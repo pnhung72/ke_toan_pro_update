@@ -1,0 +1,13 @@
+{
+  "phien_ban_moi_nhat": "17.0.3",
+  "ngay_phat_hanh": "07/06/2026",
+  "link_tai_exe": "https://drive.google.com/uc?export=download&id=1RFAX1HkUmq1AJCX8yhdc8QXKsAEh4qbz",
+  "ten_file_exe": "PhanMemKeToan.exe",
+  "kich_thuoc_mb": 50,
+  "canh_bao_bat_buoc": false,
+  "ghi_chu_phien_ban": [
+    "✅ Sửa lỗi cập nhật email tự động",
+    "✅ Sửa lỗi cập nhật phiên bản tự động",
+    "✅ Làm sạch mã nguồn, tăng tốc xử lý"
+  ]
+}
