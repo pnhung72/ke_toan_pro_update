@@ -1,0 +1,94 @@
+=== BẢN BÁO CÁO CẤU TRÚC TAB KẾ TOÁN PRO ===
+Menu vừa bấm: Báo cáo thông minh
+Tổng số Tab thực tế: 15
+
+🔹 TAB STT [0]:
+   - Tiêu đề hiển thị: '📦 Hàng hóa'
+   - Tên Class đối tượng: ProductTab
+   - Đường dẫn Module: ui.product_tab
+   - ID định danh Widget: .!notebook.!producttab
+
+🔹 TAB STT [1]:
+   - Tiêu đề hiển thị: '💸 Giao dịch'
+   - Tên Class đối tượng: TransactionTab
+   - Đường dẫn Module: ui.transaction_tab
+   - ID định danh Widget: .!notebook.!transactiontab
+
+🔹 TAB STT [2]:
+   - Tiêu đề hiển thị: '🧾 Hóa đơn'
+   - Tên Class đối tượng: InvoiceTab
+   - Đường dẫn Module: ui.invoice_tab
+   - ID định danh Widget: .!notebook.!invoicetab
+
+🔹 TAB STT [3]:
+   - Tiêu đề hiển thị: '🤝'
+   - Tên Class đối tượng: DebtTab
+   - Đường dẫn Module: ui.debt_tab
+   - ID định danh Widget: .!notebook.!debttab
+
+🔹 TAB STT [4]:
+   - Tiêu đề hiển thị: '📊'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame
+
+🔹 TAB STT [5]:
+   - Tiêu đề hiển thị: '📖'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame2
+
+🔹 TAB STT [6]:
+   - Tiêu đề hiển thị: '🔒'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame3
+
+🔹 TAB STT [7]:
+   - Tiêu đề hiển thị: '📑'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame4
+
+🔹 TAB STT [8]:
+   - Tiêu đề hiển thị: '🏦 Ngân hàng PR'
+   - Tên Class đối tượng: BankConnectTab
+   - Đường dẫn Module: views.tabs.bank_connect_tab
+   - ID định danh Widget: .!notebook.!bankconnecttab
+
+🔹 TAB STT [9]:
+   - Tiêu đề hiển thị: '🏠'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame5
+
+🔹 TAB STT [10]:
+   - Tiêu đề hiển thị: '📊'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame6
+
+🔹 TAB STT [11]:
+   - Tiêu đề hiển thị: '💱'
+   - Tên Class đối tượng: CurrencyTab
+   - Đường dẫn Module: ui.currency_tab
+   - ID định danh Widget: .!notebook.!currencytab
+
+🔹 TAB STT [12]:
+   - Tiêu đề hiển thị: '✨'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter
+   - ID định danh Widget: .!notebook.!frame11
+
+🔹 TAB STT [13]:
+   - Tiêu đề hiển thị: '📋'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame9
+
+🔹 TAB STT [14]:
+   - Tiêu đề hiển thị: '👥'
+   - Tên Class đối tượng: Frame
+   - Đường dẫn Module: tkinter.ttk
+   - ID định danh Widget: .!notebook.!frame10
+

@@ -1,0 +1,22 @@
+{
+  "enable_ai": true,
+  "lazy_load_timeout_seconds": 300,
+  "ocr": {
+    "language": "vi",
+    "use_cache": true,
+    "cache_ttl_days": 30,
+    "confidence_threshold": 0.5
+  },
+  "classifier": {
+    "model_type": "fasttext",
+    "model_path": "ai/data/models/classifier.bin",
+    "top_k": 3,
+    "retrain_threshold": 100
+  },
+  "threading": {
+    "max_workers": 2
+  },
+  "logging": {
+    "audit_log": "ai/logs/ai_audit.log"
+  }
+}

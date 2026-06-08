@@ -1,0 +1,10 @@
+﻿dist/
+build/
+rclone.exe
+*.db
+__pycache__/
+*.pyc
+client_secrets.json
+ke_toan_data/
+logs/
+exports/

@@ -1,0 +1,22 @@
+{
+    "industry_tabs": [
+	{
+    "id": "user_manager",
+    "name": "👥 Quản lý người dùng",
+    "module": "ui.user_manager_tab",
+    "class_name": "UserManagerTab"
+},
+        {
+            "id": "gas_station",
+            "name": "Quản Lý Trạm Xăng Dầu",
+            "module": "views.tabs.gas_station_tab",
+            "class_name": "GasStationTab"
+        },
+        {
+            "id": "san_xuat_dac_thu",
+            "name": "Sản Xuất Nước Mắm YaTrang",
+            "module": "views.tabs.fish_sauce_tab",
+            "class_name": "FishSauceProductionTab"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+  "thong_tu": "99/2025/TT-BTC",
+  "bieu_mau": "B01-DN",
+  "ten_bieu_mau": "Bang Can Doi Ke Toan",
+  "phien_ban_cau_hinh": "1.0.0",
+  "cac_chi_tieu": [
+    {
+      "ma_so": "110",
+      "ten_chi_tieu": "Tiền và các khoản tương đương tiền",
+      "co_in_dam": true,
+      "cong_thuc": "DU_NO(111) + DU_NO(112) + DU_NO(113)"
+    },
+    {
+      "ma_so": "120",
+      "ten_chi_tieu": "Đầu tư tài chính ngắn hạn",
+      "co_in_dam": false,
+      "cong_thuc": "DU_NO(121) - DU_CO(129)"
+    },
+    {
+      "ma_so": "130",
+      "ten_chi_tieu": "Các khoản phải thu ngắn hạn",
+      "co_in_dam": false,
+      "cong_thuc": "DU_NO(131) + DU_NO(138)"
+    },
+    {
+      "ma_so": "300",
+      "ten_chi_tieu": "NỢ PHẢI TRẢ",
+      "co_in_dam": true,
+      "cong_thuc": "DU_CO(331) + DU_CO(333) + DU_CO(334)"
+    }
+  ]
+}

@@ -1,0 +1,1239 @@
+﻿import tkinter as tk
+from tkinter import ttk, messagebox
+from datetime import datetime
+from models.invoice import Invoice
+from models.product import Product
+from models.debt import Debt
+from utils.printer import show_print_preview   # Import hàm xem trước khi in
+from utils.license import is_full_version
+from theme import get_font
+from models.utils import smart_backup
+import threading
+import logging 
+
+class InvoiceTab(ttk.Frame):
+    def __init__(self, parent, notebook, main_window):
+        super().__init__(notebook)
+        self.main_window = main_window
+        self.parent = parent
+        self.notebook = notebook
+        
+        # Giữ nguyên các hàm khởi tạo hiện có
+        self.create_widgets()
+        
+        # THÊM ĐOẠN NÀY ĐỂ TẠO NÚT BẤM
+        self.add_action_buttons()
+        
+        self.fix_database_data()
+        self.load_invoices()
+        self.load_product_names()
+        self.load_customer_suggestions()
+        
+    def add_action_buttons(self):
+            # 1. Tạo một khung chứa các nút ở dưới cùng
+            self.action_frame = ttk.Frame(self, padding=10)
+            self.action_frame.pack(fill="x", side="bottom")
+
+            # 2. Khởi tạo các nút bằng ttk.Button (thay vì QPushButton)
+            self.btn_save = ttk.Button(self.action_frame, text="Lưu", command=self.save_invoice)
+            self.btn_print = ttk.Button(self.action_frame, text="In", command=self.print_invoice)
+            self.btn_cancel = ttk.Button(self.action_frame, text="Hủy", command=self.destroy)
+            
+            # 3. Đẩy các nút sang phải (thay vì QHBoxLayout)
+            self.btn_cancel.pack(side="right", padx=5)
+            self.btn_print.pack(side="right", padx=5)
+            self.btn_save.pack(side="right", padx=5)
+        
+    def save_invoice(self):
+        """Lưu dữ liệu hóa đơn vào cơ sở dữ liệu"""
+        try:
+            # Lấy dữ liệu từ các widget Tkinter đã định nghĩa trong create_widgets()
+            buyer = self.entry_buyer.get().strip()
+            phone = self.entry_phone.get().strip()
+            address = self.entry_address.get().strip()
+            # Lấy giá trị tổng từ lbl_total (đã định dạng tiền) hoặc tự tính toán lại
+            amount_str = self.lbl_total.cget("text").replace(" VNĐ", "").replace(".", "").replace(",", "")
+            amount = float(amount_str) if amount_str.isdigit() else 0
+            
+            # Kiểm tra dữ liệu cơ bản
+            if not buyer or amount <= 0:
+                messagebox.showwarning("Cảnh báo", "Vui lòng nhập tên người mua và kiểm tra lại số tiền!", parent=self)
+                return
+
+            # Thực hiện câu lệnh SQL (Sử dụng phương thức có sẵn trong class Invoice của thầy)
+            # Lưu ý: Nếu thầy muốn lưu phức tạp hơn, hãy gọi hàm self.add_invoice() 
+            # vì hàm đó đã có logic đồng bộ nợ và tồn kho đầy đủ.
+            query = "INSERT INTO invoices (buyer_name, phone, address, total_payment) VALUES (?, ?, ?, ?)"
+            self.main_window.db.execute_query(query, (buyer, phone, address, amount))
+            
+            messagebox.showinfo("Thông báo", "Đã lưu hóa đơn thành công!", parent=self)
+            
+            self.load_invoices()  # Tải lại danh sách
+            self.clear_form()     # Làm sạch form sau khi lưu
+            
+        except Exception as e:
+            messagebox.showerror("Lỗi hệ thống", f"Lỗi khi lưu hóa đơn: {e}", parent=self)
+            logging.error(f"Lỗi khi lưu hóa đơn: {e}")
+        
+    def load_customer_suggestions(self):
+        """Tải danh sách khách hàng từ lịch sử để gợi ý"""
+        customers = set()
+        # Lấy từ bảng invoices
+        for inv in Invoice.get_all():
+            if inv['buyer_name'] and inv['buyer_name'] != 'None':
+                name = inv['buyer_name'].strip()
+                if name:  # Chỉ thêm nếu tên không rỗng
+                    customers.add((
+                        name, 
+                        inv['phone'] or '', 
+                        inv['address'] or '', 
+                        inv['tax_code'] or ''
+                    ))
+        # Lấy từ bảng debts (nếu có)
+        from models.debt import Debt
+        for debt in Debt.get_all():
+            if debt['name'] and debt['name'] != 'None':
+                name = debt['name'].strip()
+                if name:
+                    customers.add((name, debt['phone'] or '', '', ''))
+        # Chuyển thành list để hiển thị
+        self.customer_suggestions = list(customers)
+        # Tạo dictionary để tra cứu nhanh
+        self.customer_dict = {c[0]: c for c in self.customer_suggestions}
+        
+    def update_customer_history(self, name, phone, address, tax_code):
+        """Cập nhật thông tin khách hàng vào bảng lịch sử"""
+        from models.customer_history import CustomerHistory
+        CustomerHistory.update(name, phone, address, tax_code)
+        # Cập nhật lại danh sách gợi ý (nếu có)
+        if hasattr(self, 'load_customer_suggestions'):
+            self.load_customer_suggestions()
+
+    def on_buyer_keyrelease(self, event):
+        """Gợi ý theo tên khách hàng"""
+        text = self.entry_buyer.get().strip().lower()
+        if len(text) < 2:
+            self.entry_buyer['values'] = []
+            return
+        suggestions = [c[0] for c in self.customer_suggestions if text in c[0].lower()]
+        self.entry_buyer['values'] = suggestions[:10]
+
+    def on_phone_keyrelease(self, event):
+        """Gợi ý theo số điện thoại"""
+        text = self.entry_phone.get().strip()
+        if len(text) < 3:
+            self.entry_phone['values'] = []
+            return
+        suggestions = [c[1] for c in self.customer_suggestions if text in c[1]]
+        self.entry_phone['values'] = suggestions[:10]
+
+    def on_buyer_selected(self, event):
+        """Khi chọn tên khách hàng, tự động điền các trường còn lại (Bản tối ưu)"""
+        name = self.entry_buyer.get().strip()
+        
+        # Kiểm tra xem tên có trong từ điển không
+        if name in self.customer_dict:
+            info = self.customer_dict[name]
+            # info cấu trúc: (name, phone, address, tax_code)
+            
+            # Cập nhật SĐT (Sử dụng delete/insert để tránh lỗi .set trên mọi loại widget)
+            self.entry_phone.delete(0, tk.END)
+            self.entry_phone.insert(0, info[1] if info[1] and info[1] != 'None' else "")
+            
+            # Cập nhật Địa chỉ
+            self.entry_address.delete(0, tk.END)
+            self.entry_address.insert(0, info[2] if info[2] and info[2] != 'None' else "")
+            
+            # Cập nhật MST
+            self.entry_tax.delete(0, tk.END)
+            self.entry_tax.insert(0, info[3] if info[3] and info[3] != 'None' else "")
+
+    def on_phone_selected(self, event):
+        """Khi chọn số điện thoại, tự động điền các trường còn lại"""
+        phone = self.entry_phone.get()
+        for c in self.customer_suggestions:
+            if c[1] == phone:
+                self.entry_buyer.set(c[0])
+                self.entry_address.delete(0, tk.END)
+                self.entry_address.insert(0, c[2])
+                self.entry_tax.delete(0, tk.END)
+                self.entry_tax.insert(0, c[3])
+                break
+    
+    def create_widgets(self):
+        # Style cho form
+        style = ttk.Style()
+        style.configure("Invoice.TLabel", font=get_font("label"))
+        style.configure("Invoice.TEntry", font=get_font("label"))
+        style.configure("Invoice.TButton", font=get_font("label"))
+        
+        # === Frame nhập liệu === - CHUYỂN DÁN TRỰC TIẾP LÊN TẦNG LÕI self
+        input_frame = ttk.LabelFrame(self, text="Tạo hóa đơn mới", padding=10)
+        input_frame.pack(fill="x", padx=10, pady=5)
+        
+        # Sử dụng grid để bố trí
+        input_frame.columnconfigure(1, weight=1)
+        input_frame.columnconfigure(3, weight=1)
+        
+        # Hàng 0: Người mua (Combobox có gợi ý)
+        ttk.Label(input_frame, text="Người mua:", style="Invoice.TLabel").grid(row=0, column=0, padx=5, pady=6, sticky="w")
+        self.entry_buyer = ttk.Combobox(input_frame, width=25, font=get_font("label"))
+        self.entry_buyer.grid(row=0, column=1, padx=5, pady=6, sticky="we")
+        self.entry_buyer.bind("<KeyRelease>", self.on_buyer_keyrelease)
+        self.entry_buyer.bind("<<ComboboxSelected>>", self.on_buyer_selected)
+
+        # Hàng 0: SĐT (Combobox có gợi ý)
+        ttk.Label(input_frame, text="SĐT:", style="Invoice.TLabel").grid(row=0, column=2, padx=5, pady=6, sticky="w")
+        self.entry_phone = ttk.Combobox(input_frame, width=18, font=get_font("label"))
+        self.entry_phone.grid(row=0, column=3, padx=5, pady=6, sticky="w")
+        self.entry_phone.bind("<KeyRelease>", self.on_phone_keyrelease)
+        self.entry_phone.bind("<<ComboboxSelected>>", self.on_phone_selected)
+        
+        # Hàng 1: MST, Địa chỉ
+        ttk.Label(input_frame, text="MST:", style="Invoice.TLabel").grid(row=1, column=0, padx=5, pady=6, sticky="w")
+        self.entry_tax = ttk.Entry(input_frame, width=25, font=get_font("label"))
+        self.entry_tax.grid(row=1, column=1, padx=5, pady=6, sticky="we")
+        
+        ttk.Label(input_frame, text="Địa chỉ:", style="Invoice.TLabel").grid(row=1, column=2, padx=5, pady=6, sticky="w")
+        self.entry_address = ttk.Entry(input_frame, width=25, font=get_font("label"))
+        self.entry_address.grid(row=1, column=3, padx=5, pady=6, sticky="we")
+        
+        # Hàng 2: Sản phẩm, Số lượng
+        ttk.Label(input_frame, text="Sản phẩm:", style="Invoice.TLabel").grid(row=2, column=0, padx=5, pady=6, sticky="w")
+        self.combo_product = ttk.Combobox(input_frame, width=25, state="readonly", font=get_font("label"))
+        self.combo_product.grid(row=2, column=1, padx=5, pady=6, sticky="we")
+        self.combo_product.bind("<<ComboboxSelected>>", self.on_product_select)
+        
+        # Hàng 2: Số lượng
+        ttk.Label(input_frame, text="Số lượng:", style="Invoice.TLabel").grid(row=2, column=2, padx=5, pady=6, sticky="w")
+        self.entry_qty = ttk.Entry(input_frame, width=12, font=get_font("label"))
+        self.entry_qty.grid(row=2, column=3, padx=5, pady=6, sticky="w")
+        self.entry_qty.insert(0, "1")
+        self.entry_qty.bind("<KeyRelease>", self.calculate_total)
+        
+        # Hàng 3: Đơn giá, Thành tiền (chưa thuế)
+        ttk.Label(input_frame, text="Đơn giá:", style="Invoice.TLabel").grid(row=3, column=0, padx=5, pady=6, sticky="w")
+        self.entry_price = ttk.Entry(input_frame, width=18, font=get_font("label"))
+        self.entry_price.grid(row=3, column=1, padx=5, pady=6, sticky="w")
+        self.entry_price.bind("<KeyRelease>", self.calculate_total)
+        
+        # Hàng 3: Thành tiền
+        ttk.Label(input_frame, text="Thành tiền:", style="Invoice.TLabel").grid(row=3, column=2, padx=5, pady=6, sticky="w")
+        self.lbl_subtotal = ttk.Label(input_frame, text="0 VNĐ", font=get_font("label"), foreground="blue")
+        self.lbl_subtotal.grid(row=3, column=3, padx=5, pady=6, sticky="w")
+        
+        # Hàng 4: Thuếu GTGT
+        self.tax_var = tk.BooleanVar(master=self, value=False)
+        self.chk_tax = ttk.Checkbutton(input_frame, text="Có thuế GTGT", variable=self.tax_var, command=self.calculate_total, style="Invoice.TLabel")
+        self.chk_tax.grid(row=4, column=0, padx=5, pady=6, sticky="w")
+        
+        self.combo_tax_rate = ttk.Combobox(input_frame, values=["8%", "10%"], width=6, state="readonly", font=get_font("label"))
+        self.combo_tax_rate.grid(row=4, column=1, padx=5, pady=6, sticky="w")
+        self.combo_tax_rate.current(1)
+        self.combo_tax_rate.bind("<<ComboboxSelected>>", lambda e: self.calculate_total())
+        
+        self.lbl_tax_amount = ttk.Label(input_frame, text="0 VNĐ", font=get_font("label"))
+        self.lbl_tax_amount.grid(row=4, column=2, padx=5, pady=6, sticky="w")
+        
+        # Hàng 5: Tổng cộng, Hình thức TT
+        ttk.Label(input_frame, text="Tổng cộng:", font=get_font("bold")).grid(row=5, column=0, padx=5, pady=6, sticky="w")
+        self.lbl_total = ttk.Label(input_frame, text="0 VNĐ", font=get_font("bold"), foreground="red")
+        self.lbl_total.grid(row=5, column=1, padx=5, pady=6, sticky="w")
+        
+        # Hàng 5: Hình thức TT
+        ttk.Label(input_frame, text="Hình thức TT:", style="Invoice.TLabel").grid(row=5, column=2, padx=5, pady=6, sticky="w")
+        self.combo_payment = ttk.Combobox(input_frame, values=["Tiền mặt", "Chuyển khoản", "Nợ"], width=14, state="readonly", font=get_font("label"))
+        self.combo_payment.grid(row=5, column=3, padx=5, pady=6, sticky="w")
+        self.combo_payment.current(0)
+        
+        # Hàng 6: Nguồn đơn (Thêm mới)
+        ttk.Label(input_frame, text="Nguồn đơn:", style="Invoice.TLabel").grid(row=6, column=2, padx=5, pady=6, sticky="w")
+        self.combo_source = ttk.Combobox(input_frame, values=["Tiktok", "Lazada", "Tiki", "Facebook", "Cửa hàng", "Zalo"], width=14, font=get_font("label"))
+        self.combo_source.grid(row=6, column=3, padx=5, pady=6, sticky="w")
+        self.combo_source.current(0)
+        
+        # Hàng 7: Đã thanh toán
+        ttk.Label(input_frame, text="Đã thanh toán:", style="Invoice.TLabel").grid(row=6, column=0, padx=5, pady=6, sticky="w")
+        self.entry_paid = ttk.Entry(input_frame, width=18, font=get_font("label"))
+        self.entry_paid.grid(row=6, column=1, padx=5, pady=6, sticky="w")
+        self.entry_paid.insert(0, "0")
+        self.entry_paid.bind("<KeyRelease>", self.validate_payment)
+        
+        # Hàng 8: Nút chức năng
+        btn_frame = ttk.Frame(input_frame)
+        btn_frame.grid(row=7, column=0, columnspan=4, pady=10)
+        ttk.Button(btn_frame, text="➕ Thêm hóa đơn", command=self.add_invoice, width=18).pack(side="left", padx=5)
+        # Tạo nút OCR với log
+        self.ocr_button = ttk.Button(btn_frame, text="📸 Nhập hóa đơn (OCR)", command=self.ocr_import_invoice, width=22)
+        self.ocr_button.pack(side="left", padx=5)
+        #print("=== THÔNG TIN NÚT OCR ===")
+        #print(f"✅ Nút OCR đã được tạo")
+        #print(f"   - command: {self.ocr_import_invoice}")
+        #print(f"   - button object: {self.ocr_button}")
+        #print(f"==========================")
+        ttk.Button(btn_frame, text="🔄 Làm mới", command=self.clear_form, width=12).pack(side="left", padx=5)
+        
+        # === Frame danh sách hóa đơn === - CHUYỂN DÁN TRỰC TIẾP LÊN TẦNG LÕI self
+        list_frame = ttk.LabelFrame(self, text="DANH SÁCH HÓA ĐƠN", padding=5)
+        list_frame.pack(fill="both", expand=True, padx=10, pady=5)
+        
+        # Style cho Treeview
+        style.configure("Invoice.Treeview", font=get_font("small"), rowheight=28)
+        style.configure("Invoice.Treeview.Heading", font=get_font("bold"))
+        
+        columns = ("ID", "Người mua", "SĐT", "Nguồn đơn", "Địa chỉ", "MST", "Sản phẩm", "Số lượng", "Đơn giá", "Thành tiền", "Đã TT", "Còn nợ", "Hình thức TT", "Ngày tạo")
+        col_widths = [50, 160, 110, 100, 180, 130, 180, 80, 120, 140, 120, 120, 120, 130]
+        self.tree = ttk.Treeview(list_frame, columns=columns, show="headings", height=8, style="Invoice.Treeview")
+        
+        # Căn lề: chỉ cột "Người mua"(1) và "Địa chỉ"(3) căn trái, còn lại căn giữa
+        for idx, col in enumerate(columns):
+            self.tree.heading(col, text=col)
+            if idx in [1, 3]:  # Người mua, Địa chỉ
+                self.tree.column(col, width=col_widths[idx], anchor="w")
+            else:
+                self.tree.column(col, width=col_widths[idx], anchor="center")
+        
+        vsb = ttk.Scrollbar(list_frame, orient="vertical", command=self.tree.yview)
+        hsb = ttk.Scrollbar(list_frame, orient="horizontal", command=self.tree.xview)
+        self.tree.configure(yscrollcommand=vsb.set, xscrollcommand=hsb.set)
+        
+        self.tree.grid(row=0, column=0, sticky="nsew")
+        vsb.grid(row=0, column=1, sticky="ns")
+        hsb.grid(row=1, column=0, sticky="ew")
+        
+        list_frame.columnconfigure(0, weight=1)
+        list_frame.rowconfigure(0, weight=1)
+        
+        # Nút chức năng phía dưới
+        btn_bottom = ttk.Frame(list_frame)
+        btn_bottom.grid(row=2, column=0, columnspan=2, pady=5, sticky="e")
+        
+        ttk.Button(btn_bottom, text="✏️ Sửa", command=self.edit_invoice, width=10).pack(side="left", padx=5)
+        self.btn_delete = ttk.Button(btn_bottom, text="🗑️ Xóa", command=self.delete_invoice, width=10)
+        self.btn_delete.pack(side="left", padx=5)
+        ttk.Button(btn_bottom, text="🔄 Làm mới", command=self.load_invoices, width=12).pack(side="left", padx=5)
+        self.btn_export = ttk.Button(btn_bottom, text="📊 Xuất Excel", command=self.export_excel, width=12)
+        self.btn_export.pack(side="left", padx=5)
+        self.btn_print_invoice = ttk.Button(btn_bottom, text="🖨️ In hóa đơn", command=self.print_invoice, width=16)
+        self.btn_print_invoice.pack(side="left", padx=5)
+        self.btn_print_label = ttk.Button(btn_bottom, text="🏷️ In nhãn", command=self.print_order_label, width=14)
+        self.btn_print_label.pack(side="left", padx=5)
+        
+        # Vô hiệu hóa các nút cao cấp khi đang dùng thử (trial)
+        if hasattr(self, 'main_window') and self.main_window.is_in_trial() and not self.main_window.is_super_admin:
+            self.btn_delete.config(state='disabled')
+            self.btn_export.config(state='disabled')
+            self.btn_print_invoice.config(state='disabled')
+            self.btn_print_label.config(state='disabled')
+            
+        # === Bổ sung nút bấm Sửa/Lưu/Hủy ===
+        # Ta tạo một frame mới ở dưới cùng để chứa các nút hành động
+        bottom_action_frame = ttk.Frame(self, padding=10)
+        bottom_action_frame.pack(fill="x", side="bottom")
+
+        # Khởi tạo các nút với style Invoice.TButton (đã định nghĩa ở đầu hàm)
+        self.btn_save = ttk.Button(bottom_action_frame, text="Lưu", style="Invoice.TButton", command=self.save_invoice)
+        self.btn_print = ttk.Button(bottom_action_frame, text="In", style="Invoice.TButton", command=self.print_invoice)
+        self.btn_cancel = ttk.Button(bottom_action_frame, text="Hủy", style="Invoice.TButton", command=self.destroy)
+        
+        # Căn lề phải: pack với side="right"
+        self.btn_cancel.pack(side="right", padx=5)
+        self.btn_print.pack(side="right", padx=5)
+        self.btn_save.pack(side="right", padx=5)
+    
+    def load_product_names(self):
+        products = Product.get_all()
+        names = [p['name'] for p in products]
+        self.combo_product['values'] = names
+        if names:
+            self.combo_product.current(0)
+            self.on_product_select()
+    
+    def on_product_select(self, event=None):
+        selected = self.combo_product.get()
+        if not selected:
+            return
+        products = Product.get_all()
+        for p in products:
+            if p['name'] == selected:
+                self.entry_price.delete(0, tk.END)
+                self.entry_price.insert(0, f"{p['price_sell']:,.0f}".replace(",", "."))
+                self.calculate_total()
+                break
+    
+    def calculate_total(self, event=None):
+        try:
+            qty = float(self.entry_qty.get())
+            price_str = self.entry_price.get().replace(".", "").replace(",", "")
+            price = float(price_str) if price_str else 0
+            subtotal = qty * price
+            self.lbl_subtotal.config(text=f"{int(subtotal):,}".replace(",", ".") + " VNĐ")
+            
+            tax = 0
+            if self.tax_var.get():
+                rate_str = self.combo_tax_rate.get().replace("%", "")
+                rate = float(rate_str) / 100
+                tax = subtotal * rate
+                self.lbl_tax_amount.config(text=f"{int(tax):,}".replace(",", ".") + " VNĐ")
+            else:
+                self.lbl_tax_amount.config(text="0 VNĐ")
+            
+            total = subtotal + tax
+            self.lbl_total.config(text=f"{int(total):,}".replace(",", ".") + " VNĐ")
+        except Exception:
+            self.lbl_subtotal.config(text="0 VNĐ")
+            self.lbl_tax_amount.config(text="0 VNĐ")
+            self.lbl_total.config(text="0 VNĐ")
+    
+    def validate_payment(self, event=None):
+        # chỉ kiểm tra, không cần hiển thị lỗi ngay
+        pass
+    
+    def add_invoice(self):
+        """Thêm hóa đơn mới - HIỂN THỊ NGAY LẬP TỨC"""
+        buyer = self.entry_buyer.get().strip()
+        phone = self.entry_phone.get().strip()
+        tax = self.entry_tax.get().strip()
+        address = self.entry_address.get().strip()
+        product_name = self.combo_product.get()
+        sale_source = self.combo_source.get() 
+        
+        # Lấy dữ liệu và kiểm tra kiểu số
+        try:
+            qty = float(self.entry_qty.get())
+            price_str = self.entry_price.get().replace(".", "").replace(",", "")
+            price = float(price_str)
+            paid_str = self.entry_paid.get().replace(".", "").replace(",", "")
+            paid = float(paid_str) if paid_str else 0
+        except Exception:
+            messagebox.showerror("Lỗi", "Số liệu không hợp lệ", parent=self)
+            return
+        
+        if not buyer or not product_name or qty <= 0 or price <= 0:
+            messagebox.showwarning("Cảnh báo", "Vui lòng nhập đầy đủ thông tin hợp lệ", parent=self)
+            return
+        
+        # Lấy thông tin sản phẩm từ danh sách
+        product = None
+        for p in Product.get_all():
+            if p['name'] == product_name:
+                product = p
+                break
+        
+        if not product or product['stock'] < qty:
+            messagebox.showerror("Lỗi", "Sản phẩm không hợp lệ hoặc thiếu tồn kho", parent=self)
+            return
+        
+        subtotal = qty * price
+        tax_val = 0
+        if self.tax_var.get():
+            try:
+                rate = float(self.combo_tax_rate.get().replace("%", "")) / 100
+                tax_val = subtotal * rate
+            except Exception: 
+                pass
+        total = subtotal + tax_val
+        
+        if paid > total:
+            messagebox.showerror("Lỗi", "Tiền trả không được lớn hơn tổng tiền", parent=self)
+            return
+        
+        try:
+            # 1. Lưu Hóa đơn
+            invoice_id = Invoice.create(
+                buyer_name=buyer, phone=phone, tax_code=tax, address=address,
+                product_code=product['code'], product_name=product_name,
+                quantity=qty, unit_price=price, total_excluding_tax=subtotal,
+                tax_amount=tax_val, total_payment=total, paid=paid,
+                payment_method=self.combo_payment.get(), sale_source=sale_source
+            )
+            
+            # 2. HIỂN THỊ NGAY LẬP TỨC
+            self.load_invoices()
+            self.clear_form()
+            messagebox.showinfo("Thành công", "Đã lưu hóa đơn!", parent=self)
+            
+            # 3. Đồng bộ nợ và lịch sử ở BACKGROUND
+            threading.Thread(
+                target=self._sync_debt_and_history,
+                args=(invoice_id, buyer, phone, address, tax, total, paid),
+                daemon=True
+            ).start()
+            
+        except Exception as e:
+            messagebox.showerror("Lỗi hệ thống", f"Lỗi lưu dữ liệu: {str(e)}", parent=self)
+            
+    def _sync_debt_and_history(self, invoice_id, buyer, phone, address, tax, total, paid):
+        """Đồng bộ công nợ và lịch sử (chạy ngầm)"""
+        try:
+            # Cập nhật lịch sử khách hàng
+            self.update_customer_history(buyer, phone, address, tax)
+            
+            # Đồng bộ công nợ
+            remaining = total - paid
+            if remaining > 0:
+                Debt.create(
+                    name=buyer, 
+                    phone=phone, 
+                    total_debt=remaining, 
+                    paid=0,
+                    last_debt_date=datetime.now().strftime("%d/%m/%Y"),
+                    notes=f"Hóa đơn {invoice_id}"
+                )
+            else:
+                Debt.delete_by_invoice(invoice_id)
+            
+            # Cập nhật lại tổng trên status bar (nếu có)
+            if hasattr(self.parent, 'update_status_bar'):
+                self.parent.after(0, self.parent.update_status_bar)
+                
+        except Exception as e:
+            logging.error(f"Lỗi background đồng bộ: {e}")
+            
+    def ocr_import_invoice(self):
+        """Mở dialog OCR để nhập hóa đơn từ ảnh/PDF"""
+        #print("=== ocr_import_invoice ĐƯỢC GỌI ===")
+        import sys
+        import os
+        import traceback
+        from datetime import datetime
+
+        # Ghi log để debug
+        log_file = os.path.join(os.path.dirname(sys.executable) if getattr(sys, 'frozen', False) else '.', 'ocr_debug.log')
+        def log(msg):
+            try:
+                with open(log_file, 'a', encoding='utf-8') as f:
+                    f.write(f"{datetime.now().isoformat()} - {msg}\n")
+            except Exception:
+                pass
+            #print(msg)
+
+        log("=== ocr_import_invoice được gọi ===")
+        try:
+            # Chỉ import, không làm gì khác trong try/except
+            try:
+                from ui.dialogs.ocr_import_dialog import OCRImportDialog
+            except ImportError:
+                from .dialogs.ocr_import_dialog import OCRImportDialog
+            
+            # ✅ Code tạo dialog phải ở ĐÂY (ngoài try/except import)
+            log("Import OCRImportDialog thành công")
+            dialog = OCRImportDialog(self.winfo_toplevel())
+            log("Dialog đã được tạo")
+            dialog.update_idletasks()
+            dialog.after(100, lambda: None)  # ← Chờ 100ms
+            self.wait_window(dialog)
+            log("Dialog đã đóng (wait_window kết thúc)")
+            self.load_invoices()
+            log("Đã gọi load_invoices")
+            
+        except Exception as e:
+            log(f"LỖI: {e}")
+            traceback.print_exc()
+            from tkinter import messagebox
+            messagebox.showerror("Lỗi", f"Không thể mở OCR: {e}")
+
+    def load_invoices(self):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+        
+        # Tải dữ liệu
+        invoices = Invoice.get_all(limit=100)
+        
+        for inv in invoices:
+            # 1. Xử lý tên sản phẩm
+            if 'product_name' in inv and inv['product_name']:
+                product_name = inv['product_name']
+            else:
+                product = Product.get_by_code(inv['product_code'])
+                product_name = product['name'] if product else inv['product_code']
+            
+            # 2. XỬ LÝ CÁC GIÁ TRỊ NULL/NONE (Sửa lỗi .get() bằng cách truy xuất trực tiếp)
+            buyer_name = inv['buyer_name'] if inv['buyer_name'] and inv['buyer_name'] != 'None' else "---"
+            phone = inv['phone'] if inv['phone'] and inv['phone'] != 'None' else "---"
+            address = inv['address'] if inv['address'] and inv['address'] != 'None' else "---"
+            tax_code = inv['tax_code'] if inv['tax_code'] and inv['tax_code'] != 'None' else "---"
+            
+            # 3. Lấy Nguồn đơn (sale_source) - SỬA LỖI Ở ĐÂY
+            # Kiểm tra xem 'sale_source' có trong dữ liệu không để tránh lỗi KeyError
+            try:
+                sale_source = inv['sale_source']
+                if not sale_source or sale_source == 'None':
+                    sale_source = "Cửa hàng"
+            except (IndexError, KeyError):
+                sale_source = "Cửa hàng"
+
+            remaining = inv['total_payment'] - inv['paid']
+            
+            # 4. Lấy payment_method an toàn
+            payment_method = inv['payment_method'] if inv['payment_method'] else 'Tiền mặt'
+            
+            # 🎯 ĐÃ ĐỒNG BỘ CHUẨN XÁC 100% THỨ TỰ 14 CỘT THEO ẢNH TIÊU ĐỀ GIAO DIỆN CỦA THẦY
+            self.tree.insert("", "end", values=(
+                inv['id'],                                           # 0: ID
+                buyer_name,                                          # 1: Người mua
+                phone,                                               # 2: SĐT
+                sale_source,                                         # 3: Nguồn đơn (Đã trả về đúng vị trí cột 4)
+                address,                                             # 4: Địa chỉ (Đã trả về đúng vị trí cột 5)
+                tax_code,                                            # 5: MST (Đã trả về đúng vị trí cột 6)
+                product_name,                                        # 6: Sản phẩm
+                f"{(inv['quantity'] or 0):,.0f}".replace(",", "."), # 7: Số lượng
+                f"{(inv['unit_price'] or 0):,.0f}".replace(",", "."),# 8: Đơn giá
+                f"{(inv['total_payment'] or 0):,.0f}".replace(",", "."), # 9: Thành tiền (Lấy total_payment thay vì để bằng 0)
+                f"{(inv['paid'] or 0):,.0f}".replace(",", "."),      # 10: Đã TT
+                f"{remaining:,.0f}".replace(",", "."),              # 11: Còn nợ (Trả số nợ về đúng cột)
+                payment_method,                                      # 12: Hình thức TT (Trả về đúng cột gần cuối)
+                inv['created_date'] if inv['created_date'] else datetime.now().strftime("%d/%m/%Y") # 13: Ngày tạo
+            ))
+        
+    def edit_invoice(self):
+        selected = self.tree.selection()
+        if not selected:
+            messagebox.showwarning("Cảnh báo", "Chọn hóa đơn cần sửa")
+            return
+        inv_id = self.tree.item(selected[0], "values")[0]
+        inv = Invoice.get_by_id(inv_id)
+        if not inv:
+            messagebox.showerror("Lỗi", "Không tìm thấy hóa đơn")
+            return
+
+        edit_win = tk.Toplevel()
+        edit_win.title("Sửa hóa đơn")
+        edit_win.geometry("640x750")
+        edit_win.minsize(640, 400)
+        edit_win.resizable(True, True)
+        edit_win.lift()
+        edit_win.focus_force()
+        edit_win.grab_set()
+
+        # === 1. KHUNG NÚT (CỐ ĐỊNH DƯỚI ĐÁY) ===
+        btn_frame = ttk.Frame(edit_win, padding=10)
+        btn_frame.pack(side="bottom", fill="x")
+
+        # === 2. VÙNG CUỘN (CHIẾM PHẦN CÒN LẠI) ===
+        scroll_container = ttk.Frame(edit_win)
+        scroll_container.pack(side="top", fill="both", expand=True)
+
+
+        canvas = tk.Canvas(scroll_container)
+        scrollbar = ttk.Scrollbar(scroll_container, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas, padding=10)
+
+        # Cấu hình cuộn
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        scrollbar.pack(side="right", fill="y")
+        canvas.pack(side="left", fill="both", expand=True)
+
+        # main_frame chính là scrollable_frame
+        main_frame = scrollable_frame
+        
+        # Thông tin khách hàng
+        ttk.Label(main_frame, text="THÔNG TIN KHÁCH HÀNG").grid(row=0, column=0, columnspan=3, sticky="w", pady=3)
+
+        ttk.Label(main_frame, text="Người mua:").grid(row=1, column=0, sticky="w", padx=5, pady=3)
+        entry_buyer = ttk.Entry(main_frame, width=30)
+        entry_buyer.grid(row=1, column=1, padx=5, pady=3, sticky="w")
+        entry_buyer.insert(0, inv['buyer_name'])
+
+        ttk.Label(main_frame, text="SĐT:").grid(row=2, column=0, sticky="w", padx=5, pady=3)
+        entry_phone = ttk.Entry(main_frame, width=20)
+        entry_phone.grid(row=2, column=1, padx=5, pady=3, sticky="w")
+        entry_phone.insert(0, inv['phone'] if inv['phone'] else "")
+
+        ttk.Label(main_frame, text="MST:").grid(row=3, column=0, sticky="w", padx=5, pady=3)
+        entry_tax = ttk.Entry(main_frame, width=30)
+        entry_tax.grid(row=3, column=1, padx=5, pady=3, sticky="w")
+        entry_tax.insert(0, inv['tax_code'] if inv['tax_code'] else "")
+
+        ttk.Label(main_frame, text="Địa chỉ:").grid(row=4, column=0, sticky="w", padx=5, pady=3)
+        entry_address = ttk.Entry(main_frame, width=40)
+        entry_address.grid(row=4, column=1, padx=5, pady=3, sticky="w")
+        entry_address.insert(0, inv['address'] if inv['address'] else "")
+
+        # Thông tin hàng hóa
+        ttk.Label(main_frame, text="THÔNG TIN HÀNG HÓA").grid(row=5, column=0, columnspan=3, sticky="w", pady=(10,5))
+
+        ttk.Label(main_frame, text="Sản phẩm:").grid(row=6, column=0, sticky="w", padx=5, pady=3)
+        combo_product = ttk.Combobox(main_frame, width=30, state="readonly")
+        combo_product.grid(row=6, column=1, padx=5, pady=3, sticky="w")
+        products = Product.get_all()
+        product_names = [p['name'] for p in products]
+        combo_product['values'] = product_names
+        # Tìm tên sản phẩm hiện tại
+        current_product = None
+        for p in products:
+            if p['code'] == inv['product_code']:
+                current_product = p['name']
+                break
+        combo_product.set(current_product if current_product else "")
+
+        ttk.Label(main_frame, text="Số lượng:").grid(row=7, column=0, sticky="w", padx=5, pady=3)
+        entry_qty = ttk.Entry(main_frame, width=10)
+        entry_qty.grid(row=7, column=1, padx=5, pady=3, sticky="w")
+        entry_qty.insert(0, str(inv['quantity']))
+
+        ttk.Label(main_frame, text="Đơn giá (VND):").grid(row=8, column=0, sticky="w", padx=5, pady=3)
+        entry_price = ttk.Entry(main_frame, width=15)
+        entry_price.grid(row=8, column=1, padx=5, pady=3, sticky="w")
+        entry_price.insert(0, f"{inv['unit_price']:,.0f}".replace(",", "."))
+
+        ttk.Label(main_frame, text="Thuế GTGT:").grid(row=9, column=0, sticky="w", padx=5, pady=3)
+        tax_var = tk.BooleanVar(master=edit_win, value=inv['tax_amount'] > 0)
+        chk_tax = ttk.Checkbutton(main_frame, text="Có thuế", variable=tax_var)
+        chk_tax.grid(row=9, column=1, sticky="w", padx=5, pady=3)
+        combo_tax_rate = ttk.Combobox(main_frame, values=["8%", "10%"], width=5, state="readonly")
+        combo_tax_rate.grid(row=9, column=2, padx=5, pady=3, sticky="w")
+        if inv['tax_amount'] > 0:
+            tax_rate_val = inv['tax_amount'] / inv['total_excluding_tax'] if inv['total_excluding_tax'] > 0 else 0.1
+            if abs(tax_rate_val - 0.08) < 0.001:
+                combo_tax_rate.set("8%")
+            else:
+                combo_tax_rate.set("10%")
+        else:
+            combo_tax_rate.set("10%")
+        combo_tax_rate.config(state="normal" if tax_var.get() else "disabled")
+
+        def toggle_tax():
+            combo_tax_rate.config(state="normal" if tax_var.get() else "disabled")
+            calculate_total()
+        tax_var.trace_add('write', lambda *args: toggle_tax())
+
+        ttk.Label(main_frame, text="Hình thức TT:").grid(row=10, column=0, sticky="w", padx=5, pady=3)
+        combo_payment = ttk.Combobox(main_frame, values=["Tiền mặt", "Chuyển khoản", "Nợ"], width=12, state="readonly")
+        combo_payment.grid(row=10, column=1, padx=5, pady=3, sticky="w")
+        combo_payment.set(inv['payment_method'] if inv['payment_method'] else "Tiền mặt")
+
+        ttk.Label(main_frame, text="Đã thanh toán (VND):").grid(row=11, column=0, sticky="w", padx=5, pady=3)
+        entry_paid = ttk.Entry(main_frame, width=15)
+        entry_paid.grid(row=11, column=1, padx=5, pady=3, sticky="w")
+        entry_paid.insert(0, f"{inv['paid']:,.0f}".replace(",", "."))
+
+        # === NGÀY TẠO VÀ NGUỒN ĐƠN  ===
+        ttk.Label(main_frame, text="Ngày tạo:").grid(row=12, column=0, sticky="w", padx=5, pady=3)
+        entry_date = ttk.Entry(main_frame, width=15)
+        entry_date.grid(row=12, column=1, padx=5, pady=3, sticky="w")
+        entry_date.insert(0, inv['created_date'] if inv['created_date'] else datetime.now().strftime("%d/%m/%Y"))
+
+        # NGUỒN ĐƠN 
+        ttk.Label(main_frame, text="Nguồn đơn:").grid(row=13, column=0, sticky="w", padx=5, pady=3)
+        combo_source = ttk.Combobox(main_frame, values=["Tiktok", "Lazada", "Tiki", "Facebook", "Cửa hàng", "Zalo"], width=14, state="readonly")
+        combo_source.grid(row=13, column=1, padx=5, pady=3, sticky="w")
+        try:
+            source_val = inv['sale_source'] if inv['sale_source'] else 'Cửa hàng'
+        except (KeyError, IndexError):
+            source_val = 'Cửa hàng'
+        combo_source.set(source_val)
+
+        # Hiển thị tổng tiền
+        ttk.Label(main_frame, text="Thành tiền:").grid(row=14, column=0, sticky="w", padx=5, pady=3)
+        lbl_subtotal = ttk.Label(main_frame, text="0 VNĐ")
+        lbl_subtotal.grid(row=14, column=1, padx=5, pady=3, sticky="w")
+
+        ttk.Label(main_frame, text="Thuế:").grid(row=15, column=0, sticky="w", padx=5, pady=3)
+        lbl_tax = ttk.Label(main_frame, text="0 VNĐ")
+        lbl_tax.grid(row=15, column=1, padx=5, pady=3, sticky="w")
+
+        ttk.Label(main_frame, text="Tổng cộng:").grid(row=16, column=0, sticky="w", padx=5, pady=3)
+        lbl_total = ttk.Label(main_frame, text="0 VNĐ", foreground="blue")
+        lbl_total.grid(row=16, column=1, padx=5, pady=3, sticky="w")
+
+        def calculate_total(event=None):
+            try:
+                qty = float(entry_qty.get())
+                price = float(entry_price.get().replace(".", "").replace(",", ""))
+                subtotal = qty * price
+                lbl_subtotal.config(text=f"{int(subtotal):,}".replace(",", ".") + " VNĐ")
+                tax = 0
+                if tax_var.get():
+                    rate_str = combo_tax_rate.get().replace("%", "")
+                    rate = float(rate_str) / 100
+                    tax = subtotal * rate
+                    lbl_tax.config(text=f"{int(tax):,}".replace(",", ".") + " VNĐ")
+                else:
+                    lbl_tax.config(text="0 VNĐ")
+                total = subtotal + tax
+                lbl_total.config(text=f"{int(total):,}".replace(",", ".") + " VNĐ")
+            except Exception:
+                lbl_subtotal.config(text="0 VNĐ")
+                lbl_tax.config(text="0 VNĐ")
+                lbl_total.config(text="0 VNĐ")
+
+        entry_qty.bind("<KeyRelease>", calculate_total)
+        entry_price.bind("<KeyRelease>", calculate_total)
+        combo_tax_rate.bind("<<ComboboxSelected>>", lambda e: calculate_total())
+        tax_var.trace_add('write', lambda *args: calculate_total())
+        calculate_total()
+        # === ĐỊNH NGHĨA HÀM LƯU ===
+        def save_changes():
+            try:
+                new_buyer = entry_buyer.get().strip()
+                new_phone = entry_phone.get().strip()
+                new_tax = entry_tax.get().strip()
+                new_address = entry_address.get().strip()
+                new_product_name = combo_product.get()
+                new_qty = float(entry_qty.get())
+                new_price = float(entry_price.get().replace(".", "").replace(",", ""))
+                new_paid = float(entry_paid.get().replace(".", "").replace(",", ""))
+                new_payment_method = combo_payment.get()
+                new_source = combo_source.get()
+                new_created_date = entry_date.get().strip()
+                
+                new_tax_amount = 0
+                if tax_var.get():
+                    rate_str = combo_tax_rate.get().replace("%", "")
+                    rate = float(rate_str) / 100
+                    new_tax_amount = new_qty * new_price * rate
+                new_total = new_qty * new_price + new_tax_amount
+
+                if not new_buyer:
+                    messagebox.showerror("Lỗi", "Vui lòng nhập tên khách hàng")
+                    return
+                if not new_product_name:
+                    messagebox.showerror("Lỗi", "Vui lòng chọn sản phẩm")
+                    return
+                if new_qty <= 0:
+                    messagebox.showerror("Lỗi", "Số lượng phải lớn hơn 0")
+                    return
+                if new_price <= 0:
+                    messagebox.showerror("Lỗi", "Đơn giá phải lớn hơn 0")
+                    return
+                if new_paid > new_total:
+                    messagebox.showerror("Lỗi", "Số tiền đã thanh toán không được lớn hơn tổng tiền")
+                    return
+
+                new_product_code = None
+                for p in products:
+                    if p['name'] == new_product_name:
+                        new_product_code = p['code']
+                        break
+                if not new_product_code:
+                    messagebox.showerror("Lỗi", "Sản phẩm không hợp lệ")
+                    return
+
+                old_qty = inv['quantity']
+                old_product_code = inv['product_code']
+                
+                if old_product_code == new_product_code:
+                    diff = new_qty - old_qty
+                    if diff > 0:
+                        product = Product.get_by_code(new_product_code)
+                        if product['stock'] < diff:
+                            messagebox.showerror("Lỗi", f"Sản phẩm {new_product_name} chỉ còn {product['stock']} đơn vị")
+                            return
+                else:
+                    product = Product.get_by_code(new_product_code)
+                    if product['stock'] < new_qty:
+                        messagebox.showerror("Lỗi", f"Sản phẩm {new_product_name} chỉ còn {product['stock']} đơn vị")
+                        return
+
+                if old_product_code != new_product_code:
+                    Product.update_stock(old_product_code, old_qty, add=True)
+                    Product.update_stock(new_product_code, new_qty, add=False)
+                else:
+                    diff = new_qty - old_qty
+                    if diff != 0:
+                        if diff > 0:
+                            Product.update_stock(new_product_code, diff, add=False)
+                        else:
+                            Product.update_stock(new_product_code, -diff, add=True)
+
+                Invoice.update(inv['id'],
+                               buyer_name=new_buyer,
+                               phone=new_phone if new_phone else None,
+                               tax_code=new_tax if new_tax else None,
+                               address=new_address if new_address else None,
+                               product_code=new_product_code,
+                               product_name=new_product_name,
+                               quantity=new_qty,
+                               unit_price=new_price,
+                               total_excluding_tax=new_qty * new_price,
+                               tax_amount=new_tax_amount,
+                               total_payment=new_total,
+                               paid=new_paid,
+                               payment_method=new_payment_method,
+                               sale_source=new_source,
+                               created_date=new_created_date)
+
+                remaining = new_total - new_paid
+                from models.debt import Debt
+                if remaining > 0:
+                    Debt.update_or_create_debt(
+                        invoice_id=inv['id'],
+                        customer_name=new_buyer,
+                        customer_phone=new_phone,
+                        remaining=remaining,
+                        date=new_created_date
+                    )
+                else:
+                    Debt.delete_by_invoice(inv['id'])
+
+                self.update_customer_history(new_buyer, new_phone, new_address, new_tax)
+                self.load_invoices()
+                edit_win.destroy()
+                messagebox.showinfo("Thành công", "Đã cập nhật hóa đơn")
+            except Exception as e:
+                messagebox.showerror("Lỗi", str(e))
+
+        # 3. Tạo nút SAU KHI CÓ save_changes (căn sát lề trái)
+        ttk.Button(btn_frame, text="✅ Cập nhật", command=save_changes, width=15).pack(side="left", padx=10)
+        ttk.Button(btn_frame, text="❌ Hủy", command=edit_win.destroy, width=10).pack(side="left", padx=10)
+
+        # === CẬP NHẬT CUỘN ===
+        edit_win.update_idletasks()
+        canvas.update_idletasks()
+        canvas.configure(scrollregion=canvas.bbox("all"))
+        canvas.yview_moveto(0)  
+
+    def delete_invoice(self):
+        """Xóa hóa đơn (có xác nhận và lưu vào database)"""
+        selected = self.tree.selection()
+        if not selected:
+            messagebox.showwarning("Cảnh báo", "Vui lòng chọn hóa đơn cần xóa trong danh sách")
+            return
+        
+        # Lấy thông tin từ dòng được chọn để hiển thị xác nhận
+        values = self.tree.item(selected[0], "values")
+        invoice_id = values[0]
+        # Theo cột của bạn: 1 là Người mua, 8 là Thành tiền
+        invoice_customer = values[1] if len(values) > 1 else "Khách hàng"
+        invoice_total = values[8] if len(values) > 8 else "0"
+        
+        confirm = messagebox.askyesno(
+            "Xác nhận xóa hóa đơn",
+            f"Bạn có chắc chắn muốn xóa hóa đơn này không?\n\n"
+            f"🧾 Mã ID: #{invoice_id}\n"
+            f"👤 Khách hàng: {invoice_customer}\n"
+            f"💰 Tổng tiền: {invoice_total}\n\n"
+            f"⚠️ Lưu ý: Dữ liệu sẽ bị xóa vĩnh viễn và không thể khôi phục!",
+            icon='warning'
+        )
+        
+        if not confirm:
+            return
+        
+        try:
+            # thực hiện xóa trong Database
+            from models.database import Database
+            with Database.get_connection() as conn:
+                cursor = conn.cursor()
+                
+                # 1. Thực hiện lệnh xóa dựa trên ID
+                cursor.execute("DELETE FROM invoices WHERE id = ?", (invoice_id,))
+                
+                # 2. LỆNH QUAN TRỌNG NHẤT: Xác nhận thay đổi xuống ổ cứng
+                conn.commit()
+                
+                # KÍCH HOẠT BACKUP NGAY TẠI ĐÂY
+                from data_config import DB_PATH
+                smart_backup(DB_PATH)               
+                messagebox.showinfo("Thành công", "Đã lưu hóa đơn và sao lưu dữ liệu!")
+            
+            # 3. Cập nhật lại giao diện ngay lập tức
+            self.load_invoices()  # Tải lại bảng để dòng 47 biến mất
+            
+            # 4. Cập nhật con số tổng trên thanh trạng thái (nếu có hàm update)
+            if hasattr(self.parent, 'update_status_bar'):
+                self.parent.update_status_bar()
+                
+            messagebox.showinfo("Thành công", f"Đã xóa hoàn tất hóa đơn #{invoice_id}")
+            
+        except Exception as e:
+            messagebox.showerror("Lỗi hệ thống", f"Không thể xóa hóa đơn:\n{str(e)}")
+    
+    def export_excel(self):
+        if not is_full_version():
+            messagebox.showwarning("Bản quyền", "Tính năng này chỉ dành cho bản quyền chính thức. Vui lòng liên hệ để mua.")
+            return
+        from utils.excel_export import export_to_excel
+        data = []
+        for item in self.tree.get_children():
+            values = self.tree.item(item, "values")
+            try:
+                # Cập nhật chỉ số cột theo cấu trúc mới (13 cột)
+                # columns: 0=ID, 1=Người mua, 2=SĐT, 3=Địa chỉ, 4=MST, 5=Sản phẩm, 
+                # 6=Số lượng, 7=Đơn giá, 8=Thành tiền, 9=Đã TT, 10=Còn nợ, 11=Hình thức TT, 12=Ngày tạo
+                quantity = float(values[6].replace(".", "")) if values[6] else 0   # Số lượng (cột 6)
+                unit_price = float(values[7].replace(".", "")) if values[7] else 0 # Đơn giá (cột 7)
+                total = float(values[8].replace(".", "")) if values[8] else 0      # Thành tiền (cột 8)
+                paid = float(values[9].replace(".", "")) if values[9] else 0       # Đã TT (cột 9)
+                remaining = float(values[10].replace(".", "")) if values[10] else 0 # Còn nợ (cột 10)
+            except Exception:
+                quantity = unit_price = total = paid = remaining = 0
+            data.append({
+                "ID": values[0],
+                "Người mua": values[1],
+                "SĐT": values[2],
+                "Địa chỉ": values[3],
+                "MST": values[4],
+                "Sản phẩm": values[5],           # Sản phẩm ở cột 5
+                "Số lượng": quantity,
+                "Đơn giá": unit_price,
+                "Thành tiền": total,
+                "Đã thanh toán": paid,
+                "Còn nợ": remaining,
+                "Hình thức TT": values[11],       # Hình thức TT ở cột 11
+                "Ngày tạo": values[12]            # Ngày tạo ở cột 12
+            })
+        columns = ["ID", "Người mua", "SĐT", "Địa chỉ", "MST", "Sản phẩm", 
+                   "Số lượng", "Đơn giá", "Thành tiền", "Đã thanh toán", 
+                   "Còn nợ", "Hình thức TT", "Ngày tạo"]
+        export_to_excel(data, columns, "Danh_sach_hoa_don")
+    
+    def clear_form(self):
+        self.entry_buyer.delete(0, tk.END)
+        self.entry_phone.delete(0, tk.END)
+        self.entry_tax.delete(0, tk.END)
+        self.entry_address.delete(0, tk.END)
+        self.entry_qty.delete(0, tk.END)
+        self.entry_qty.insert(0, "1")
+        self.entry_price.delete(0, tk.END)
+        self.entry_paid.delete(0, tk.END)
+        self.entry_paid.insert(0, "0")
+        self.tax_var.set(False)
+        self.combo_tax_rate.current(1)
+        self.combo_payment.current(0)
+        self.lbl_subtotal.config(text="0 VNĐ")
+        self.lbl_tax_amount.config(text="0 VNĐ")
+        self.lbl_total.config(text="0 VNĐ")
+        self.entry_buyer.focus_set()
+    
+    def print_invoice(self):
+        """In hóa đơn: Bảo toàn mọi tính năng hữu ích, đồng bộ chuẩn xác theo 14 cột Treeview"""
+        if not is_full_version():
+            messagebox.showwarning("Bản quyền", "Tính năng này chỉ dành cho bản quyền chính thức. Vui lòng liên hệ để mua.", parent=self)
+            return
+            
+        selected = self.tree.selection()
+        if not selected:
+            messagebox.showwarning("Cảnh báo", "Vui lòng chọn hóa đơn cần in", parent=self)
+            return
+            
+        values = self.tree.item(selected[0], "values")
+        
+        # 🎯 ĐÃ CẬP NHẬT CHỈ SỐ CỘT THEO ĐÚNG SƠ ĐỒ 14 CỘT THỰC TẾ TRÊN MÀN HÌNH CỦA THẦY
+        # 0=ID, 1=Người mua, 2=SĐT, 3=Nguồn đơn, 4=Địa chỉ, 5=MST, 6=Sản phẩm, 
+        # 7=Số lượng, 8=Đơn giá, 9=Thành tiền, 10=Đã TT, 11=Còn nợ, 12=Hình thức TT, 13=Ngày tạo
+        invoice_id = values[0]
+        buyer = values[1]
+        phone = values[2]
+        sale_source = values[3] if len(values) > 3 else "Cửa hàng"       # 🎯 Thêm Nguồn đơn (Cột 3)
+        address = values[4] if len(values) > 4 else ""                  # 🎯 Địa chỉ dịch chuyển sang Cột 4
+        tax_code = values[5] if len(values) > 5 else ""                 # 🎯 MST dịch chuyển sang Cột 5
+        product = values[6]                                              # 🎯 Sản phẩm dịch chuyển sang Cột 6
+        qty = values[7]                                                  # 🎯 Số lượng dịch chuyển sang Cột 7
+        unit_price = values[8]                                           # 🎯 Đơn giá dịch chuyển sang Cột 8
+        total = values[9]                                                # 🎯 Thành tiền dịch chuyển sang Cột 9
+        paid = values[10]                                                # 🎯 Đã TT dịch chuyển sang Cột 10
+        remaining = values[11]                                           # 🎯 Còn nợ dịch chuyển sang Cột 11
+        payment_method = values[12] if len(values) > 12 else "Tiền mặt"  # 🎯 Hình thức TT dịch chuyển sang Cột 12
+        date = values[13] if len(values) > 13 else datetime.now().strftime("%d/%m/%Y") # 🎯 Ngày tạo dịch chuyển sang Cột 13
+        
+        # BẢO TOÀN NGUYÊN VẸN: Hàm xử lý hiển thị số tiền chuẩn định dạng của Thầy
+        def fmt_money(s):
+            try:
+                # Loại bỏ dấu chấm và " VNĐ" nếu có trước khi định dạng lại
+                num_str = str(s).replace(".", "").replace(" VNĐ", "").replace(",", "")
+                return f"{float(num_str):,.0f}".replace(",", ".") + " VNĐ"
+            except Exception:
+                return s
+        
+        total_fmt = fmt_money(total)
+        paid_fmt = fmt_money(paid)
+        remaining_fmt = fmt_money(remaining)
+        unit_price_fmt = fmt_money(unit_price)
+        
+        # BẢO TOÀN NGUYÊN VẸN: Logic xử lý ẩn/hiện Địa chỉ và MST thông minh của Thầy
+        address_display = f"\n    Địa chỉ:    {address}" if address and address != "---" and str(address).strip() != "" else ""
+        tax_display = f"\n    MST:       {tax_code}" if tax_code and tax_code != "---" and str(tax_code).strip() != "" else ""
+        payment_display = f"\n    Hình thức TT: {payment_method}"
+        source_display = f"\n    Nguồn đơn:  {sale_source}" # Tính năng hữu ích bổ sung hiển thị nguồn đơn trên hóa đơn mẫu
+        
+        # BẢO TOÀN NGUYÊN VẸN: Mẫu thiết kế giao diện hóa đơn văn bản chuẩn mực của Thầy Hùng
+        content = f"""
+    {'='*50}
+    {'HÓA ĐƠN BÁN HÀNG':^50}
+    {'='*50}
+
+    Số HĐ: {invoice_id}
+    Ngày: {date}
+
+    Khách hàng: {buyer}
+    Điện thoại: {phone}{address_display}{tax_display}{source_display}
+
+    {'-'*50}
+    Sản phẩm: {product}
+    Số lượng: {qty}
+    Đơn giá: {unit_price_fmt}
+    Thành tiền: {total_fmt}
+    Đã thanh toán: {paid_fmt}
+    Còn nợ: {remaining_fmt}{payment_display}
+    {'-'*50}
+
+    Cảm ơn quý khách!
+    {'='*50}
+    """
+        # BẢO TOÀN NGUYÊN VẸN: Hàm đẩy dữ liệu sang cửa sổ xem trước khi in của Thầy
+        show_print_preview(content, f"Hóa đơn {invoice_id}", self.parent)
+          
+    def print_order_label(self):
+        """Tính năng in nhãn dán thùng hàng A5 - Không hiển thị giá, có đơn vị tính"""
+        if not is_full_version():
+            messagebox.showwarning("Bản quyền", "Tính năng này chỉ dành cho bản quyền chính thức. Vui lòng liên hệ để mua.", parent=self)
+            return
+            
+        selected = self.tree.selection()
+        if not selected:
+            messagebox.showwarning("Cảnh báo", "Vui lòng chọn một hóa đơn để in nhãn dán thùng!", parent=self)
+            return
+            
+        values = self.tree.item(selected[0], "values")
+        
+        # Bóc tách dữ liệu
+        invoice_id = values[0]
+        buyer = values[1]
+        phone = values[2]
+        sale_source = values[3] if len(values) > 3 else "Cửa hàng"
+        address = values[4] if len(values) > 4 else ""
+        product = values[6]
+        qty_str = values[7]
+        
+        # Chuyển số lượng từ string sang float
+        try:
+            qty = float(qty_str.replace(".", "").replace(",", ""))
+        except Exception:
+            qty = 0
+        
+        # Hàm xác định đơn vị tính và ghi chú dựa trên sản phẩm
+        def get_unit_and_note(product_name, quantity):
+            """Trả về (đơn_vị_tính, ghi_chú_số_lượng)"""
+            product_lower = product_name.lower()
+            
+            # Nước mắm
+            if "nước mắm" in product_lower or "nuoc mam" in product_lower or "cốt cá" in product_lower:
+                if quantity >= 1:
+                    return "Chai 500ml", f"{quantity:.0f} lít ({int(quantity*2)} chai)"
+                else:
+                    return "Chai 500ml", f"{quantity:.1f} lít ({int(quantity*2)} chai)"
+            
+            # Cá cơm
+            elif "cá cơm" in product_lower or "ca com" in product_lower:
+                return "Kg", f"{quantity:.0f} kg"
+            
+            # Muối
+            elif "muối" in product_lower or "muoi" in product_lower:
+                return "Kg", f"{quantity:.0f} kg"
+            
+            # Chai thủy tinh / lọ
+            elif "chai" in product_lower or "lọ" in product_lower or "thủy tinh" in product_lower:
+                return "Cái", f"{quantity:.0f} cái"
+            
+            # Nắp / nhãn
+            elif "nắp" in product_lower or "nhãn" in product_lower:
+                return "Bộ", f"{quantity:.0f} bộ"
+            
+            # Mặc định
+            else:
+                return "Sản phẩm", f"{quantity:.0f}"
+        
+        unit, qty_note = get_unit_and_note(product, qty)
+        current_date = datetime.now().strftime("%d/%m/%Y %H:%M")
+        
+        # Nội dung nhãn - KHÔNG CÓ GIÁ TIỀN
+        content = f"""
+        NƯỚC MẮM TRUYỀN THỐNG YATRANG
+        ĐC: 55/26, Đường Đặng Lộ, Nha Trang | ĐT: 0982493474
+        --------------------------------------------------
+        ĐƠN HÀNG: #{invoice_id}
+        NGUỒN ĐƠN: {sale_source}
+        NGÀY TẠO: {current_date}
+        --------------------------------------------------
+        NGƯỜI NHẬN:
+        Họ tên:  {buyer}
+        SĐT:     {phone if phone != "---" else "Chưa cập nhật"}
+        Địa chỉ: {address if address != "---" else "Chưa cập nhật"}
+        --------------------------------------------------
+        THÔNG TIN ĐƠN HÀNG:
+        Sản phẩm:   {product}
+        Đơn vị tính: {unit}
+        Số lượng:   {qty_note}
+        --------------------------------------------------
+        ⚠️ HÀNG DỄ VỠ - XIN NHẸ TAY!
+        """
+        
+        # Đẩy dữ liệu ra cửa sổ xem trước
+        show_print_preview(content, f"Nhãn đơn hàng #{invoice_id}", self.parent)
+
+    def fix_database_data(self):
+        """
+        Nâng cấp cấu trúc bảng và sửa lỗi dữ liệu một cách AN TOÀN.
+        - Không tự động xóa bất kỳ dòng nào.
+        - Hỏi người dùng trước khi thay đổi cấu trúc hoặc sửa dữ liệu.
+        - Các bản ghi bị lỗi tên sẽ được đặt thành 'Khách lẻ' (giữ lại hóa đơn).
+        """
+        from models.database import Database
+        import tkinter.messagebox as msgbox
+        
+        try:
+            with Database.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+                existing_tables = [row[0] for row in cursor.fetchall()]
+                
+                for table_name in ['invoice', 'invoices']:
+                    if table_name not in existing_tables:
+                        continue
+                    
+                    # ========= 1. THÊM CỘT MỚI (sale_source) =========
+                    cursor.execute(f"PRAGMA table_info({table_name})")
+                    columns = [col[1] for col in cursor.fetchall()]
+                    if 'sale_source' not in columns:
+                        if msgbox.askyesno(
+                            "Nâng cấp cơ sở dữ liệu",
+                            f"Bảng {table_name} cần thêm cột 'sale_source' (lưu nguồn đơn).\n"
+                            "Việc này an toàn, không ảnh hưởng dữ liệu hiện có.\n\n"
+                            "Bạn có muốn thực hiện không?"
+                        ):
+                            cursor.execute(f"ALTER TABLE {table_name} ADD COLUMN sale_source TEXT DEFAULT 'Cửa hàng'")
+                            conn.commit()
+                            logging.info(f"Đã thêm cột sale_source vào bảng {table_name}")
+                        else:
+                            pass #print(f"⏭️ Đã bỏ qua việc thêm cột sale_source vào {table_name}")
+                    
+                    # ========= 2. SỬA LỖI TÊN KHÁCH HÀNG (KHÔNG XÓA) =========
+                    # Đếm số dòng bị lỗi
+                    cursor.execute(f"""
+                        SELECT COUNT(*) FROM {table_name}
+                        WHERE buyer_name IS NULL OR buyer_name = '' OR buyer_name = 'None'
+                    """)
+                    count_invalid = cursor.fetchone()[0]
+                    
+                    if count_invalid > 0:
+                        if msgbox.askyesno(
+                            "Sửa lỗi dữ liệu",
+                            f"Phát hiện {count_invalid} hóa đơn trong bảng {table_name} có tên khách hàng bị lỗi (NULL, rỗng, 'None').\n\n"
+                            "Chương trình sẽ **đặt tên thành 'Khách lẻ'** để giữ lại hóa đơn (không xóa).\n"
+                            "Bạn có muốn tự động sửa lỗi này không?\n\n"
+                            "⚠️ Nếu chọn Không, các hóa đơn này sẽ vẫn bị lỗi hiển thị."
+                        ):
+                            cursor.execute(f"""
+                                UPDATE {table_name}
+                                SET buyer_name = 'Khách lẻ'
+                                WHERE buyer_name IS NULL OR buyer_name = '' OR buyer_name = 'None'
+                            """)
+                            conn.commit()
+                            logging.info(f"Đã sửa {count_invalid} dòng trong bảng {table_name}")
+                        else:
+                            pass#print(f"⏭️ Đã bỏ qua việc sửa tên khách hàng trong {table_name}")
+                
+                # Thông báo hoàn tất (không tự động load lại invoices để tránh gọi lặp)
+                logging.info("Đã kiểm tra và nâng cấp cơ sở dữ liệu an toàn.")
+                
+        except Exception as e:
+            logging.error(f"Lỗi khi nâng cấp DB: {e}")
+            msgbox.showerror("Lỗi hệ thống", f"Không thể nâng cấp cơ sở dữ liệu:\n{e}")
+
+
+

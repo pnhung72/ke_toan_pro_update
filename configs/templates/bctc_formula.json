@@ -1,0 +1,20 @@
+{
+  "thong_tu": "99/2025/TT-BTC",
+  "bieu_mau": "B01-DN",
+  "ten_bieu_mau": "Bang Can Doi Ke Toan Dong",
+  "phien_ban_cau_hinh": "1.0.0",
+  "cac_chi_tieu": [
+    {
+      "ma_so": "110",
+      "ten_chi_tieu": "Tien va cac khoan tuong duong tien",
+      "co_in_dam": true,
+      "cong_thuc": "DU_NO(111) + DU_NO(112) + DU_NO(113)"
+    },
+    {
+      "ma_so": "120",
+      "ten_chi_tieu": "Dau tu tai chinh ngan han",
+      "co_in_dam": false,
+      "cong_thuc": "DU_NO(121) - DU_CO(129)"
+    }
+  ]
+}
