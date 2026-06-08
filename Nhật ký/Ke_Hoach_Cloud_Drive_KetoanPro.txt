@@ -1,0 +1,204 @@
+===============================================================================
+                    KE HOACH TONG THE VA CHI TIET: CLOUD HYBRID
+                     HE THONG PHAN MEM KE TOAN PRO V10.0.0
+===============================================================================
+Tac gia: NgocPhan (Thay Hung)
+Dia ban: Pho bien Nha Trang
+Dinh vi he thong: Cap do 5 - Tu dong hoa thuong mai & Toi uu hoa chi phi
+Nen tang hien tai: Desktop Offline (Core nghiep vu, quet XML, quet Email ngam)
+Giai phap nang cap: Cloud Hybrid (0 dong chi phi ha tang, bao mat tuyet doi)
+===============================================================================
+
+-------------------------------------------------------------------------------
+PHAN I: PHAN TICH KIEN TRUC HE THONG (ARCHITECTURAL OVERVIEW)
+-------------------------------------------------------------------------------
+Mo hinh "Bac Cau" (Hybrid Bridge Model) khong lam thay doi bo khung v10.0.0:
+
+1. TANG THU THAP & XU LY (Local Client):
+   - Chay tren Desktop cua Ke toan dịch vu / Doanh nghiep.
+   - Nhiem vu: Quet email, doc file hoa don XML, định khoan cu dup, xu ly tab
+     dac thu da nganh nghe (Xang dau, van tai...).
+   - Co che: Ghi du lieu nhanh toc hanh vao file Excel/SQLite local, khong tre.
+
+2. TANG DONG BO (Data Sync Layer):
+   - Dung thu vien ngam (vi du: google-api-python-client) tich hop trong ma nguon.
+   - Nhiem vu: Khi tat phan mem hoac bam "Luu", ma nguon tu dong goi lenh ngam
+     day file du lieu Excel len folder dinh san tren Google Drive.
+   - Khach hang khong thay thong bao phien phuc, moi thu chay ngam (Silent Sync).
+
+3. TANG CAU NOI DU LIEU (Middleware API):
+   - Su dung Google Apps Script (GAS) trien khai duoi dang Web App API.
+   - Nhiem vu: Nhap lenh tu Web Blogger -> Doc truc tiep file Excel tu Drive ->
+     Chuyen doi du lieu sang dang JSON nhe va tra ve cho Web.
+
+4. TANG GIAO DIEN MAU (Frontend Cloud):
+   - Dung nen tang Blogger mien phi. Chèn ma JavaScript va thu vien Chart.js.
+   - Nhiem vu: Giam doc dung dien thoai/may tinh vao trang Blogger, nhap mat khau,
+     xem bieu do doanh thu, bao cao tai chinh thoi gian thuc (Real-time).
+
+-------------------------------------------------------------------------------
+PHAN II: KE HOACH TRIEN KHAI CHI TIET (STEP-BY-STEP IMPLEMENTATION)
+-------------------------------------------------------------------------------
+
+BUOC 1: QUY HOACH KHO DU LIEU TREN GOOGLE DRIVE (DATABASE LAYER)
+===================================================================
+- Cau truc thu muc tren Drive cua khach hang:
+  [Google Drive Root]
+     |-- /KetoanPro_Cloud/
+            |-- /Data/ (Chua cac file bieu_mau.xlsx, data_goc.xlsx)
+            |-- /config/ (Chua file cau hinh thong so key, thoi han)
+- Co che bao ve: 
+  * Google Drive tu dong chong virus ma hoa (Ransomware).
+  * Co che Version History cho phep khoi phuc file neu ke toan lo tay xoa nham.
+  * Du lieu thuoc so huu tuyet doi cua khach hang -> Tuyen bo mien tru lo ro ri.
+
+BUOC 2: VIET LENH DONG BO TU BAN DESKTOP (DATA SYNC VIA PYTHON API)
+===================================================================
+- Khong dung phan mem Google Drive Desktop dong bo vi rat nang may va de xung dot.
+- Giai phap: Ghi ma Python de tuong tac voi Google Drive API qua phuong thuc POST.
+- Doan ma mau de tich hop chay ngam (Background Thread):
+  -----------------------------------------------------------------
+  import threading
+  from googleapiclient.discovery import build
+  from googleapiclient.http import MediaFileUpload
+
+  def upload_to_drive_silent(file_path, file_id, credentials):
+      try:
+          service = build('drive', 'v3', credentials=credentials)
+          media = MediaFileUpload(file_path, mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+          service.files().update(fileId=file_id, media_body=media).execute()
+          # Gui ngam thong bao loi/thanh cong ve Admin neu can thiet
+      except Exception as e:
+          # Gui bao loi ngam ve he thong cua Thay Hung
+          pass
+
+  def start_sync(file_path, file_id, credentials):
+      # Chay thread ngam de khong lam treo giao dien cua ke toan
+      threading.Thread(target=upload_to_drive_silent, args=(file_path, file_id, credentials)).start()
+  -----------------------------------------------------------------
+
+BUOC 3: VIET MA CAU NOI GOOGLE APPS SCRIPT (MIDDLEWARE API LAYER)
+===================================================================
+- Anh vao Drive -> Tao moi "Google Apps Script".
+- Doan ma nay se mo file Excel ra, lay du lieu va bien thanh API:
+  -----------------------------------------------------------------
+  function doGet(e) {
+    var fileId = "DIEN_FILE_ID_EXCEL_TAI_DAY";
+    var sheetName = "BaoCaoTongHop"; // Hoac tab Xang Dau, Van Tai...
+    
+    // Mo file va lay vung du lieu
+    var spreadsheet = SpreadsheetApp.openById(fileId);
+    var sheet = spreadsheet.getSheetByName(sheetName);
+    var data = sheet.getDataRange().getValues();
+    
+    // Chuyen doi mang du lieu thanh cau truc JSON
+    var jsonData = [];
+    var headers = data[0];
+    for (var i = 1; i < data.length; i++) {
+      var row = data[i];
+      var obj = {};
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = row[j];
+      }
+      jsonData.push(obj);
+    }
+    
+    // Tra ve ket qua dang JSON cho Web Blogger goi sang
+    return ContentService.createTextOutput(JSON.stringify(jsonData))
+                         .setMimeType(ContentService.MimeType.JSON);
+  }
+  -----------------------------------------------------------------
+- Sau khi viet xong, bấm "Deploy" -> "New Deployment" -> Chon loai "Web App".
+- Muc "Who has access" -> Chon "Anyone" (De JavaScript tren Blogger co the goi).
+
+BUOC 4: THIET KE GIAO DIEN WEB BAO CAO TREN BLOGGER (FRONTEND LAYER)
+===================================================================
+- Tao mot trang blog moi tren Blogger (vi du: xembaocao-ketoanpro.blogspot.com).
+- Vao phan Chu de (Theme) -> Chinh sua HTML (Edit HTML). Chèn doan ma JavaScript
+  de goi API tu Google Apps Script o Buoc 3 va ve bieu do bang Chart.js mien phi.
+- Cau truc doan code JavaScript chay tren Blogger:
+  -----------------------------------------------------------------
+  <!-- Nhung thu vien bieu do mien phi -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <div id="login-box">
+    <h3>HE THONG BAO CAO CLOUD - KETOAN PRO</h3>
+    <input type="password" id="txtPassword" placeholder="Nhap mat khau xem bao cao"/>
+    <button onclick="checkAccess()">Vao xem</button>
+  </div>
+
+  <div id="dashboard" style="display:none;">
+    <canvas id="myChart" width="400" height="200"></canvas>
+  </div>
+
+  <script>
+    function checkAccess() {
+      var pass = document.getElementById('txtPassword').value;
+      if(pass === "MAT_KHAU_CUA_DOANH_NGHIEP") {
+          document.getElementById('login-box').style.display = 'none';
+          document.getElementById('dashboard').style.display = 'block';
+          loadCloudData();
+      } else {
+          alert("Mat khau khong dung!");
+      }
+    }
+
+    function loadCloudData() {
+      var urlAPI = "LINK_WEB_APP_GOOGLE_APPS_SCRIPT_BUOC_3";
+      
+      fetch(urlAPI)
+        .then(response => response.json())
+        .then(data => {
+            // Trich xuat du lieu tu JSON de ve bieu do
+            var nhan = data.map(item => item.Thang); // Vi du cot Thang
+            var doanhThu = data.map(item => item.DoanhThu); // Vi du cot DoanhThu
+            
+            // Ve bieu do cot bieu dien doanh thu cho Giam doc xem
+            var ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: nhan,
+                    datasets: [{
+                        label: 'Doanh Thu Theo Thang (VND)',
+                        data: doanhThu,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                    }]
+                }
+            });
+        });
+    }
+  </script>
+  -----------------------------------------------------------------
+
+BUOC 5: PHUONG AN DONG GOI THUONG MAI & PHAN PHOI (COMMERCIALIZATION)
+===================================================================
+- Van de gioi han (Quotas): Google Apps Script mien phi gioi han khoang 20k-50k
+  luot goi API/ngay cho phan phoi mien phi.
+- Giai phap thong minh cua Thay Hung:
+  * Khi ban phan mem cho doanh nghiep nao, huong dan (hoac viet script tu dong) 
+    khoi tao Google Apps Script va Google Drive tren chinh tai khoan Gmail cua 
+    doanh nghiep do.
+  * Loi ich 1: Chi phi ha tang mang cua anh dung nghia = 0 dong vi khach hang 
+    tu gien tai nguyen tren Gmail cua ho. Anh khong can thue server may chu lon.
+  * Loi ich 2: Khach hang dat niem tin tuyet doi vao Kegan Pro vi du lieu doanh
+    nghiep nhay cam nam hoan toan tren Drive cua ho, anh khong he nam giu.
+
+-------------------------------------------------------------------------------
+PHAN III: KET LUAN MA TRAN UU - NHUOC DIEM (COMPARED TO MISA CLOUD)
+-------------------------------------------------------------------------------
+1. DIEM CHENH LECH CHU DO (Uu the tuyet doi cua anh):
+   - MISA Cloud: Thu phi theo nam, ngung nop tien la khoa du lieu, chi phi thue
+     ha tang dat do, du lieu tap trung tren server MISA (nhieu nguoi ngai).
+   - Ketoan Pro Cloud Hybrid: Mua 1 lan so huu vinh vien, ha tang mien phi 100%
+     dua tren Google Cloud Ecosystem, bao mat tuyet doi, thong tin luu tru tinh
+     te, hieu qua kinh te toi da cho mo hinh ca nhan van hanh.
+
+2. GIAI PHAP TOI UU TRONG TAM:
+   Giu nguyen ban Offline lam be phong (on dinh, bao loi ngam ve Admin, tu dong
+   kich cau tang ma giam gia bang Key). Dung phuong an Blogger + Drive nay lam
+   tien ich gia tang (Add-on) de thu them tien mo khoa tinh nang Cloud. Goi mon
+   nao tinh tien mon do!
+===============================================================================
+                KETOAN PRO V10.0.0 - CAY DA LON NHAT CO THE!
+===============================================================================

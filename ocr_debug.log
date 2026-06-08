@@ -1,0 +1,565 @@
+2026-06-01T10:23:51.489129 - === ocr_import_invoice được gọi ===
+2026-06-01T10:23:51.496813 - Import OCRImportDialog thành công
+2026-06-01T10:23:51.504425 - Dialog đã được tạo
+2026-06-01T10:23:53.246416 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T10:23:53.259655 - Đã gọi load_invoices
+2026-06-01T10:24:25.308895 - === ocr_import_invoice được gọi ===
+2026-06-01T10:24:25.308895 - Import OCRImportDialog thành công
+2026-06-01T10:24:25.316506 - Dialog đã được tạo
+2026-06-01T10:24:27.072717 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T10:24:27.077676 - Đã gọi load_invoices
+2026-06-01T10:34:30.636856 - === ocr_import_invoice được gọi ===
+2026-06-01T10:34:30.652644 - Import OCRImportDialog thành công
+2026-06-01T10:34:30.652644 - Dialog đã được tạo
+2026-06-01T10:34:32.283929 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T10:34:32.286929 - Đã gọi load_invoices
+2026-06-01T10:41:29.757051 - === ocr_import_invoice được gọi ===
+2026-06-01T10:41:29.757051 - Import OCRImportDialog thành công
+2026-06-01T10:41:29.757051 - Dialog đã được tạo
+2026-06-01T10:41:36.245694 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T10:41:36.248697 - Đã gọi load_invoices
+2026-06-01T10:45:13.038293 - === ocr_import_invoice được gọi ===
+2026-06-01T10:45:13.043343 - Import OCRImportDialog thành công
+2026-06-01T10:45:13.055147 - Dialog đã được tạo
+2026-06-01T10:45:15.151084 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T10:45:15.153100 - Đã gọi load_invoices
+2026-06-01T11:33:23.121073 - === ocr_import_invoice được gọi ===
+2026-06-01T11:33:23.136873 - Import OCRImportDialog thành công
+2026-06-01T11:33:23.136873 - Dialog đã được tạo
+2026-06-01T11:33:43.339632 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T11:33:43.339632 - Đã gọi load_invoices
+2026-06-01T11:33:45.253072 - === ocr_import_invoice được gọi ===
+2026-06-01T11:33:45.259651 - Import OCRImportDialog thành công
+2026-06-01T11:33:45.261390 - Dialog đã được tạo
+2026-06-01T11:33:46.864891 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T11:33:46.873948 - Đã gọi load_invoices
+2026-06-01T11:33:52.084300 - === ocr_import_invoice được gọi ===
+2026-06-01T11:33:52.084300 - Import OCRImportDialog thành công
+2026-06-01T11:33:52.084300 - Dialog đã được tạo
+2026-06-01T12:00:38.023596 - === ocr_import_invoice được gọi ===
+2026-06-01T12:00:38.023596 - Import OCRImportDialog thành công
+2026-06-01T12:00:38.023596 - Dialog đã được tạo
+2026-06-01T12:00:39.850634 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T12:00:39.866562 - Đã gọi load_invoices
+2026-06-01T12:08:17.616839 - === ocr_import_invoice được gọi ===
+2026-06-01T12:08:17.616839 - Import OCRImportDialog thành công
+2026-06-01T12:08:17.616839 - Dialog đã được tạo
+2026-06-01T12:08:18.820896 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T12:08:18.820896 - Đã gọi load_invoices
+2026-06-01T12:15:22.586865 - === ocr_import_invoice được gọi ===
+2026-06-01T12:15:22.602617 - Import OCRImportDialog thành công
+2026-06-01T12:15:22.602617 - Dialog đã được tạo
+2026-06-01T12:25:28.849692 - === ocr_import_invoice được gọi ===
+2026-06-01T12:25:28.857340 - Import OCRImportDialog thành công
+2026-06-01T12:25:28.873647 - Dialog đã được tạo
+2026-06-01T12:25:45.009502 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T12:25:45.009502 - Đã gọi load_invoices
+2026-06-01T13:07:43.317754 - === ocr_import_invoice được gọi ===
+2026-06-01T13:07:43.333873 - Import OCRImportDialog thành công
+2026-06-01T13:07:43.333873 - Dialog đã được tạo
+2026-06-01T13:07:44.753479 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T13:07:44.766557 - Đã gọi load_invoices
+2026-06-01T13:14:43.649884 - === ocr_import_invoice được gọi ===
+2026-06-01T13:14:43.652739 - Import OCRImportDialog thành công
+2026-06-01T13:14:43.656693 - Dialog đã được tạo
+2026-06-01T13:14:45.017126 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T13:14:45.019129 - Đã gọi load_invoices
+2026-06-01T13:16:28.223531 - === ocr_import_invoice được gọi ===
+2026-06-01T13:16:28.223531 - Import OCRImportDialog thành công
+2026-06-01T13:16:28.239553 - Dialog đã được tạo
+2026-06-01T16:24:38.014775 - === ocr_import_invoice được gọi ===
+2026-06-01T16:24:38.019914 - Import OCRImportDialog thành công
+2026-06-01T16:24:38.019914 - Dialog đã được tạo
+2026-06-01T16:24:44.727869 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T16:24:44.727869 - Đã gọi load_invoices
+2026-06-01T16:52:53.724579 - === ocr_import_invoice được gọi ===
+2026-06-01T16:52:53.742247 - Import OCRImportDialog thành công
+2026-06-01T16:52:53.748473 - Dialog đã được tạo
+2026-06-01T16:53:26.973050 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T16:53:26.977098 - Đã gọi load_invoices
+2026-06-01T16:54:18.770606 - === ocr_import_invoice được gọi ===
+2026-06-01T16:54:18.770606 - Import OCRImportDialog thành công
+2026-06-01T16:54:18.786453 - Dialog đã được tạo
+2026-06-01T16:54:22.736579 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T16:54:22.736579 - Đã gọi load_invoices
+2026-06-01T16:56:53.327498 - === ocr_import_invoice được gọi ===
+2026-06-01T16:56:53.327498 - Import OCRImportDialog thành công
+2026-06-01T16:56:53.337560 - Dialog đã được tạo
+2026-06-01T16:56:55.892293 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T16:56:55.892293 - Đã gọi load_invoices
+2026-06-01T16:57:17.968913 - === ocr_import_invoice được gọi ===
+2026-06-01T16:57:17.968913 - Import OCRImportDialog thành công
+2026-06-01T16:57:17.972495 - Dialog đã được tạo
+2026-06-01T16:57:19.763020 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T16:57:19.773930 - Đã gọi load_invoices
+2026-06-01T16:58:50.098559 - === ocr_import_invoice được gọi ===
+2026-06-01T16:58:50.103522 - Import OCRImportDialog thành công
+2026-06-01T16:58:50.112484 - Dialog đã được tạo
+2026-06-01T16:58:52.739298 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T16:58:52.741732 - Đã gọi load_invoices
+2026-06-01T16:59:33.832356 - === ocr_import_invoice được gọi ===
+2026-06-01T16:59:33.832356 - Import OCRImportDialog thành công
+2026-06-01T16:59:33.847462 - Dialog đã được tạo
+2026-06-01T16:59:35.492393 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T16:59:35.492393 - Đã gọi load_invoices
+2026-06-01T17:00:23.236135 - === ocr_import_invoice được gọi ===
+2026-06-01T17:00:23.236135 - Import OCRImportDialog thành công
+2026-06-01T17:00:23.241110 - Dialog đã được tạo
+2026-06-01T17:00:24.538614 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T17:00:24.542779 - Đã gọi load_invoices
+2026-06-01T17:01:12.946411 - === ocr_import_invoice được gọi ===
+2026-06-01T17:01:12.959768 - Import OCRImportDialog thành công
+2026-06-01T17:01:12.962375 - Dialog đã được tạo
+2026-06-01T17:01:14.342466 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T17:01:14.342466 - Đã gọi load_invoices
+2026-06-01T17:02:30.644423 - === ocr_import_invoice được gọi ===
+2026-06-01T17:02:30.656011 - Import OCRImportDialog thành công
+2026-06-01T17:02:30.672099 - Dialog đã được tạo
+2026-06-01T17:04:52.254227 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T17:04:52.265088 - Đã gọi load_invoices
+2026-06-01T17:04:59.502742 - === ocr_import_invoice được gọi ===
+2026-06-01T17:04:59.502742 - Import OCRImportDialog thành công
+2026-06-01T17:04:59.508406 - Dialog đã được tạo
+2026-06-01T17:05:00.615439 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T17:05:00.620089 - Đã gọi load_invoices
+2026-06-01T18:21:54.760407 - === ocr_import_invoice được gọi ===
+2026-06-01T18:21:54.760407 - Import OCRImportDialog thành công
+2026-06-01T18:21:54.771934 - Dialog đã được tạo
+2026-06-01T18:21:56.184425 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T18:21:56.192665 - Đã gọi load_invoices
+2026-06-01T18:46:12.164845 - === ocr_import_invoice được gọi ===
+2026-06-01T18:46:12.167939 - Import OCRImportDialog thành công
+2026-06-01T18:46:12.175652 - Dialog đã được tạo
+2026-06-01T19:03:25.815401 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T19:03:25.829414 - Đã gọi load_invoices
+2026-06-01T19:08:43.814611 - === ocr_import_invoice được gọi ===
+2026-06-01T19:08:43.814611 - Import OCRImportDialog thành công
+2026-06-01T19:08:43.840951 - Dialog đã được tạo
+2026-06-01T19:08:45.484515 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T19:08:45.500240 - Đã gọi load_invoices
+2026-06-01T19:46:21.802693 - === ocr_import_invoice được gọi ===
+2026-06-01T19:46:21.808722 - Import OCRImportDialog thành công
+2026-06-01T19:46:21.812743 - Dialog đã được tạo
+2026-06-01T19:46:25.974942 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T19:46:25.978948 - Đã gọi load_invoices
+2026-06-01T19:47:54.228080 - === ocr_import_invoice được gọi ===
+2026-06-01T19:47:54.234148 - Import OCRImportDialog thành công
+2026-06-01T19:47:54.240233 - Dialog đã được tạo
+2026-06-01T19:47:55.579082 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T19:47:55.579082 - Đã gọi load_invoices
+2026-06-01T19:50:50.140534 - === ocr_import_invoice được gọi ===
+2026-06-01T19:50:50.140534 - Import OCRImportDialog thành công
+2026-06-01T19:50:50.156547 - Dialog đã được tạo
+2026-06-01T19:50:51.906530 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T19:50:51.906530 - Đã gọi load_invoices
+2026-06-01T19:51:00.943433 - === ocr_import_invoice được gọi ===
+2026-06-01T19:51:00.943433 - Import OCRImportDialog thành công
+2026-06-01T19:51:00.948434 - Dialog đã được tạo
+2026-06-01T19:51:02.407206 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T19:51:02.407206 - Đã gọi load_invoices
+2026-06-01T19:51:49.110262 - === ocr_import_invoice được gọi ===
+2026-06-01T19:51:49.110262 - Import OCRImportDialog thành công
+2026-06-01T19:51:49.126256 - Dialog đã được tạo
+2026-06-01T19:52:16.501520 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T19:52:16.501520 - Đã gọi load_invoices
+2026-06-01T21:40:45.126469 - === ocr_import_invoice được gọi ===
+2026-06-01T21:40:45.126469 - Import OCRImportDialog thành công
+2026-06-01T21:40:45.142115 - Dialog đã được tạo
+2026-06-01T21:40:47.885976 - Dialog đã đóng (wait_window kết thúc)
+2026-06-01T21:40:47.887974 - Đã gọi load_invoices
+2026-06-02T05:25:17.011101 - === ocr_import_invoice được gọi ===
+2026-06-02T05:25:17.011101 - Import OCRImportDialog thành công
+2026-06-02T05:25:17.019022 - Dialog đã được tạo
+2026-06-02T05:25:23.285262 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T05:25:23.291243 - Đã gọi load_invoices
+2026-06-02T05:29:24.036479 - === ocr_import_invoice được gọi ===
+2026-06-02T05:29:24.036479 - Import OCRImportDialog thành công
+2026-06-02T05:29:24.036479 - Dialog đã được tạo
+2026-06-02T05:37:39.251410 - === ocr_import_invoice được gọi ===
+2026-06-02T05:37:39.251410 - Import OCRImportDialog thành công
+2026-06-02T05:37:39.251410 - Dialog đã được tạo
+2026-06-02T05:52:13.046729 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T05:52:13.046729 - Đã gọi load_invoices
+2026-06-02T06:34:41.268115 - === ocr_import_invoice được gọi ===
+2026-06-02T06:34:41.268115 - Import OCRImportDialog thành công
+2026-06-02T06:34:41.292679 - Dialog đã được tạo
+2026-06-02T06:34:46.284382 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T06:34:46.284382 - Đã gọi load_invoices
+2026-06-02T06:35:58.020877 - === ocr_import_invoice được gọi ===
+2026-06-02T06:35:58.020877 - Import OCRImportDialog thành công
+2026-06-02T06:35:58.032765 - Dialog đã được tạo
+2026-06-02T08:08:16.883719 - === ocr_import_invoice được gọi ===
+2026-06-02T08:08:16.889805 - Import OCRImportDialog thành công
+2026-06-02T08:08:16.892765 - Dialog đã được tạo
+2026-06-02T08:08:22.163743 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T08:08:22.163743 - Đã gọi load_invoices
+2026-06-02T08:09:38.254031 - === ocr_import_invoice được gọi ===
+2026-06-02T08:09:38.262217 - Import OCRImportDialog thành công
+2026-06-02T08:09:38.266227 - Dialog đã được tạo
+2026-06-02T08:09:48.824319 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T08:09:48.828317 - Đã gọi load_invoices
+2026-06-02T08:44:44.445106 - === ocr_import_invoice được gọi ===
+2026-06-02T08:44:44.451168 - Import OCRImportDialog thành công
+2026-06-02T08:44:44.455114 - Dialog đã được tạo
+2026-06-02T08:44:46.034976 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T08:44:46.035977 - Đã gọi load_invoices
+2026-06-02T08:45:54.156893 - === ocr_import_invoice được gọi ===
+2026-06-02T08:45:54.162008 - Import OCRImportDialog thành công
+2026-06-02T08:45:54.163957 - Dialog đã được tạo
+2026-06-02T08:46:02.011641 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T08:46:02.011641 - Đã gọi load_invoices
+2026-06-02T08:48:40.361462 - === ocr_import_invoice được gọi ===
+2026-06-02T08:48:40.368281 - Import OCRImportDialog thành công
+2026-06-02T08:48:40.371185 - Dialog đã được tạo
+2026-06-02T09:00:39.171678 - === ocr_import_invoice được gọi ===
+2026-06-02T09:00:39.173481 - Import OCRImportDialog thành công
+2026-06-02T09:00:39.178430 - Dialog đã được tạo
+2026-06-02T09:05:01.823840 - === ocr_import_invoice được gọi ===
+2026-06-02T09:05:01.831512 - Import OCRImportDialog thành công
+2026-06-02T09:05:01.834505 - Dialog đã được tạo
+2026-06-02T09:05:03.276096 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:05:03.276096 - Đã gọi load_invoices
+2026-06-02T09:06:27.974792 - === ocr_import_invoice được gọi ===
+2026-06-02T09:06:27.980030 - Import OCRImportDialog thành công
+2026-06-02T09:06:27.982939 - Dialog đã được tạo
+2026-06-02T09:06:29.941748 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:06:29.941748 - Đã gọi load_invoices
+2026-06-02T09:07:29.201459 - === ocr_import_invoice được gọi ===
+2026-06-02T09:07:29.206347 - Import OCRImportDialog thành công
+2026-06-02T09:07:29.211342 - Dialog đã được tạo
+2026-06-02T09:07:30.465239 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:07:30.467277 - Đã gọi load_invoices
+2026-06-02T09:08:17.502106 - === ocr_import_invoice được gọi ===
+2026-06-02T09:08:17.510669 - Import OCRImportDialog thành công
+2026-06-02T09:08:17.514580 - Dialog đã được tạo
+2026-06-02T09:08:19.683703 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:08:19.683703 - Đã gọi load_invoices
+2026-06-02T09:12:45.709777 - === ocr_import_invoice được gọi ===
+2026-06-02T09:12:45.726732 - Import OCRImportDialog thành công
+2026-06-02T09:12:45.731792 - Dialog đã được tạo
+2026-06-02T09:16:00.644827 - === ocr_import_invoice được gọi ===
+2026-06-02T09:16:00.651533 - Import OCRImportDialog thành công
+2026-06-02T09:16:00.654482 - Dialog đã được tạo
+2026-06-02T09:16:30.300180 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:16:30.300180 - Đã gọi load_invoices
+2026-06-02T09:16:31.231284 - === ocr_import_invoice được gọi ===
+2026-06-02T09:16:31.234744 - Import OCRImportDialog thành công
+2026-06-02T09:16:31.237851 - Dialog đã được tạo
+2026-06-02T09:16:32.563862 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:16:32.572641 - Đã gọi load_invoices
+2026-06-02T09:16:52.863790 - === ocr_import_invoice được gọi ===
+2026-06-02T09:16:52.879249 - Import OCRImportDialog thành công
+2026-06-02T09:16:52.883371 - Dialog đã được tạo
+2026-06-02T09:23:44.276489 - === ocr_import_invoice được gọi ===
+2026-06-02T09:23:44.296911 - Import OCRImportDialog thành công
+2026-06-02T09:23:44.299602 - Dialog đã được tạo
+2026-06-02T09:23:50.756471 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:23:50.756471 - Đã gọi load_invoices
+2026-06-02T09:25:21.111148 - === ocr_import_invoice được gọi ===
+2026-06-02T09:25:21.131715 - Import OCRImportDialog thành công
+2026-06-02T09:25:21.135676 - LỖI: Too early to create variable: no default root window
+2026-06-02T09:25:32.026595 - === ocr_import_invoice được gọi ===
+2026-06-02T09:25:32.026595 - Import OCRImportDialog thành công
+2026-06-02T09:25:32.031675 - LỖI: Too early to create variable: no default root window
+2026-06-02T09:33:36.420326 - === ocr_import_invoice được gọi ===
+2026-06-02T09:33:36.421315 - Import OCRImportDialog thành công
+2026-06-02T09:33:36.423307 - LỖI: Too early to create variable: no default root window
+2026-06-02T09:34:28.890463 - === ocr_import_invoice được gọi ===
+2026-06-02T09:34:28.895458 - Import OCRImportDialog thành công
+2026-06-02T09:34:28.902519 - Dialog đã được tạo
+2026-06-02T09:39:47.250524 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T09:39:47.253530 - Đã gọi load_invoices
+2026-06-02T10:44:00.297891 - === ocr_import_invoice được gọi ===
+2026-06-02T10:44:00.297891 - Import OCRImportDialog thành công
+2026-06-02T10:44:00.313962 - Dialog đã được tạo
+2026-06-02T10:44:01.962916 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T10:44:01.962916 - Đã gọi load_invoices
+2026-06-02T10:45:56.081287 - === ocr_import_invoice được gọi ===
+2026-06-02T10:45:56.097399 - Import OCRImportDialog thành công
+2026-06-02T10:45:56.097399 - Dialog đã được tạo
+2026-06-02T10:46:09.259795 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T10:46:09.268123 - Đã gọi load_invoices
+2026-06-02T10:46:11.362331 - === ocr_import_invoice được gọi ===
+2026-06-02T10:46:11.362331 - Import OCRImportDialog thành công
+2026-06-02T10:46:11.362331 - Dialog đã được tạo
+2026-06-02T10:46:14.098467 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T10:46:14.098467 - Đã gọi load_invoices
+2026-06-02T10:47:15.310264 - === ocr_import_invoice được gọi ===
+2026-06-02T10:47:15.310264 - Import OCRImportDialog thành công
+2026-06-02T10:47:15.332122 - Dialog đã được tạo
+2026-06-02T10:47:20.544328 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T10:47:20.544328 - Đã gọi load_invoices
+2026-06-02T11:20:29.638754 - === ocr_import_invoice được gọi ===
+2026-06-02T11:20:29.638754 - Import OCRImportDialog thành công
+2026-06-02T11:20:29.654662 - Dialog đã được tạo
+2026-06-02T11:22:06.344069 - Dialog đã đóng (wait_window kết thúc)
+2026-06-02T11:22:06.360093 - Đã gọi load_invoices
+2026-06-03T11:53:04.621365 - === ocr_import_invoice được gọi ===
+2026-06-03T11:53:04.634374 - Import OCRImportDialog thành công
+2026-06-03T11:53:04.637399 - Dialog đã được tạo
+2026-06-03T11:54:27.012877 - === ocr_import_invoice được gọi ===
+2026-06-03T11:54:27.025652 - Import OCRImportDialog thành công
+2026-06-03T11:54:27.028676 - Dialog đã được tạo
+2026-06-03T11:54:28.290972 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T11:54:28.304086 - Đã gọi load_invoices
+2026-06-03T11:58:00.523152 - === ocr_import_invoice được gọi ===
+2026-06-03T11:58:00.526254 - Import OCRImportDialog thành công
+2026-06-03T11:58:00.528140 - Dialog đã được tạo
+2026-06-03T12:01:39.891569 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T12:01:39.891569 - Đã gọi load_invoices
+2026-06-03T13:03:43.514577 - === ocr_import_invoice được gọi ===
+2026-06-03T13:03:43.516559 - Import OCRImportDialog thành công
+2026-06-03T13:03:43.525068 - Dialog đã được tạo
+2026-06-03T13:10:33.915204 - === ocr_import_invoice được gọi ===
+2026-06-03T13:10:33.922873 - Import OCRImportDialog thành công
+2026-06-03T13:10:33.922873 - Dialog đã được tạo
+2026-06-03T13:10:35.289487 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T13:10:35.293138 - Đã gọi load_invoices
+2026-06-03T14:11:57.189385 - === ocr_import_invoice được gọi ===
+2026-06-03T14:11:57.189385 - Import OCRImportDialog thành công
+2026-06-03T14:11:57.204004 - Dialog đã được tạo
+2026-06-03T14:13:05.397418 - === ocr_import_invoice được gọi ===
+2026-06-03T14:13:05.400469 - Import OCRImportDialog thành công
+2026-06-03T14:13:05.430955 - Dialog đã được tạo
+2026-06-03T14:13:55.184858 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:13:55.191548 - Đã gọi load_invoices
+2026-06-03T14:14:00.228001 - === ocr_import_invoice được gọi ===
+2026-06-03T14:14:00.228001 - Import OCRImportDialog thành công
+2026-06-03T14:14:00.235083 - Dialog đã được tạo
+2026-06-03T14:14:02.312379 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:14:02.312379 - Đã gọi load_invoices
+2026-06-03T14:14:03.395682 - === ocr_import_invoice được gọi ===
+2026-06-03T14:14:03.396667 - Import OCRImportDialog thành công
+2026-06-03T14:14:03.412547 - Dialog đã được tạo
+2026-06-03T14:14:04.391030 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:14:04.406806 - Đã gọi load_invoices
+2026-06-03T14:15:15.832257 - === ocr_import_invoice được gọi ===
+2026-06-03T14:15:15.835673 - Import OCRImportDialog thành công
+2026-06-03T14:15:15.843643 - Dialog đã được tạo
+2026-06-03T14:15:16.922072 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:15:16.922072 - Đã gọi load_invoices
+2026-06-03T14:15:49.426039 - === ocr_import_invoice được gọi ===
+2026-06-03T14:15:49.426039 - Import OCRImportDialog thành công
+2026-06-03T14:15:49.455618 - Dialog đã được tạo
+2026-06-03T14:15:50.615540 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:15:50.618554 - Đã gọi load_invoices
+2026-06-03T14:17:14.711904 - === ocr_import_invoice được gọi ===
+2026-06-03T14:17:14.714972 - Import OCRImportDialog thành công
+2026-06-03T14:17:14.729666 - Dialog đã được tạo
+2026-06-03T14:17:18.579041 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:17:18.583043 - Đã gọi load_invoices
+2026-06-03T14:20:07.464101 - === ocr_import_invoice được gọi ===
+2026-06-03T14:20:07.469108 - Import OCRImportDialog thành công
+2026-06-03T14:20:07.484782 - Dialog đã được tạo
+2026-06-03T14:20:12.673671 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:20:12.673671 - Đã gọi load_invoices
+2026-06-03T14:23:42.642063 - === ocr_import_invoice được gọi ===
+2026-06-03T14:23:42.642063 - Import OCRImportDialog thành công
+2026-06-03T14:23:42.684605 - Dialog đã được tạo
+2026-06-03T14:23:44.064351 - Dialog đã đóng (wait_window kết thúc)
+2026-06-03T14:23:44.064351 - Đã gọi load_invoices
+2026-06-04T05:19:04.926932 - === ocr_import_invoice được gọi ===
+2026-06-04T05:19:04.928949 - Import OCRImportDialog thành công
+2026-06-04T05:19:04.976748 - Dialog đã được tạo
+2026-06-04T05:19:06.379049 - Dialog đã đóng (wait_window kết thúc)
+2026-06-04T05:19:06.385673 - Đã gọi load_invoices
+2026-06-04T15:59:48.601057 - === ocr_import_invoice được gọi ===
+2026-06-04T15:59:48.602175 - Import OCRImportDialog thành công
+2026-06-04T15:59:48.632651 - Dialog đã được tạo
+2026-06-04T15:59:54.054219 - Dialog đã đóng (wait_window kết thúc)
+2026-06-04T15:59:54.054219 - Đã gọi load_invoices
+2026-06-04T16:10:49.126698 - === ocr_import_invoice được gọi ===
+2026-06-04T16:10:49.126698 - Import OCRImportDialog thành công
+2026-06-04T16:10:49.167686 - Dialog đã được tạo
+2026-06-04T16:10:50.586649 - Dialog đã đóng (wait_window kết thúc)
+2026-06-04T16:10:50.586649 - Đã gọi load_invoices
+2026-06-04T16:35:29.454408 - === ocr_import_invoice được gọi ===
+2026-06-04T16:35:29.468587 - Import OCRImportDialog thành công
+2026-06-04T16:35:29.486174 - Dialog đã được tạo
+2026-06-04T16:35:30.751455 - Dialog đã đóng (wait_window kết thúc)
+2026-06-04T16:35:30.759692 - Đã gọi load_invoices
+2026-06-04T21:05:18.699368 - === ocr_import_invoice được gọi ===
+2026-06-04T21:05:18.699368 - Import OCRImportDialog thành công
+2026-06-04T21:05:18.764958 - Dialog đã được tạo
+2026-06-04T21:05:23.208250 - Dialog đã đóng (wait_window kết thúc)
+2026-06-04T21:05:23.210314 - Đã gọi load_invoices
+2026-06-04T22:10:10.155136 - === ocr_import_invoice được gọi ===
+2026-06-04T22:10:10.155136 - Import OCRImportDialog thành công
+2026-06-04T22:10:10.186827 - Dialog đã được tạo
+2026-06-04T22:10:11.819192 - Dialog đã đóng (wait_window kết thúc)
+2026-06-04T22:10:11.819192 - Đã gọi load_invoices
+2026-06-05T06:45:38.094810 - === ocr_import_invoice được gọi ===
+2026-06-05T06:45:38.104759 - Import OCRImportDialog thành công
+2026-06-05T06:45:38.153065 - Dialog đã được tạo
+2026-06-05T06:45:39.259943 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T06:45:39.265509 - Đã gọi load_invoices
+2026-06-05T10:54:08.786028 - === ocr_import_invoice được gọi ===
+2026-06-05T10:54:08.801772 - Import OCRImportDialog thành công
+2026-06-05T10:54:08.836878 - Dialog đã được tạo
+2026-06-05T10:54:09.948762 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T10:54:09.951772 - Đã gọi load_invoices
+2026-06-05T11:20:16.911412 - === ocr_import_invoice được gọi ===
+2026-06-05T11:20:16.911412 - Import OCRImportDialog thành công
+2026-06-05T11:20:16.964104 - Dialog đã được tạo
+2026-06-05T11:20:18.107489 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T11:20:18.113943 - Đã gọi load_invoices
+2026-06-05T11:23:08.136290 - === ocr_import_invoice được gọi ===
+2026-06-05T11:23:08.149776 - Import OCRImportDialog thành công
+2026-06-05T11:23:08.206268 - Dialog đã được tạo
+2026-06-05T11:23:09.283903 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T11:23:09.284904 - Đã gọi load_invoices
+2026-06-05T11:29:07.313521 - === ocr_import_invoice được gọi ===
+2026-06-05T11:29:07.314620 - Import OCRImportDialog thành công
+2026-06-05T11:29:07.334343 - Dialog đã được tạo
+2026-06-05T11:29:08.380715 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T11:29:08.398009 - Đã gọi load_invoices
+2026-06-05T11:33:32.159098 - === ocr_import_invoice được gọi ===
+2026-06-05T11:33:32.160097 - Import OCRImportDialog thành công
+2026-06-05T11:33:32.178033 - Dialog đã được tạo
+2026-06-05T11:33:33.137852 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T11:33:33.139880 - Đã gọi load_invoices
+2026-06-05T11:58:32.098668 - === ocr_import_invoice được gọi ===
+2026-06-05T11:58:32.114419 - Import OCRImportDialog thành công
+2026-06-05T11:58:32.130383 - Dialog đã được tạo
+2026-06-05T11:58:33.160760 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T11:58:33.160760 - Đã gọi load_invoices
+2026-06-05T12:03:25.302138 - === ocr_import_invoice được gọi ===
+2026-06-05T12:03:25.317475 - Import OCRImportDialog thành công
+2026-06-05T12:03:25.348956 - Dialog đã được tạo
+2026-06-05T12:03:26.409833 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T12:03:26.409833 - Đã gọi load_invoices
+2026-06-05T12:11:08.667945 - === ocr_import_invoice được gọi ===
+2026-06-05T12:11:08.673931 - Import OCRImportDialog thành công
+2026-06-05T12:11:08.691434 - Dialog đã được tạo
+2026-06-05T12:11:09.776574 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T12:11:09.779586 - Đã gọi load_invoices
+2026-06-05T14:45:47.295435 - === ocr_import_invoice được gọi ===
+2026-06-05T14:45:47.307568 - Import OCRImportDialog thành công
+2026-06-05T14:45:47.333891 - Dialog đã được tạo
+2026-06-05T14:45:48.292522 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T14:45:48.295994 - Đã gọi load_invoices
+2026-06-05T15:30:10.324599 - === ocr_import_invoice được gọi ===
+2026-06-05T15:30:10.324599 - Import OCRImportDialog thành công
+2026-06-05T15:30:10.356175 - Dialog đã được tạo
+2026-06-05T15:30:11.324451 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T15:30:11.324451 - Đã gọi load_invoices
+2026-06-05T15:43:45.825853 - === ocr_import_invoice được gọi ===
+2026-06-05T15:43:45.825853 - Import OCRImportDialog thành công
+2026-06-05T15:43:45.841590 - Dialog đã được tạo
+2026-06-05T15:43:50.807898 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T15:43:50.807898 - Đã gọi load_invoices
+2026-06-05T16:25:00.698200 - === ocr_import_invoice được gọi ===
+2026-06-05T16:25:00.709256 - Import OCRImportDialog thành công
+2026-06-05T16:25:00.741082 - Dialog đã được tạo
+2026-06-05T16:25:02.059077 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T16:25:02.074769 - Đã gọi load_invoices
+2026-06-05T16:33:58.742893 - === ocr_import_invoice được gọi ===
+2026-06-05T16:33:58.742893 - Import OCRImportDialog thành công
+2026-06-05T16:33:58.774436 - Dialog đã được tạo
+2026-06-05T16:33:59.880056 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T16:33:59.880056 - Đã gọi load_invoices
+2026-06-05T16:37:56.534380 - === ocr_import_invoice được gọi ===
+2026-06-05T16:37:56.534380 - Import OCRImportDialog thành công
+2026-06-05T16:37:56.561109 - Dialog đã được tạo
+2026-06-05T16:37:57.648207 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T16:37:57.658547 - Đã gọi load_invoices
+2026-06-05T16:39:47.367507 - === ocr_import_invoice được gọi ===
+2026-06-05T16:39:47.369530 - Import OCRImportDialog thành công
+2026-06-05T16:39:47.393773 - Dialog đã được tạo
+2026-06-05T16:39:48.460982 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T16:39:48.476700 - Đã gọi load_invoices
+2026-06-05T16:47:28.052790 - === ocr_import_invoice được gọi ===
+2026-06-05T16:47:28.052790 - Import OCRImportDialog thành công
+2026-06-05T16:47:28.086786 - Dialog đã được tạo
+2026-06-05T16:47:29.018710 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T16:47:29.018710 - Đã gọi load_invoices
+2026-06-05T16:48:42.680795 - === ocr_import_invoice được gọi ===
+2026-06-05T16:48:42.680795 - Import OCRImportDialog thành công
+2026-06-05T16:48:42.707456 - Dialog đã được tạo
+2026-06-05T16:48:44.110386 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T16:48:44.110386 - Đã gọi load_invoices
+2026-06-05T17:11:52.946059 - === ocr_import_invoice được gọi ===
+2026-06-05T17:11:52.946059 - Import OCRImportDialog thành công
+2026-06-05T17:11:52.977805 - Dialog đã được tạo
+2026-06-05T17:11:54.164612 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T17:11:54.164612 - Đã gọi load_invoices
+2026-06-05T17:38:09.403661 - === ocr_import_invoice được gọi ===
+2026-06-05T17:38:09.405681 - Import OCRImportDialog thành công
+2026-06-05T17:38:09.425543 - Dialog đã được tạo
+2026-06-05T17:38:10.622877 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T17:38:10.622877 - Đã gọi load_invoices
+2026-06-05T17:41:00.236086 - === ocr_import_invoice được gọi ===
+2026-06-05T17:41:00.238088 - Import OCRImportDialog thành công
+2026-06-05T17:41:00.261740 - Dialog đã được tạo
+2026-06-05T17:41:01.305200 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T17:41:01.305200 - Đã gọi load_invoices
+2026-06-05T17:45:27.807743 - === ocr_import_invoice được gọi ===
+2026-06-05T17:45:27.807743 - Import OCRImportDialog thành công
+2026-06-05T17:45:27.839259 - Dialog đã được tạo
+2026-06-05T17:45:28.944743 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T17:45:28.949751 - Đã gọi load_invoices
+2026-06-05T18:02:44.655952 - === ocr_import_invoice được gọi ===
+2026-06-05T18:02:44.657972 - Import OCRImportDialog thành công
+2026-06-05T18:02:44.679547 - Dialog đã được tạo
+2026-06-05T18:02:45.637257 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T18:02:45.637257 - Đã gọi load_invoices
+2026-06-05T20:27:00.683608 - === ocr_import_invoice được gọi ===
+2026-06-05T20:27:00.686143 - Import OCRImportDialog thành công
+2026-06-05T20:27:00.717925 - Dialog đã được tạo
+2026-06-05T20:27:01.981023 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T20:27:01.981023 - Đã gọi load_invoices
+2026-06-05T20:57:28.586144 - === ocr_import_invoice được gọi ===
+2026-06-05T20:57:28.588159 - Import OCRImportDialog thành công
+2026-06-05T20:57:28.630704 - Dialog đã được tạo
+2026-06-05T20:57:29.818144 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T20:57:29.820961 - Đã gọi load_invoices
+2026-06-05T21:13:34.879811 - === ocr_import_invoice được gọi ===
+2026-06-05T21:13:34.886726 - Import OCRImportDialog thành công
+2026-06-05T21:13:34.941055 - Dialog đã được tạo
+2026-06-05T21:13:36.123844 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T21:13:36.123844 - Đã gọi load_invoices
+2026-06-05T21:36:18.603337 - === ocr_import_invoice được gọi ===
+2026-06-05T21:36:18.605354 - Import OCRImportDialog thành công
+2026-06-05T21:36:18.645117 - Dialog đã được tạo
+2026-06-05T21:36:19.778905 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T21:36:19.785624 - Đã gọi load_invoices
+2026-06-05T23:03:34.361552 - === ocr_import_invoice được gọi ===
+2026-06-05T23:03:34.399659 - Import OCRImportDialog thành công
+2026-06-05T23:03:34.467677 - Dialog đã được tạo
+2026-06-05T23:03:35.765746 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T23:03:35.767740 - Đã gọi load_invoices
+2026-06-05T23:06:20.768210 - === ocr_import_invoice được gọi ===
+2026-06-05T23:06:20.770228 - Import OCRImportDialog thành công
+2026-06-05T23:06:20.802127 - Dialog đã được tạo
+2026-06-05T23:06:21.954364 - Dialog đã đóng (wait_window kết thúc)
+2026-06-05T23:06:21.958280 - Đã gọi load_invoices
+2026-06-06T03:49:27.384124 - === ocr_import_invoice được gọi ===
+2026-06-06T03:49:27.389878 - Import OCRImportDialog thành công
+2026-06-06T03:49:27.434663 - Dialog đã được tạo
+2026-06-06T03:49:29.496538 - Dialog đã đóng (wait_window kết thúc)
+2026-06-06T03:49:29.499316 - Đã gọi load_invoices
+2026-06-06T04:24:06.600970 - === ocr_import_invoice được gọi ===
+2026-06-06T04:24:06.603125 - Import OCRImportDialog thành công
+2026-06-06T04:24:06.637980 - Dialog đã được tạo
+2026-06-06T04:24:07.668390 - Dialog đã đóng (wait_window kết thúc)
+2026-06-06T04:24:07.668390 - Đã gọi load_invoices
+2026-06-06T04:30:07.961887 - === ocr_import_invoice được gọi ===
+2026-06-06T04:30:07.963907 - Import OCRImportDialog thành công
+2026-06-06T04:30:07.999176 - Dialog đã được tạo
+2026-06-06T04:30:09.059481 - Dialog đã đóng (wait_window kết thúc)
+2026-06-06T04:30:09.061491 - Đã gọi load_invoices
+2026-06-06T04:39:43.270296 - === ocr_import_invoice được gọi ===
+2026-06-06T04:39:43.270296 - Import OCRImportDialog thành công
+2026-06-06T04:39:43.343199 - Dialog đã được tạo
+2026-06-06T04:39:45.550718 - Dialog đã đóng (wait_window kết thúc)
+2026-06-06T04:39:45.553261 - Đã gọi load_invoices
+2026-06-06T04:49:49.099418 - === ocr_import_invoice được gọi ===
+2026-06-06T04:49:49.101415 - Import OCRImportDialog thành công
+2026-06-06T04:49:49.143299 - Dialog đã được tạo
+2026-06-06T04:49:50.676410 - Dialog đã đóng (wait_window kết thúc)
+2026-06-06T04:49:50.688017 - Đã gọi load_invoices
+2026-06-06T05:39:53.432301 - === ocr_import_invoice được gọi ===
+2026-06-06T05:39:53.439680 - Import OCRImportDialog thành công
+2026-06-06T05:39:53.470564 - Dialog đã được tạo
+2026-06-06T05:39:54.672891 - Dialog đã đóng (wait_window kết thúc)
+2026-06-06T05:39:54.672891 - Đã gọi load_invoices

@@ -1,0 +1,33 @@
+Giai đoạn 1: "Chỉnh đốn hàng ngũ" (Phần hiển thị & Thanh trạng thái)
+Mục tiêu: Đưa trạng thái bản quyền trở lại vị trí quan trọng nhất trên giao diện.
+
+Chỉnh sửa hàm create_status_bar: Tôi sẽ yêu cầu Thầy chèn một Label mới (đã được liên kết với biến self.is_super_admin) vào đúng vị trí của thanh trạng thái phía dưới.
+
+Đồng bộ hóa: Thiết lập một hàm refresh_status_bar() để mỗi khi hệ thống nạp xong Tab, nó sẽ tự động "đọc" lại quyền Admin và hiển thị lên thanh này.
+
+Kiểm tra: Chạy thử để đảm bảo nó luôn đứng yên ở dưới cùng, không bị các Tab mới đè lên.
+
+Giai đoạn 2: "Khôi phục kết nối" (Chọn ngành nghề)
+Mục tiêu: Tạo lối vào an toàn cho tính năng chọn ngành nghề.
+
+Định nghĩa hàm "cầu nối": Viết hàm open_industry_selector trong MainWindow. Hàm này sẽ chịu trách nhiệm gọi IndustrySelectorDialog và đảm bảo nó chạy trên luồng chính (Main Thread) giống như cách chúng ta đã sửa lỗi open_license_manager.
+
+Gắn kết Menu: Tìm đến hàm create_menu và đăng ký lệnh gọi vào đúng hàm open_industry_selector.
+
+Xử lý hậu quả: Sau khi chọn ngành nghề xong, hàm sẽ tự động kích hoạt _init_all_tabs() để cập nhật lại giao diện theo ngành nghề mới.
+
+Giai đoạn 3: "Dọn dẹp hệ thống" (Kiểm soát rác & Đảm bảo ổn định)
+Mục tiêu: Vệ sinh bộ nhớ và kiểm tra cuối cùng.
+
+Vệ sinh __pycache__: Thao tác bắt buộc sau khi sửa code để Python nhận diện các thay đổi.
+
+Test luồng sự kiện: Nhấn vào menu, đảm bảo cửa sổ hiện lên, nhấn chọn ngành nghề, đảm bảo Tab thay đổi.
+
+Kiểm tra tính bền vững: Đảm bảo lỗi No default root window hay RuntimeError không bao giờ xuất hiện lại trong các menu này.
+
+Thầy cần tôi xuất bản (dán) đoạn code nào trước?
+Để nhanh và chính xác nhất, Thầy hãy chọn thứ tự ưu tiên:
+
+Lựa chọn A: Thầy muốn tôi đưa đoạn code "Khôi phục thanh trạng thái" trước?
+
+Lựa chọn B: Thầy muốn tôi đưa đoạn code "Xây dựng lại Menu Công cụ & Hàm ngành nghề" trước?

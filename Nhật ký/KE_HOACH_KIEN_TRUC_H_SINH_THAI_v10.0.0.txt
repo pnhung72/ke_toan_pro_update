@@ -1,0 +1,61 @@
+================================================================================
+KE HOACH KIEN TRUC: NANG CAP KE TOAN PRO LEN HE SINH THAI DA NGANH v10.0.0
+Ngay lap plan: 17/05/2026
+Tac gia: NgocPhan & Gemini Co-pilot
+================================================================================
+
+[MUC TIEU CHIEN LUOC]
+--------------------------------------------------------------------------------
+1. Chuyen doi phan mem tu dong khoi (Monolithic) sang kien truc Phand he dong (Modular ERP).
+2. Quan ly duy nhat 1 bo ma nguon (Single Codebase), dieu khien tinh nang bang License Key.
+3. Cho phep Admin bat/tat nhanh cac tab nganh nghe ngay lap tuc de bao tri.
+4. Co che "Goi mon" (Add-ons) cho phep mo rong thuong mai hoa linh hoat.
+
+
+PHAN I: KHAO SAT VA QUY HOACH DIEN TICH (RE-FACTORING CODEBASE)
+--------------------------------------------------------------------------------
+* Thoi gian du kien: Ngay 1 - Ngay 2
+* Cac vung can tac dong:
+  1. Chuyen tab "Xang dau" hien tai tu hien thi mac dinh vao thu muc views/tabs/petrol_tab.py.
+  2. Tao file quan ly danh muc nganh nghe tai config/industry_modules.json de de mo rong sau nay (Nuoc mam, Van tai...).
+  3. Xac dinh cac Tab mac dinh dung chung (Giao dich, Hoa don, Hang hoa).
+
+
+PHAN II: THIET KE "O KHOA THONG MINH" (CORE SECURITY & LICENSE)
+--------------------------------------------------------------------------------
+* Thoi gian du kien: Ngay 3 - Ngay 4
+* Cac buoc trien khai:
+  1. Cap nhat cau truc bang `licenses` trong Database:
+     - Them truong `activated_modules` (Kieu TEXT, luu chuoi JSON hoac danh sach nganh nghe duoc cap phep).
+  2. Nang cap he thong tao va giai ma Key tai `core/security/` va `core/encryption/`:
+     - Key moi se ma hoa thong tin: Ma may + Goi cuoc (Basic/Pro/Enterprise) + Danh sach Module Add-on.
+  3. Viet ham `LicenseManager.verify_and_get_permissions()` de chay khi phan mem khoi dong.
+
+
+PHAN III: XAY DUNG MA TRAN DIEU KHIEN (DYNAMIC UI INTERFACE)
+--------------------------------------------------------------------------------
+* Thoi gian du kien: Ngay 5 - Ngay 6
+* Cac buoc trien khai:
+  1. Tai lop giao dien chinh (Main Window): Bo co che add_tab cung nhac. Chuyen sang dung `DynamicTabManager`.
+  2. Xay dung ham `update_tabs_by_license(license_info)`:
+     - Xoa cac tab dac thu dang hien hanh.
+     - Duyet qua danh sach module duoc phep de add vao QTabWidget (hoac bo khung UI dang dung).
+  3. Thiet ke Menu Admin:
+     - Vao menu `Cong cu` -> Them submenu `Tab tuy chon theo nganh nghe`.
+     - Neu User_Role == 'admin': Hien thi danh sach Checkbox cac nganh nghe.
+     - Su kien `on_checkbox_changed`: Tich vao phat nao, goi ham add/remove Tab ra giao dien ngay lap tuc ma khong can reset app.
+
+
+PHAN IV: KIEM THU VA DONG GOI (TESTING & DEPLOYMENT)
+--------------------------------------------------------------------------------
+* Thoi gian du kien: Ngay 7
+* Kiem thu chat che:
+  - Unit test cho bo ma hoa/giai ma Key moi (tai tests/unit/security/).
+  - Test kich ban Admin tich chon bat/tat nhanh tai cho.
+  - Test kich ban Khach hang nhap Key Basic thi an Tab Xang dau, nhap Key Enterprise co Add-on thi hien Tab Xang dau.
+  - Cap nhat file version.txt len thanh: 10.0.0
+
+
+================================================================================
+KAY DUYET KHOI DONG DU AN: v10.0.0 - HE SINH THAI SO DA NGANH
+================================================================================

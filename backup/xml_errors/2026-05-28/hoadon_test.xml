@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice>
+    <SellerTaxCode>0123456789</SellerTaxCode>
+    <SellerName>Công ty TNHH Sản xuất ABC</SellerName>
+    <InvoiceNo>HD12345</InvoiceNo>
+    <IssueDate>2026-05-28</IssueDate>
+    <TotalAmountWithoutTax>1000000</TotalAmountWithoutTax>
+    <TaxAmount>100000</TaxAmount>
+    <TotalAmount>1100000</TotalAmount>
+</Invoice>

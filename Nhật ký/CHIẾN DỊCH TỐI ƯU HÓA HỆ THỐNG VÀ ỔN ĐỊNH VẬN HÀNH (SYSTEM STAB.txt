@@ -1,0 +1,43 @@
+============================================================
+KẾ HOẠCH: CHIẾN DỊCH TỐI ƯU HÓA HỆ THỐNG KẾ TOÁN PRO v14.0.11
+Ngày bắt đầu: 27/05/2026
+Mục tiêu: Ổn định - Tối ưu - Bảo toàn thành quả
+============================================================
+
+I. MỤC TIÊU CẢI TIẾN
+1. Ổn định hóa kết nối: Sửa lỗi mất cấu hình Email và tối ưu hóa quy trình quét hóa đơn.
+2. Tối ưu hóa quy trình đóng ứng dụng: Loại bỏ hiện tượng treo tiến trình (zombie process).
+3. Đồng bộ bản quyền: Khớp nối quyền Admin với hệ thống License.
+
+II. KẾ HOẠCH CHI TIẾT (QUY TRÌNH THỰC HIỆN)
+
+[ ] GIAI ĐOẠN 1: BẢO MẬT & SAO LƯU (ƯU TIÊN SỐ 1)
+    - [ ] Sao lưu toàn bộ thư mục D:\ke_toan_pro_v3 ra ổ cứng rời.
+    - [ ] Tạo file license.key dự phòng để tránh lỗi nạp module.
+
+[ ] GIAI ĐOẠN 2: TÁI CẤU TRÚC TAB "ĐỒNG BỘ HÓA ĐƠN & SAO KÊ"
+    - [ ] Đổi tên lớp và nhãn tab thành 'EmailSyncTab' trong email_connection_tab.py.
+    - [ ] Bổ sung hàm tự động truy vấn DB để điền email vào ô nhập liệu khi mở tab.
+    - [ ] Kiểm tra lại cơ chế lưu trữ (INSERT/UPDATE) vào bảng email_configurations.
+
+[ ] GIAI ĐOẠN 3: XỬ LÝ LỖI ĐÓNG ỨNG DỤNG (GRACEFUL SHUTDOWN)
+    - [ ] Cập nhật AdminMailScanner: Thêm cờ kiểm soát luồng (self.is_running).
+    - [ ] Định nghĩa hàm on_closing() trong giao diện chính.
+    - [ ] Đảm bảo tất cả luồng (threads) kết thúc trước khi thực hiện lệnh đóng (destroy).
+
+[ ] GIAI ĐOẠN 4: KIỂM CHỨNG & VẬN HÀNH
+    - [ ] Chạy main.py và kiểm tra log hệ thống (Đảm bảo không còn lỗi Authenticated).
+    - [ ] Xác nhận các Tab module (Sản xuất, Trạm xăng) đã được kích hoạt.
+
+III. BẢNG KIỂM SOÁT TIẾN ĐỘ (TRACKER)
+
+| Hạng mục                    | Trạng thái | Ghi chú |
+|-----------------------------|------------|---------|
+| Backup dữ liệu              | [ ]        |         |
+| Fix Tab & Load Email        | [ ]        |         |
+| Fix lỗi Đóng ứng dụng       | [ ]        |         |
+| Kiểm chứng License          | [ ]        |         |
+
+============================================================
+GHI CHÚ: Mọi thay đổi mã nguồn phải được backup trước khi lưu.
+============================================================

@@ -1,0 +1,180 @@
+======================================================================
+  BÁO CÁO PHÂN TÍCH TOÀN DIỆN MÃ NGUỒN
+  Phần Mềm Kế Toán Pro
+  Ngày: 02/06/2026 06:00:41
+======================================================================
+
+▌ ĐIỂM ĐÁNH GIÁ TỔNG THỂ
+----------------------------------------------------------------------
+  Kiến trúc       [██████████████████████████████]  20/20
+  Nghiệp vụ KT   [██████████████████████████████]  30/30
+  Chất lượng code [███████████████░░░░░░░░░░░░░░░]  10/20
+  Bảo mật         [██████████████████░░░░░░░░░░░░]   9/15
+  Tests           [███████████████░░░░░░░░░░░░░░░]   5/10
+  Tính năng +     [██████████████████████████████]    5/5
+----------------------------------------------------------------------
+  TỔNG ĐIỂM:  79/100   →  B - Cần hoàn thiện thêm (~1-2 tháng)
+
+▌ 1. THỐNG KÊ MÃ NGUỒN
+----------------------------------------------------------------------
+  Tổng file .py    : 197
+  Tổng dòng        : 29,808
+  Dòng code thực   : 23,314
+  Dòng comment     : 2,047 (6.9%)
+  Dòng trống       : 4,447
+
+  Top 10 file lớn nhất:
+    ui\main_window.py                                        2560 dòng
+    ui\business_info_tab.py                                  1822 dòng
+    ui\report_tab.py                                         1213 dòng
+    ui\invoice_tab.py                                        1100 dòng
+    ui\transaction_tab.py                                     842 dòng
+    PhanTichMaNguon.py                                        749 dòng
+    models\transaction.py                                     553 dòng
+    services\accounting_service.py                            551 dòng
+    ui\debt_tab.py                                            518 dòng
+    services\report_service.py                                504 dòng
+
+▌ 2. KIẾN TRÚC PHÂN TẦNG
+----------------------------------------------------------------------
+  ✓ core           : 16 file
+  ✓ models         : 14 file
+  ✓ services       : 31 file
+  ✓ controllers    : 6 file
+  ✓ ui             : 27 file
+  ✓ views          : 22 file
+  ✓ utils          : 14 file
+  ✓ reports        : 5 file
+  ✓ ai             : 19 file
+  ✓ tests          : 10 file
+  ✓ extensions     : 8 file
+  ✓ other          : 25 file
+
+▌ 3. NGHIỆP VỤ KẾ TOÁN
+----------------------------------------------------------------------
+  ✓ Kế toán kép (Double-entry)         : 28 file liên quan
+  ✓ Bảng cân đối kế toán               : 5 file liên quan
+  ✓ Báo cáo KQKD                       : 8 file liên quan
+  ✓ Lưu chuyển tiền tệ                 : 3 file liên quan
+  ✓ Kê khai thuế / Thông tư            : 26 file liên quan
+  ✓ Đối soát ngân hàng                 : 3 file liên quan
+  ✓ Quản lý tồn kho                    : 4 file liên quan
+  ✓ Khấu hao TSCĐ                      : 5 file liên quan
+  ✓ Bảng lương                         : 6 file liên quan
+  ✓ Đa tiền tệ                         : 6 file liên quan
+  ✓ OCR nhập hóa đơn                   : 10 file liên quan
+  ✓ Quản lý license                    : 23 file liên quan
+  ✓ Audit log                          : 7 file liên quan
+  ✓ Backup/Đồng bộ                     : 21 file liên quan
+  ✓ Mã hóa dữ liệu                     : 6 file liên quan
+
+▌ 4. CHẤT LƯỢNG CODE
+----------------------------------------------------------------------
+  Bare except (xử lý lỗi kém)  : 134 chỗ
+  Debug print còn sót           : 31 chỗ
+  TODO/FIXME chưa xử lý        : 3 chỗ
+  Hàm quá dài (>80 dòng)       : 10 hàm
+  Class không có docstring      : 53
+  Độ phức tạp cyclomatic TB     : 3.14
+
+  Hàm dài nhất:
+    ui\main_window.py → _init_all_tabs() = 285 dòng
+    models\database.py → init_db() = 280 dòng
+    ui\invoice_tab.py → edit_invoice() = 270 dòng
+    ui\main_window.py → __init__() = 258 dòng
+    services\revenue_book_service.py → get_revenue_data() = 197 dòng
+
+  File có bare except:
+    diagnose_build_issue.py: 1 chỗ
+    main_window.py: 2 chỗ
+    PhanTichMaNguon.py: 4 chỗ
+    theme_OLD.py: 1 chỗ
+    xuat_kien_truc.py: 1 chỗ
+
+▌ 5. CƠ SỞ DỮ LIỆU
+----------------------------------------------------------------------
+  Tổng bảng: 30
+  • account_balances                    4 dòng  |  account_code(TEXT), balance(REAL), last_updated(TEXT)
+  • accounting_periods                  0 dòng  |  id(INTEGER), period_name(TEXT), start_date(TEXT), end_date(TEXT), is_closed(INTEGER) +1 cột
+  • accounts                           15 dòng  |  code(TEXT), name(TEXT), type(TEXT)
+  • bank_accounts                       5 dòng  |  id(INTEGER), business_id(INTEGER), ten_ngan_hang(TEXT), so_tai_khoan(TEXT), so_hieu_vi_dien_tu(TEXT) +2 cột
+  • business_info                       1 dòng  |  id(INTEGER), ma_so_thue(TEXT), ten_ho_kinh_doanh(TEXT), dia_chi(TEXT), so_dien_thoai(TEXT) +5 cột
+  • categories                         25 dòng  |  id(INTEGER), name(TEXT), type(TEXT)
+  • closing_entries                     0 dòng  |  id(INTEGER), period_id(INTEGER), date(TEXT), description(TEXT), debit_account(TEXT) +2 cột
+  • currencies                         12 dòng  |  code(TEXT), name(TEXT), symbol(TEXT), is_base(INTEGER), is_active(INTEGER) +2 cột
+  • customer_history                   28 dòng  |  name(TEXT), phone(TEXT), address(TEXT), purchase_count(INTEGER), last_updated(TEXT)
+  • customers                           0 dòng  |  id(INTEGER), machine_id(TEXT), full_name(TEXT), email(TEXT), phone(TEXT) +6 cột
+  • debts                               1 dòng  |  id(INTEGER), name(TEXT), phone(TEXT), total_debt(REAL), paid(REAL) +4 cột
+  • email_configurations                2 dòng  |  id(INTEGER), email_address(TEXT), app_password(TEXT), created_at(TEXT)
+  • exchange_rates                      1 dòng  |  id(INTEGER), from_currency(TEXT), to_currency(TEXT), rate(REAL), effective_date(TEXT) +2 cột
+  • feature_tiers                       2 dòng  |  id(INTEGER), tier_name(TEXT), allowed_features(TEXT), description(TEXT)
+  • invoice_queue                      39 dòng  |  id(INTEGER), xml_path(TEXT), invoice_no(TEXT), seller_name(TEXT), total_amount(REAL) +2 cột
+  • invoices                           36 dòng  |  id(INTEGER), buyer_name(TEXT), phone(TEXT), tax_code(TEXT), address(TEXT) +11 cột
+  • journal_details                    56 dòng  |  id(INTEGER), journal_entry_id(INTEGER), account_code(TEXT), account_name(TEXT), debit_amount(REAL) +1 cột
+  • journal_entries                    29 dòng  |  id(INTEGER), date(TEXT), description(TEXT), account_code(TEXT), debit(REAL) +8 cột
+  • licenses                            0 dòng  |  hardware_id(TEXT), license_key(TEXT), status(TEXT), created_date(TEXT), user_name(TEXT) +2 cột
+  • permissions                        14 dòng  |  id(INTEGER), role(TEXT), module(TEXT), can_view(INTEGER), can_edit(INTEGER) +1 cột
+  • products                            2 dòng  |  code(TEXT), name(TEXT), unit(TEXT), price_sell(REAL), price_buy(REAL) +2 cột
+  • purchase_orders                     0 dòng  |  id(INTEGER), date(TEXT), product_code(TEXT), quantity(REAL), unit_price(REAL) +1 cột
+  • roles                               4 dòng  |  id(INTEGER), name(TEXT), description(TEXT)
+  • software_licenses                   0 dòng  |  id(INTEGER), machine_id(TEXT), tier_id(INTEGER), license_key(TEXT), expiry_date(DATETIME) +1 cột
+  • sqlite_sequence                    15 dòng  |  name(), seq()
+  • tax_filing_history                  0 dòng  |  id(INTEGER), ma_so_thue(TEXT), mau_bieu(TEXT), ky_khai(TEXT), ngay_nop(TEXT) +3 cột
+  • tax_returns                         0 dòng  |  id(INTEGER), tax_year(INTEGER), tax_type(TEXT), revenue(REAL), tax_amount(REAL) +2 cột
+  • transaction_metadata               27 dòng  |  journal_id(INTEGER), type(TEXT), category(TEXT), description(TEXT), created_at(TEXT) +1 cột
+  • transactions                       22 dòng  |  id(INTEGER), date(TEXT), description(TEXT), amount(REAL), type(TEXT) +5 cột
+  • users                               1 dòng  |  id(INTEGER), username(TEXT), password_hash(TEXT), full_name(TEXT), email(TEXT) +4 cột
+
+▌ 6. BẢO MẬT
+----------------------------------------------------------------------
+  ⚠ Phát hiện 4 chỗ có thể hardcode secret:
+    core\encryption\encryption.py: password = "KeToanPro2026@Secure
+    services\email_service.py: password = "bhczlexkuxythqsc
+    tests\unit\services\test_security_service.py: password = "P@ssw0rd123!
+    utils\error_logger.py: password = "bhczlexkuxythqsc
+
+▌ 7. KIỂM THỬ (TESTS)
+----------------------------------------------------------------------
+  File test      : 10
+  Hàm test       : 26
+  Mức độ coverage: Trung bình
+
+▌ 8. DEPENDENCIES
+----------------------------------------------------------------------
+  • cryptography>=41.0.0
+  • psutil>=5.9.0
+  • Pillow>=10.0.0
+  • pandas>=2.0.0
+  • openpyxl>=3.1.0
+  • requests>=2.31.0
+  • matplotlib>=3.7.0
+  • pytest>=7.0.0
+  • pytest-cov>=4.0.0
+  • pytest-mock>=3.10.0
+  • black>=23.0.0
+  • flake8>=6.0.0
+  • pyinstaller>=5.0.0
+  • imap-tools>=1.5.0
+
+▌ 9. KẾT LUẬN & KHUYẾN NGHỊ
+----------------------------------------------------------------------
+  Điểm tổng: 79/100  →  B - Cần hoàn thiện thêm (~1-2 tháng)
+
+  PHÂN KHÚC PHÙ HỢP:
+  • Hộ kinh doanh, doanh nghiệp siêu nhỏ (1-10 nhân viên)
+  • Kế toán thuê ngoài / dịch vụ kế toán
+  • Giá đề xuất: 1.5 – 3 triệu/năm/user
+
+  SO SÁNH CẠNH TRANH:
+  • Misa SME:       ERP đầy đủ, giá 5-15tr/năm
+  • Fast Accounting: Kế toán thuần, giá 3-8tr/năm
+  • Bravo:          Doanh nghiệp vừa, 20tr+
+  → Sản phẩm này cạnh tranh ở phân khúc giá thấp hơn Misa
+
+  VIỆC CẦN LÀM TRƯỚC KHI BÁN:
+  ① Sửa bare except → xử lý lỗi rõ ràng hơn
+  ② Xóa debug print → dùng logging module
+
+======================================================================
+  HẾT BÁO CÁO
+======================================================================

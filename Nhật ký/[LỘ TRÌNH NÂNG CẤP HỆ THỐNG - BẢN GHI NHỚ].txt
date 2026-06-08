@@ -1,0 +1,44 @@
+[LỘ TRÌNH NÂNG CẤP HỆ THỐNG - BẢN GHI NHỚ]
+Mục tiêu: Đồng bộ cấu trúc thư mục & Giải quyết xung đột config.
+
+[ ] Bước 1: Sao lưu dữ liệu
+
+Copy toàn bộ thư mục ke_toan_pro_v3 sang một ổ cứng/thư mục khác để làm bản backup an toàn.
+
+[ ] Bước 2: Thay đổi cấu trúc thư mục
+
+Trong thư mục gốc ke_toan_pro_v3, tìm thư mục tên config.
+
+Đổi tên nó thành configs.
+
+[ ] Bước 3: Cập nhật biến cấu hình
+
+Mở file config.py.
+
+Tìm biến config_DIR.
+
+Sửa giá trị từ ... "config" thành ... "configs".
+
+[ ] Bước 4: Kiểm tra đồng bộ (Tự kiểm tra)
+
+Mở file KiemTraLicense.py: Đảm bảo dòng from config import DB_PATH đã tồn tại.
+
+Mở file main.py: Đảm bảo logic check_trial_period() và check_access_mode() đã được tích hợp đúng vị trí trong main().
+
+[ ] Bước 5: Dọn dẹp hệ thống
+
+Chạy lệnh xóa __pycache__ để Python biên dịch lại toàn bộ từ đầu (tránh lỗi cache cũ).
+
+[ ] Bước 6: Kiểm tra cuối cùng (Test Run)
+
+Chạy python main.py.
+
+Quan sát terminal: Nếu hiện bảng thông báo cấu hình (như file config.py in ra) mà không có lỗi ImportError -> Thành công.
+
+Lưu ý cho Thầy:
+
+Nếu sau khi đổi tên thư mục mà phần mềm báo lỗi “File not found” tại một vị trí nào đó, Thầy hãy tìm trong code chỗ nào có chữ "config" (trong dấu ngoặc kép) để sửa thành "configs" là xong.
+
+Không cần sửa bất cứ dòng code logic nào khác ngoài đường dẫn thư mục configs.
+
+Chúc Thầy thực hiện trôi chảy! Thầy đã có bản này trong Notepad chưa ạ?

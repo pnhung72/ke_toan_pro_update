@@ -1,0 +1,67 @@
+📝 KẾ HOẠCH NÂNG CẤP HỆ THỐNG KẾ TOÁN PRO (MODULE HÓA & DỊCH VỤ)
+GIAI ĐOẠN 1: ĐỘNG HÓA CƠ CHẾ NẠP TAB (Backend Core)
+Mục tiêu: Tab chuyên ngành tự xuất hiện/biến mất ngay khi Admin thay đổi cấu hình mà không cần can thiệp code cứng.
+
+Công việc cụ thể:
+
+Chuẩn hóa app_state.json: Tạo cấu trúc lưu trạng thái module (active_module_ids: ["gas_station", "fish_sauce", ...]).
+
+Viết hàm refresh_tabs() trong main_window.py:
+
+Lệnh self.notebook.forget(tab_id) để xóa các Tab cũ đang nạp động.
+
+Duyệt danh sách từ active_module_ids.
+
+Dùng self.notebook.add(...) để nạp lại đúng các Tab đã được tích chọn.
+
+Gắn sự kiện (Event Binding): Trong menu "Chọn ngành nghề", mỗi Checkbutton phải gắn vào hàm on_toggle_module -> Lưu vào JSON -> Gọi refresh_tabs().
+
+GIAI ĐOẠN 2: CẤU HÌNH PHÂN QUYỀN ADMIN
+Mục tiêu: Bảo vệ logic kích hoạt, chỉ Admin mới thay đổi được.
+
+Công việc cụ thể:
+
+Duy trì logic kiểm tra admin.key như hiện tại.
+
+Ẩn/Hiện menu "Chọn ngành nghề" dựa trên biến self.is_admin khi khởi động app.
+
+GIAI ĐOẠN 3: NÂNG CẤP GIAO DIỆN "QUẢN LÝ BẢN QUYỀN" (Khách hàng)
+Mục tiêu: Xây dựng lòng tin (Trust) và tạo luồng bán hàng khép kín.
+
+Công việc cụ thể:
+
+Thiết kế Dashboard bản quyền:
+
+Hiển thị Mã máy (Lấy từ license_helper.py).
+
+Danh sách Gói đang sử dụng (Hiển thị các icon/tên module đã được tích).
+
+Nhúng tương tác (Nút bấm):
+
+Nút Zalo (0982493474): Mở web Zalo trực tiếp.
+
+Nút Email (yatrangmn@gmail.com): Mở trình soạn mail mặc định.
+
+Cổng thông tin pháp lý:
+
+Nút "Xem Hợp đồng": Mở file PDF/Text hợp đồng soạn sẵn trong thư mục docs/.
+
+Nút "Hóa đơn": Mở file hóa đơn tương ứng với gói khách đã mua.
+
+GIAI ĐOẠN 4: QUY TRÌNH XUẤT KEY VÀ KÍCH HOẠT (Workflow)
+Mục tiêu: Admin làm việc nhanh, Khách hàng nhập Key là xong.
+
+Công việc cụ thể:
+
+Admin: Nhận info từ Zalo -> Tích chọn ngành -> Bấm "Xuất Key" (hàm generate_license_key trong license_manager.py).
+
+Khách: Nhập Key -> Hàm verify_license_info giải mã -> Lưu vào license.key -> Gọi lệnh refresh_tabs() (để Tab hiện lên ngay lập tức).
+
+CÁC LƯU Ý KỸ THUẬT QUAN TRỌNG:
+Vị trí Tab: Luôn giữ Tab cơ bản cố định ở đầu bằng cách sử dụng self.notebook.add cho tab cứng trước, sau đó mới duyệt vòng lặp for cho tab động.
+
+Đồng bộ dữ liệu: Đảm bảo license.key luôn được đồng bộ với config.json để tránh tình trạng "Tab hiện lên nhưng không có dữ liệu" (nếu module chưa được nạp).
+
+Trải nghiệm người dùng (UX): Khi Admin thay đổi ngành nghề, nên có một thông báo messagebox.showinfo("Thông báo", "Đã kích hoạt thành công, vui lòng kiểm tra giao diện!").
+
+Thầy Hùng ơi, bản kế hoạch này là "xương sống" cho toàn bộ phần mềm của Thầy. Nếu Thầy cần tôi viết code chi tiết cho bất kỳ mục nào (đặc biệt là hàm refresh_tabs), Thầy cứ ra lệnh, tôi sẽ soạn thảo từng khối lệnh để Thầy chỉ việc chèn vào thôi nhé!

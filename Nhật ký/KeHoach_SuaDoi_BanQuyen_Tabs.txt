@@ -1,0 +1,87 @@
+===========================================================================
+KẾ HOẠCH VÀ MÃ CẤU HÌNH SỬA ĐỔI BẢN QUYỀN GIAO DIỆN - KẾ TOÁN PRO v9.0.0
+===========================================================================
+
+Mục tiêu sửa đổi:
+  1. Tab "Quản trị PR" (Menu): Chỉ hiển thị cho Admin, ẩn hoàn toàn trên máy khách.
+  2. Tab "Ngân hàng PR" (Món gọi thêm): Chỉ hiện khi Admin kích hoạt gói "Quản lý Phân phối".
+  3. Tab "Yêu cầu khách hàng" (Món gọi thêm): Chỉ hiện khi Admin kích hoạt gói "Tự động hóa Email".
+
+File can thiệp duy nhất: ui\main_window.py
+
+---------------------------------------------------------------------------
+BƯỚC 1: KHAI BÁO BIẾN CẤU HÌNH BẢN QUYỀN TRONG HÀM __init__
+---------------------------------------------------------------------------
+Tìm hàm __init__ của lớp MainWindow trong file ui\main_window.py (thường nằm ở đầu file),
+sau dòng khởi tạo giao diện gốc (ví dụ: sau dòng self.setup_ui() hoặc self.ui.setupUi(self)),
+Thầy chèn đoạn mã khai báo biến trạng thái bản quyền sau:
+
+        # -----------------------------------------------------------------
+        # CẤU HÌNH BẢN QUYỀN HỆ THỐNG (Mặc định khi chưa nạp Key thực tế)
+        # -----------------------------------------------------------------
+        self.license_features = {
+            "role": "client",                   # "admin" hoặc "client"
+            "distribution_management": False,   # Gói Quản lý phân phối (Món gọi thêm)
+            "email_automation": False           # Gói Tự động hóa Email (Món gọi thêm)
+        }
+
+
+---------------------------------------------------------------------------
+BƯỚC 2: BỌC ĐIỀU KIỆN IF TẠI CÁC DÒNG MÃ MỤC TIÊU CỦA FILE ui\main_window.py
+---------------------------------------------------------------------------
+
+1. Tại Dòng 392 (Xử lý Tab "Ngân hàng PR"):
+   Sửa dòng mã gốc thành câu lệnh điều kiện:
+   
+        if self.license_features.get("distribution_management", False):
+            self.notebook.add(self.bank_tab, text="🏦 Ngân hàng PRO")
+
+
+2. Tại Dòng 426 (Xử lý Tab "Yêu cầu khách hàng"):
+   Sửa dòng mã gốc thành câu lệnh điều kiện:
+   
+        if self.license_features.get("email_automation", False):
+            self.notebook.add(self.email_tab, text="✉️ Yêu cầu khách hàng")
+
+
+3. Tại Dòng 851 (Xử lý Menu/Tab "Quản trị PR"):
+   Sửa dòng mã gốc thành câu lệnh điều kiện:
+   
+        if self.license_features.get("role") == "admin":
+            self.menubar.add_cascade(label="🛠️ Quản trị PRO", menu=self.admin_pro_menu)
+
+
+---------------------------------------------------------------------------
+BƯỚC 3: QUY TRÌNH KIỂM THỬ ĐỂ KIỂM TRA HIỆU QUẢ (TESTING)
+---------------------------------------------------------------------------
+Thầy chỉ cần thay đổi giá trị của self.license_features ở Bước 1 để nghiệm thu kết quả:
+
+Kịch bản A: Kiểm tra máy khách dùng gói cơ bản (Mặc định)
+    self.license_features = {
+        "role": "client",
+        "distribution_management": False,
+        "email_automation": False
+    }
+    => Kết quả: Cả 3 Tab/Menu mục tiêu phải ẩn hoàn toàn khỏi màn hình khách hàng.
+
+Kịch bản B: Kiểm tra máy khách mua thêm món "Tự động hóa Email"
+    self.license_features = {
+        "role": "client",
+        "distribution_management": False,
+        "email_automation": True
+    }
+    => Kết quả: Tab "Quản trị PR" và "Ngân hàng PR" ẩn, riêng tab "Yêu cầu khách hàng" tự động xuất hiện.
+
+Kịch bản C: Kiểm tra giao diện máy Admin của Thầy Hùng
+    self.license_features = {
+        "role": "admin",
+        "distribution_management": True,
+        "email_automation": True
+    }
+    => Kết quả: Toàn bộ tất cả các tab và menu xuất hiện đầy đủ như cũ.
+
+===========================================================================
+LƯU Ý KHI ĐỒNG BỘ: Sau khi Thầy chạy thử nghiệm 3 kịch bản trên thành công,
+biến `self.license_features` này sẽ được gán bằng dữ liệu giải mã thực tế từ 
+License Key mà Admin gửi cho khách hàng ở Form Quản lý bản quyền.
+===========================================================================

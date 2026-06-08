@@ -1,0 +1,208 @@
+================================================================================
+   KẾ HOẠCH TÍCH HỢP AI – KẾ TOÁN PRO v16.0.0
+   PHIÊN BẢN CUỐI CÙNG: LOCAL DRIVE, BẢO MẬT TUYỆT ĐỐI, OFFLINE READY
+   NGÀY: 30/05/2026 – ĐÃ TÍCH HỢP ĐẦY ĐỦ GÓP Ý
+================================================================================
+
+I. PHÂN TÍCH TÌNH HÌNH
+
+1. Hiện trạng phần mềm
+   - Kế toán Pro v15.0.0: 203 file .py, 30 bảng SQLite, đầy đủ nghiệp vụ.
+   - Nhập liệu thủ công: 5 phút/hóa đơn, dễ sai tài khoản, không dự báo.
+   - Người dùng: kế toán doanh nghiệp, cực kỳ nhạy cảm về bảo mật dữ liệu.
+
+2. Điểm yếu
+   - Tốc độ xử lý chậm, phụ thuộc hoàn toàn vào thao tác thủ công.
+   - Không có gợi ý, không cảnh báo bất thường.
+   - Không có trợ lý ảo, không dự báo dòng tiền.
+
+3. Cơ hội
+   - AI local (offline) là USP mạnh: không gửi dữ liệu ra ngoài, không cần Internet.
+   - Chi phí vận hành = 0. Tạo lợi thế cạnh tranh trước các phần mềm dùng cloud API.
+   - Có thể tăng giá bán hoặc giữ thị phần.
+
+4. Thách thức
+   - Model AI local khá nặng, cần tối ưu (lazy loading, threading, cache).
+   - Phải tự xây dựng và huấn luyện mô hình (không có API sẵn).
+
+=> Kết luận: CẦN tích hợp AI local với thiết kế thông minh, nhẹ, bảo mật tuyệt đối.
+
+================================================================================
+II. GIẢI PHÁP AI CỤ THỂ (CHẠY HOÀN TOÀN TRÊN MÁY NGƯỜI DÙNG)
+
+1. OCR – Nhập hóa đơn, chứng từ
+   - Công cụ: EasyOCR (tiếng Việt)
+   - Bắt buộc tiền xử lý ảnh: grayscale, tăng contrast, deskew (dùng OpenCV)
+   - Lợi ích: tăng độ chính xác 10-15%, giảm thời gian OCR.
+
+2. Phân loại giao dịch – Gợi ý tài khoản
+   - Mô hình: FastText (nhẹ, nhanh) kết hợp với KNN + Levenshtein distance.
+   - Cơ chế: FastText → top 5 ứng viên → tính khoảng cách Levenshtein với mô tả lịch sử → chọn account_id tốt nhất.
+   - Dữ liệu huấn luyện: lấy từ lịch sử transactions đã được làm sạch.
+
+3. Dự báo dòng tiền
+   - statsmodels (ARIMA) hoặc Exponential Smoothing – chạy local.
+
+4. Phát hiện bất thường
+   - Isolation Forest (scikit-learn) – local.
+
+5. Action‑oriented Chat (trợ lý ảo)
+   - Không dùng LLM. Kết hợp regex + difflib.get_close_matches để sửa lỗi chính tả.
+   - Hỗ trợ lệnh: số dư, tìm hóa đơn, in báo cáo, dự báo.
+
+6. Retrain thông minh (Active Learning)
+   - Chỉ retrain khi số lượng giao dịch được người dùng "sửa tay" (wrong_correction) vượt ngưỡng, ví dụ 100 dòng.
+   - Tránh retrain liên tục gây tốn CPU.
+
+7. UI/UX – Trạng thái "Offline Ready"
+   - Hiển thị đèn báo (chấm xanh) trên tab AI khi các model đã được load vào RAM, sẵn sàng hoạt động.
+   - Tạo cảm giác an toàn: "AI đang chạy ngay trên máy tính của bạn, không cần Internet".
+
+================================================================================
+III. KẾ HOẠCH TRIỂN KHAI CHI TIẾT (12 TUẦN)
+
+------------ GIAI ĐOẠN 0 – CHUẨN BỊ DỮ LIỆU VÀ NỀN TẢNG (2 TUẦN) ------------
+
+Tuần 1: Data Cleanup & Tạo tập huấn luyện
+   - Script `data_cleaner.py`:
+        * Gom tất cả giao dịch từ `transactions`, loại bỏ null, mô tả rỗng, account_id lỗi.
+        * Chuẩn hóa mô tả (lower, bỏ dấu, loại bỏ ký tự đặc biệt).
+        * Xuất `training_data.csv` (description, account_id).
+   - Script thống kê phân bố nhãn, nếu thiếu mẫu → yêu cầu người dùng gán thủ công.
+
+Tuần 2: Nền tảng kỹ thuật (Threading, Lazy Loading, Cache)
+   - Xây dựng `AIWorker` (QThread) và `ModelManager` (lazy load, auto unload sau 5 phút không dùng).
+   - Thiết lập cache phân tầng:
+        * OCR cache: hash(file ảnh), TTL 30 ngày.
+        * Classification cache: exact + fuzzy (dùng difflib).
+   - Viết module `image_preprocessor.py` (grayscale, contrast, deskew).
+
+------------ GIAI ĐOẠN 1 – OCR VÀ PHÂN LOẠI LOCAL (4 TUẦN) ------------
+
+Tuần 3: Tích hợp OCR + Image Preprocessing
+   - Cài EasyOCR, `ocr_engine.py` gọi preprocessor trước khi OCR.
+   - `document_parser.py` dùng regex trích xuất số hóa đơn, ngày, mã khách, tiền, thuế.
+   - `OCRViewModel` chạy background, progress bar.
+
+Tuần 4: Giao diện duyệt OCR & Batch
+   - Dialog hiển thị ảnh gốc + text, cho phép sửa.
+   - Kéo thả nhiều file, xử lý song song bằng QThreadPool.
+   - Lưu cache OCR, audit log.
+
+Tuần 5: Huấn luyện mô hình phân loại (FastText + KNN + Levenshtein)
+   - Dùng `fasttext` hoặc `scikit-learn` để huấn luyện.
+   - Pipeline: FastText → top 5 → Levenshtein với các mô tả đã lưu (trong cache) → chọn account_id gần nhất.
+   - Lưu model vào `ai/data/models/classifier/`.
+
+Tuần 6: Tích hợp phân loại realtime & Active Learning
+   - `classifier.py`: predict(description) trả về top 3 gợi ý.
+   - Tích hợp vào form nhập chứng từ: debounce 300ms, gọi AI trong background.
+   - Thêm cột `ai_feedback` vào `transactions` (NULL, 'correct', 'wrong_correction').
+   - **Retrain thông minh**: Chỉ kích hoạt retrain khi số lượng 'wrong_correction' vượt ngưỡng (ví dụ 100 dòng). Người dùng có thể kích hoạt thủ công.
+
+------------ GIAI ĐOẠN 2 – DỰ BÁO, BẤT THƯỜNG VÀ CHAT (4 TUẦN) ------------
+
+Tuần 7: Dự báo dòng tiền
+   - `forecaster.py` (statsmodels ARIMA / ExponentialSmoothing).
+   - Lấy dữ liệu từ `account_balances` và `transactions`.
+   - Chạy thread riêng, cache 24h. Hiển thị biểu đồ matplotlib trong tab AI.
+
+Tuần 8: Phát hiện bất thường
+   - `anomaly_detector.py` (Isolation Forest).
+   - Huấn luyện trên lịch sử giao dịch (số tiền, tần suất, loại).
+   - Rà soát giao dịch mới hàng ngày, đưa ra bảng cảnh báo kèm nút "Bỏ qua" / "Kiểm tra".
+
+Tuần 9: Action Chat với regex + difflib
+   - `command_executor.py`:
+        * Chuẩn hóa câu lệnh (lower, bỏ dấu, sửa lỗi chính tả bằng `difflib.get_close_matches`).
+        * Định nghĩa pattern: "số dư account X", "tìm hóa đơn keyword", "báo cáo loại tháng Y".
+   - Giao diện chat QTextEdit + QLineEdit, kết quả có nút hành động.
+
+Tuần 10: Tối ưu, đóng gói, trạng thái Offline Ready & Phát hành beta
+   - Tối ưu lazy loading: chỉ load EasyOCR khi mở tab nhập hóa đơn.
+   - Tách model AI khỏi bộ cài chính:
+        * Bộ cài core (~50MB) không chứa model.
+        * Lần đầu bật AI, phần mềm tự động tải gói `ai_models_v1.zip` từ server của bạn (hoặc USB) và giải nén vào `ai/data/models/`.
+   - **UI/UX**: Thêm đèn báo trạng thái (chấm xanh) trên tab AI khi các model đã sẵn sàng.
+   - Viết unit test, integration test. Đóng gói bằng PyInstaller.
+   - Phát hành Kế toán Pro v16.0.0 Beta (AI Local Edition).
+
+================================================================================
+IV. KIẾN TRÚC THƯ MỤC (BỔ SUNG)
+
+\ai
+   __init__.py
+   engine\
+       image_preprocessor.py
+       ocr_engine.py
+       document_parser.py
+       classifier.py           # FastText + KNN + Levenshtein
+       forecaster.py
+       anomaly_detector.py
+       command_executor.py
+   data\
+       cache\                  # ocr_cache, forecast_cache, classify_cache
+       models\                 # classifier.bin, ocr_model (sẽ được tải sau)
+   viewmodels\
+       ai_worker.py
+       ocr_worker.py
+       classify_worker.py
+   services\
+       ai_service.py
+   feedback\
+       data_collector.py
+       retrain_script.py       # chỉ chạy khi đủ ngưỡng wrong_correction
+   logs\
+       ai_audit.log
+   configs\
+       ai_config.json
+
+================================================================================
+V. BỔ SUNG SECURITY.MD (MỤC "AI LOCAL COMMITMENT")
+
+Trong file SECURITY.md, thêm nội dung sau:
+
+## AI Local Commitment (Cam kết xử lý AI nội bộ)
+
+Kể từ phiên bản 16.0.0, Kế toán Pro tích hợp các tính năng AI (OCR nhập hóa đơn, phân loại giao dịch, dự báo, phát hiện bất thường, trợ lý ảo) hoàn toàn trên phần cứng của máy tính khách hàng. Chúng tôi cam kết:
+
+- **Dữ liệu không bao giờ rời khỏi thiết bị của quý khách.** Không có bất kỳ thông tin nào được gửi lên đám mây hay máy chủ bên thứ ba.
+- **Không cần kết nối Internet** để sử dụng các tính năng AI.
+- **Không phát sinh chi phí hàng tháng** liên quan đến AI.
+- Tất cả các mô hình AI (OCR, phân loại, dự báo) đều được đóng gói sẵn hoặc tải một lần và lưu trữ cục bộ.
+
+Đây là cam kết mạnh mẽ về bảo mật và quyền riêng tư dành cho khách hàng doanh nghiệp.
+
+================================================================================
+VI. CHI PHÍ DỰ KIẾN
+
+- Nhân sự phát triển: ~240h công → 6.000 USD (nếu thuê ngoài).
+- Chi phí vận hành hàng năm: 0 USD.
+- Chi phí phân phối gói model (băng thông) không đáng kể (người dùng tải 1 lần).
+
+=> Hòa vốn khi bán được 80 bản nâng cấp giá 100 USD.
+
+================================================================================
+VII. RỦI RO VÀ ĐỐI SÁCH
+
+| Rủi ro                           | Giảm thiểu                                               |
+|----------------------------------|----------------------------------------------------------|
+| Model nặng, máy khách yếu        | Lazy load, preprocess ảnh, có option tắt AI              |
+| Phân loại kém chính xác          | Active learning + retrain theo ngưỡng; kết hợp Levenshtein |
+| Lỗi chính tả trong lệnh chat     | Dùng difflib gợi ý sửa, hiển thị câu lệnh đề xuất        |
+| Gói cài đặt quá lớn (>500MB)     | Tách model ra khỏi core, tải sau cài đặt                 |
+| Người dùng không có Internet để tải model | Cho phép tải thủ công từ USB/DVD                      |
+| Retrain tốn CPU không cần thiết  | Chỉ retrain khi đủ ngưỡng `wrong_correction` (ví dụ 100) |
+
+================================================================================
+VIII. KẾT LUẬN
+
+- Bản kế hoạch này tích hợp đầy đủ các góp ý: local drive, bảo mật tuyệt đối, retrain theo ngưỡng, UI offline ready, cam kết trong SECURITY.md.
+- Lộ trình 12 tuần chi tiết, có thể triển khai ngay.
+- Kế toán Pro v16.0.0 sẽ là một chuẩn mực mới về phần mềm kế toán an toàn và thông minh tại Việt Nam.
+
+================================================================================
+   XÁC NHẬN PHÊ DUYỆT (BẢN CUỐI)
+   TRƯỞNG DỰ ÁN: ___________________
+   NGÀY: 30/05/2026
+================================================================================

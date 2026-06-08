@@ -1,0 +1,119 @@
+================================================================================
+NHẬT KÝ KIẾN TRÚC & CẢI TIẾN PHẦN MỀM - KẾ TOÁN PRO V3 (PHASE 6.0)
+================================================================================
+Thời gian thiết lập: 2026-05-15
+Tác giả kiến trúc: Thầy Hùng & Trợ lý AI
+Trạng thái hệ thống: Đỉnh cấp độ 3 (Desktop Doanh nghiệp tích hợp ngoại vi)
+Mục tiêu: Quy hoạch, dọn dẹp và chuẩn hóa hệ thống (Refactoring)
+--------------------------------------------------------------------------------
+
+MỤC I: ĐÁNH GIÁ THỰC TRẠNG HỆ THỐNG
+--------------------------------------------------------------------------------
+1. Điểm mạnh cốt lõi:
+   - Sở hữu mạch quản trị Đàn hồi (Elastic Feature Locking) qua file admin.key
+     và bought_features tiệm cận mô hình SaaS lớn (Feature Flags).
+   - Cơ chế bảo vệ dữ liệu 3 tầng (Auto Backup 24h, Manual Backup, Exit Backup).
+   - Có tích hợp Nhật ký vận hành (Audit Log) theo đúng luật kế toán doanh nghiệp.
+   - Tích hợp thành công các cổng ngoại vi mạng (Bank Connect PRO & Email Connect).
+
+2. Điểm nghẽn cần xử lý (Nợ kỹ thuật - Technical Debt):
+   - Bất đồng bộ thiết kế UI giữa các Tab nghiệp vụ (Cái dùng .get_frame(), 
+     cái tự ý gọi notebook.add() ngay trong __init__, cái do MainWindow kiểm soát).
+   - Nguy cơ xung đột đường dẫn tương đối khi xác định vị trí file 'admin.key'.
+   - Thụt lề (Indentation) dễ bị lệch hàng khi liên tục bảo trì, sửa đổi.
+
+
+MỤC II: SƠ ĐỒ QUY HOẠCH PHÂN PHÒNG CHỨC NĂNG (MÔ HÌNH MVC LAI)
+--------------------------------------------------------------------------------
+Toàn bộ "đồ đạc trong nhà" sẽ được sắp xếp lại vào đúng vị trí như sau:
+
+D:\ke_toan_pro_v3\
+│
+├── main.py                     # File kích hoạt chính (Giữ nguyên vẹn)
+├── config.py                   # File chốt cấu hình (DB_PATH, VERSION, LOG_DIR)
+│
+├── core\ (hoặc services\)       # PHÒNG LOGIC NGHIỆP VỤ (Thuần tính toán & kết nối)
+│   ├── product_service.py      # Xử lý thêm, xóa, sửa hàng hóa
+│   ├── license_manager.py      # Xử lý mã hóa, giải mã, check key bản quyền
+│   └── bank_gateway.py         # Xử lý API kết nối ngân hàng
+│
+├── models\                     # PHÒNG CẤU TRÚC DỮ LIỆU (SQLAlchemy hoặc SQLite thuần)
+│   └── user_model.py           # Định nghĩa thực thể tài khoản, nhân viên
+│
+└── views\ (hoặc ui\)           # PHÒNG GIAO DIỆN ĐỒ HỌA (Chỉ chứa nút bấm, khung hình)
+    ├── main_window.py          # Khung nhà chính và thanh điều hướng Menu
+    │
+    ├── dialogs\                # Thư mục chứa các cửa sổ Pop-up bật lên
+    │   └── license_manager_dialog.py
+    │
+    └── tabs\                   # Thư mục chứa tất cả các Tab nghiệp vụ chính
+        ├── product_tab.py
+        ├── transaction_tab.py
+        ├── invoice_tab.py
+        └── email_connection_tab.py
+
+
+MỤC III: TIÊU CHUẨN KỸ THUẬT CHO CÁC THÀNH PHẦN (QUY CHUẨN 2026)
+--------------------------------------------------------------------------------
+1. TIÊU CHUẨN TAB (Ép về một chuẩn thiết kế duy nhất):
+   - Tất cả các lớp Tab BẮT BUỘC phải kế thừa trực tiếp từ khung hình 'ttk.Frame'.
+   - TUYỆT ĐỐI KHÔNG gọi lệnh 'notebook.add' bên trong file Tab. Việc hiển thị 
+     và dán Tab hoàn toàn do MainWindow quản lý và điều phối.
+   
+   * Cấu trúc mẫu file 'product_tab.py' chuẩn hóa:
+     ---------------------------------------------------------------------------
+     class ProductTab(ttk.Frame):
+         def __init__(self, main_window, notebook):
+             super().__init__(notebook) # Đăng ký làm widget con của notebook
+             self.main_window = main_window
+             self.notebook = notebook
+             self.create_widgets()   # Tự dán các nút bấm vào 'self'
+             self.load_products()
+     ---------------------------------------------------------------------------
+
+2. TIÊU CHUẨN BỘ NẠP TAB TẠI MAIN_WINDOW (Hàm _init_all_tabs tự động hóa):
+   - Thay vì copy-paste 50 dòng code để .add từng tab, chuyển sang dùng cấu trúc 
+     danh sách (List) và vòng lặp (For Loop) thông minh.
+   
+   * Thiết kế hàm nạp tab tối ưu chống crash:
+     ---------------------------------------------------------------------------
+     def _init_all_tabs(self):
+         # Danh sách quản lý tập trung
+         tabs_to_load = [
+             (ProductTab, "📦 Hàng hóa"),
+             (TransactionTab, "💸 Giao dịch"),
+             (InvoiceTab, "🧾 Hóa đơn"),
+             (DebtTab, "📑 Công nợ")
+         ]
+         # Vòng lặp nạp tự động, tự bọc bảo vệ try-except cho từng tab đơn lẻ
+         for tab_class, title in tabs_to_load:
+             try:
+                 tab_instance = tab_class(self, self.notebook)
+                 self.notebook.add(tab_instance, text=title)
+                 
+                 # Tự động tạo thuộc tính động để gọi lại (ví dụ: self.product_tab)
+                 var_name = tab_class.__name__.lower()
+                 setattr(self, var_name, tab_instance)
+             except Exception as e:
+                 print(f"❌ Lỗi nạp tab {title}: {e}")
+     ---------------------------------------------------------------------------
+
+3. TIÊU CHUẨN XÁC ĐỊNH ĐƯỜNG DẪN FILE KHÓA (admin.key):
+   - Loại bỏ hoàn toàn việc tính toán đường dẫn tương đối bằng 'os.path.dirname' 
+     lặp đi lặp lại nhiều lần dễ gây lạc vị trí file.
+   - Sử dụng biến chốt chặn duy nhất 'self.base_dir' được tính toán ngay khi 
+     khởi chạy phần mềm trong hàm '__init__'.
+
+
+MỤC IV: LỢI ÍCH CHIẾN LƯỢC SAU KHI HOÀN THÀNH CẢI TIẾN
+--------------------------------------------------------------------------------
+1. Triệt tiêu 100% các lỗi kinh điển của Tkinter: "bad window path name",
+   "TclError", mất icon tab, xuất hiện tab ma bị ẩn.
+2. Tách biệt hoàn toàn code UI và code Logic, giúp mã nguồn sạch sẽ, dễ đọc.
+3. Khi cần thêm hoặc bớt tính năng mới (ví dụ: Tab Nhân Sự, Tab Kho), chỉ cần 
+   thêm dòng vào danh sách nạp trung tâm, hoàn toàn không chạm vào lõi hệ thống.
+4. Sẵn sàng cho lộ trình nâng cấp Phase 7.0: Chuyển dữ liệu từ SQLite local 
+   lên Cloud API (FastAPI) để chạy mạng LAN đa máy nhập liệu cùng lúc.
+================================================================================
+[KÝ TÊN XÁC NHẬN: KIẾN TRÚC SƯ TRƯỞNG THẦY HÙNG - HỆ THỐNG ĐÃ SẴN SÀNG NÂNG CẤP]
+================================================================================

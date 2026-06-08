@@ -1,0 +1,54 @@
+BẢN KẾ HOẠCH TỐI ƯU HỆ THỐNG KT PRO V14.0.3
+1. CÁC MỤC TIÊU CỤ THỂ (YÊU CẦU CỦA THẦY)
+Mục tiêu 1: Nạp Tab không trùng lặp. Mỗi tab chỉ tồn tại 1 instance duy nhất trên notebook.
+
+Mục tiêu 2: Phân quyền Tab phản hồi (AdminFeedbackTab):
+
+Admin: Hiển thị self.fetch_emails() (quét email) + Bảng dữ liệu quản trị.
+
+Khách: Ẩn các tính năng quản trị, chỉ hiển thị form nhập liệu.
+
+Mục tiêu 3: Duy trì tính năng sẵn có (Không mất mát):
+
+Marketing: MarketingTab hiển thị khi features có "marketing" hoặc is_super_admin.
+
+Ngân hàng PR: DistributionTab hiển thị khi features có "distribution" hoặc is_super_admin.
+
+Admin Dashboard: AdminDashboardTab hiển thị khi features có "mail_admin" hoặc is_super_admin.
+
+Hệ thống ngầm: Auto-backup, BackgroundSyncManager, AutoUpdateService phải chạy song song.
+
+Mục tiêu 4: Xác thực: Chỉ nhận diện quyền thông qua file admin.key (gán biến is_thay_hung_admin).
+
+2. GIẢI PHÁP CHI TIẾT TỪNG BƯỚC (QUY TRÌNH THỰC HIỆN)
+Bước 1: Vệ sinh hệ thống
+
+Đóng ứng dụng.
+
+Xóa tất cả thư mục __pycache__ trong D:\ke_toan_pro_v3\.
+
+Bước 2: Cấu hình admin_feedback_tab.py (File Tab)
+
+Đảm bảo __init__ định nghĩa đúng: def __init__(self, parent, controller, is_admin=False):
+
+Thêm logic khởi tạo:
+
+Python
+self.is_admin = is_admin
+if self.is_admin:
+    self.fetch_emails() # Chỉ Admin mới quét email
+Bước 3: Cấu hình main_window.py (File Điều phối)
+
+Import: Chỉ dùng duy nhất dòng: from views.tabs.admin_feedback_tab import AdminFeedbackTab (Xóa các import tên cũ).
+
+Khởi tạo tab (Thay thế đoạn cũ):
+
+Python
+from views.tabs.admin_feedback_tab import AdminFeedbackTab
+self.customer_req_tab = AdminFeedbackTab(self.notebook, self, is_admin=is_thay_hung_admin)
+self.notebook.add(self.customer_req_tab, text="✉️ Phản hồi" if is_thay_hung_admin else "✉️ Ý kiến")
+Bước 4: Kiểm chứng tính năng
+
+Mở Console/Log xem có xuất hiện dòng: [DEBUG] Khởi tạo AdminFeedbackTab. Quyền Admin: [True/False] hay không.
+
+Kiểm tra danh sách tab trên giao diện xem các tab Marketing, Distribution có đủ không.

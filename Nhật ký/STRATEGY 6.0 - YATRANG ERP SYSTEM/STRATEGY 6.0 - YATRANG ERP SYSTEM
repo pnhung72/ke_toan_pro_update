@@ -1,0 +1,52 @@
+🟢 GIAI ĐOẠN 1: CỦNG CỐ NỀN MÓNG (KHẢO SÁT & ĐO ĐẠC)
+Trước khi xây thêm tầng, ta phải làm sạch bản mã nguồn hiện tại.
+
+Đo đạc lại không gian hiển thị: Xác định chính xác kích thước màn hình phổ biến của khách hàng để thiết lập độ rộng tối đa cho các Tab khi "đàn hồi".
+
+Kiểm tra thứ tự khởi tạo: Rà soát hàm __init__ để đảm bảo self.notebook luôn sinh ra trước mọi Tab.
+
+Dọn dẹp "rác" Log: Xóa bỏ các dòng print thừa, chuẩn hóa cơ chế log_behavior để ghi nhận sự kiện nâng cấp 6.0.0.
+
+🟡 GIAI ĐOẠN 2: XÂY DỰNG "PHÒNG ĐIỀU KHIỂN" (VĂN PHÒNG GIAO DỊCH)
+Đây là trung tâm chỉ huy nơi Thầy "tích checkbox" để hái ra tiền.
+
+Thiết kế Form Buffet (Tab Tạo License):
+
+Thêm các biến BooleanVar() cho từng tính năng: Marketing, Phân phối, AI Report, Email Auto.
+
+Tạo hàm recalculate_price(): Tự động nhảy số tiền khi Thầy tích/bỏ tích.
+
+Xây dựng bộ Mã hóa License (The Key):
+
+Thiết lập cấu trúc chuỗi mã hóa chứa các "cờ hiệu" (ví dụ: MARK=1;DIST=0...).
+
+Tích hợp mã hóa này vào nút "Xuất file Key".
+
+🔴 GIAI ĐOẠN 3: LẮP ĐẶT HỆ THỐNG "ĐÀN HỒI" (USER EXPERIENCE)
+Giúp phần mềm trông sang trọng và gọn gàng dù có thêm nhiều món.
+
+Viết mạch Elastic Tab: Triển khai hàm apply_elastic_tabs với logic ưu tiên (Admin thấy hết, Khách thấy theo gói).
+
+Cắm cờ tính năng (Feature Flags): Chèn điều kiện if is_bought or is_admin vào hàm nạp Tab.
+
+Module hóa: Tách các tính năng mới (Marketing, Phân phối) thành các file riêng biệt trong thư mục views/tabs/ để dễ quản lý.
+
+🔵 GIAI ĐOẠN 4: THỬ NGHIỆM & ĐÓNG GÓI (RELEASE)
+Hoàn thiện và đưa vào kinh doanh.
+
+Kịch bản Test Super Admin: Đăng nhập bằng tên Thầy -> Kiểm tra xem tất cả các Tab có hiện lên đầy đủ không.
+
+Kịch bản Test Khách hàng: Nạp một Key chỉ mua "Bản gốc + Email" -> Kiểm tra xem Tab Marketing có bị ẩn đi không.
+
+Đóng gói EXE: Sử dụng PyInstaller để đóng gói phiên bản 6.0.0 hoàn chỉnh.
+
+📝 BƯỚC CHUẨN BỊ ĐẦU TIÊN (HÀNH ĐỘNG NGAY)
+Để bản kế hoạch này chạy thông, Thầy cần chuẩn bị cho tôi một danh sách "Thực đơn" chính xác như sau:
+
+Giá gói gốc (Bản Basic) là bao nhiêu?
+
+Tên từng món thêm và Giá tiền tương ứng của nó (Ví dụ: Marketing - 500k, Phân phối - 1 triệu...).
+
+Khi Thầy có danh sách này, tôi sẽ gửi cho Thầy đoạn mã "Trái tim của 6.0.0" - chính là hàm tính tiền tự động và bộ mã hóa License.
+
+Thầy thấy bản kế hoạch "STRATEGY 6.0" này đã đủ bao quát hết "khu rừng" của Thầy chưa ạ?

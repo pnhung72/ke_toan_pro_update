@@ -1,0 +1,41 @@
+KẾ HOẠCH PHÁT TRIỂN HỆ THỐNG "KẾ TOÁN VẠN NĂNG" (OMNI-ACCOUNTING ENGINE)
+========================================================================
+
+1. MỤC TIÊU CHIẾN LƯỢC:
+   - Chuyển đổi từ mô hình cứng nhắc sang kiến trúc "Dữ liệu điều khiển" (Data-Driven).
+   - Cho phép tùy chỉnh quy trình nghiệp vụ từng ngành mà không sửa mã nguồn gốc[cite: 10].
+   - Tối ưu hóa khả năng mở rộng thông qua hệ thống Plugin và Metadata[cite: 6, 8].
+
+2. LỘ TRÌNH THỰC HIỆN (4 GIAI ĐOẠN):
+
+   Giai đoạn 1: Tách biệt Nghiệp vụ (Decoupling)
+     - Rà soát các file trong thư mục /services[cite: 2, 5].
+     - Chuyển đổi các logic nghiệp vụ cứng (hard-coded) thành các cấu hình JSON/YAML trong /config/templates[cite: 2, 5].
+     - Chuẩn hóa các Interface cho các Service để dễ dàng cắm thêm module mới.
+
+   Giai đoạn 2: Xây dựng Bộ máy Động (Engine Core)
+     - Nâng cấp core/database để hỗ trợ mở rộng schema qua bảng transaction_metadata[cite: 6, 8].
+     - Xây dựng "Rule Engine" cho phép cấu hình bút toán tự động dựa trên loại hình ngành nghề (ví dụ: sản xuất vs dịch vụ)[cite: 3].
+     - Tận dụng cấu trúc hiện có của /core để quản lý bảo mật và phân quyền thống nhất[cite: 2, 10].
+
+   Giai đoạn 3: Phát triển Plugin theo ngành (Industry Modules)
+     - Tạo thư mục riêng cho các gói nghiệp vụ: /plugins/retail, /plugins/production, /plugins/service[cite: 2].
+     - Sử dụng dữ liệu từ /DATA_XML để nạp các quy tắc kế toán đặc thù cho từng loại hình[cite: 2].
+     - Tích hợp tự động cập nhật thông tư qua dữ liệu (Data-driven Update) như dự kiến trong STRATEGY 6.0[cite: 3].
+
+   Giai đoạn 4: Giao diện linh hoạt (UI Dynamic Rendering)
+     - Cải tiến /ui/dialogs và /ui/tabs để hiển thị giao diện dựa trên file cấu hình thay vì viết code giao diện cho từng ngành[cite: 2, 4].
+     - Đảm bảo tính tương thích với quy định Thông tư 99/2025 thông qua cập nhật layer report[cite: 10].
+
+3. CÁC ĐIỂM CHỐT CẦN ƯU TIÊN:
+   - Bảo mật: Duy trì audit log, phân quyền, mã hóa (đang có sẵn 4 file trong core/security)[cite: 2, 5, 10].
+   - Sao lưu: Duy trì và nâng cấp cơ chế rclone đồng bộ[cite: 10].
+   - Kiểm thử: Tăng độ bao phủ cho các unit test trong /tests/unit/services để đảm bảo các plugin mới không làm lỗi core[cite: 2].
+
+4. PHÂN BỔ TÀI NGUYÊN HIỆN CÓ:
+   - Sử dụng 27 bảng dữ liệu hiện tại làm nền tảng cốt lõi[cite: 6, 7, 8].
+   - Tận dụng 181 file Python hiện có để đóng gói thành các thư viện dùng chung[cite: 4].
+   - Duy trì các dependency hiện tại (pandas, openpyxl, etc.) để phục vụ phân tích báo cáo tài chính[cite: 12].
+
+========================================================================
+Ghi chú: Bản kế hoạch này dựa trên cấu trúc v11.0.0 hiện có[cite: 1].

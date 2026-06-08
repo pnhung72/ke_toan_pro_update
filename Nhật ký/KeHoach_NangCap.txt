@@ -1,0 +1,123 @@
+============================================================
+  KẾ HOẠCH NÂNG CẤP PHẦN MỀM KẾ TOÁN PRO v16.0.0
+  
+  ĐÁNH GIÁ HIỆN TẠI: 5.0/10 (Đã trừ các vấn đề kỹ thuật)
+  MỤC TIÊU: 6.5/10 (Tăng 1.5 điểm)
+  THỜI GIAN: 8 TUẦN (Thay vì 6 tháng)
+  
+  Ngày lập: 06/06/2026
+============================================================
+
+I. THỰC TRẠNG (Dựa trên phân tích)
+------------------------------------------------------------
+  ✅ ĐIỂM MẠNH:
+     • Kiến trúc phân lớp: 10/10
+     • Quy mô & hoàn chỉnh: 10/10  
+     • Docstring: 5.7/10 (khá tốt)
+     • Chỉ 1 TODO: Code sạch sẽ
+  
+  🔴 ĐIỂM YẾU KÉO TỤT:
+     • Xử lý lỗi: 0/10 (126 bare except)
+     • Code sạch: 0/10 (671 print debug)
+     • Bảo mật: 0/10 (61 sqlite3.Row.get + 2 eval/exec)
+     • Type hints: 0.9/10 (thiếu)
+     • Test: 1.7/10 (thiếu)
+
+II. CHIẾN LƯỢC "5 ĐIỂM TRƯỚC, TĂNG DẦN SAU"
+------------------------------------------------------------
+  
+  GIAI ĐOẠN 1: ĐẠT 5.5/10 (2 tuần) - CẤP BÁCH
+  ------------------------------------------------------------
+  🔥 SỬA LỖI CHẶN CHẠY:
+     • 61 lỗi sqlite3.Row.get() - SỬA NGAY
+     • Lỗi f-string trong ui/ledger_tab.py
+  
+  🎯 CHỈ LÀM TỐI THIỂU:
+     • Không tách hàm, không thêm type hints
+     • Không viết test mới
+     • Mục tiêu: PHẦN MỀM CHẠY ỔN ĐỊNH
+  
+  GIAI ĐOẠN 2: ĐẠT 6.0/10 (4 tuần)
+  ------------------------------------------------------------
+  🧹 DỌN DẸP NGHIÊM TRỌNG:
+     • Xóa 500/671 print() debug (chuyển sang logging)
+     • Sửa 100/126 bare except thành cụ thể
+  
+  🛡️ BẢO MẬT:
+     • Sửa 2 chỗ eval/exec
+  
+  GIAI ĐOẠN 3: ĐẠT 6.5/10 (2 tuần cuối)
+  ------------------------------------------------------------
+  📈 NÂNG CAO:
+     • Xóa nốt 171 print() còn lại
+     • Sửa nốt 26 bare except
+     • Thêm 20% type hints cho functions quan trọng
+  
+  ✨ KHÔNG CẦN LÀM (Tiết kiệm thời gian):
+     • Không tách 80 hàm dài (tốn quá nhiều công)
+     • Không thêm test mới (đã có 12 file test)
+
+III. TIẾN ĐỘ CHI TIẾT (8 TUẦN)
+------------------------------------------------------------
+  Tuần 1 (07-13/06) : Sửa 61 sqlite3.Row.get + lỗi f-string
+  Tuần 2 (14-20/06) : Test kỹ, backup, sửa lỗi phát sinh
+  
+  Tuần 3 (21-27/06) : Xóa 250 print, sửa 30 bare except  
+  Tuần 4 (28-04/07) : Xóa 250 print, sửa 30 bare except
+  
+  Tuần 5 (05-11/07) : Xóa nốt print, sửa 40 bare except
+  Tuần 6 (12-18/07) : Sửa 2 eval/exec, thêm type hints cơ bản
+  
+  Tuần 7 (19-25/07) : Tối ưu, test tổng thể
+  Tuần 8 (26-01/08) : Đóng gói version 16.1, ra mắt
+
+IV. TÍNH TOÁN ĐIỂM SỐ SAU 8 TUẦN
+------------------------------------------------------------
+  Tiêu chí          Hiện tại   Mục tiêu  Cách đạt
+  --------------------------------------------------------
+  Xử lý lỗi         0.0        5.5       Sửa 80% bare except
+  Code sạch         0.0        6.0       Xóa 90% print
+  Bảo mật           0.0        6.0       Sửa get() + eval/exec
+  Type hints        0.9        3.0       Thêm 20% functions
+  Test coverage     1.7        2.0       Giữ nguyên (kệ)
+  
+  --------------------------------------------------------
+  TỔNG ĐIỂM         5.0        ~6.5     Tăng 1.5 điểm ✓
+
+V. VIỆC LÀM TUẦN NÀY (07-13/06)
+------------------------------------------------------------
+  📋 NGAY HÔM NAY:
+     □ Backup toàn bộ dự án
+     □ Mở file ui/ledger_tab.py dòng 259
+     □ Sửa lỗi f-string
+  
+  📋 TRONG TUẦN:
+     □ Sửa 20 chỗ sqlite3.Row.get() trong ui/*.py  
+     □ Sửa 20 chỗ trong models/*.py
+     □ Sửa 21 chỗ trong services/*.py
+     □ Chạy thử sau mỗi 10 lần sửa
+  
+  ⚠️ LƯU Ý:
+     • SỬA THỦ CÔNG - TUYỆT ĐỐI KHÔNG DÙNG SCRIPT TỰ ĐỘNG
+     • Backup trước khi sửa mỗi file
+     • Test ngay sau khi sửa xong
+
+VI. CAM KẾT VỚI KHÁCH HÀNG (Nếu đã bán)
+------------------------------------------------------------
+  📢 BẢN 16.0.0 (Hiện tại):
+     "Phiên bản đầu tiên, đầy đủ tính năng kế toán"
+  
+  📢 BẢN 16.1 (01/08/2026):
+     "Nâng cấp miễn phí: Tối ưu tốc độ, ổn định hơn 50%"
+     "Sửa lỗi xử lý dữ liệu, tăng độ bảo mật"
+  
+  📢 BẢN 16.2 (01/10/2026):
+     "Thêm tính năng theo yêu cầu khách hàng"
+     "Cập nhật luật thuế mới (nếu có)"
+
+============================================================
+  "Phần mềm tốt không phải viết một lần - 
+   Mà được cải tiến liên tục dựa trên phản hồi thực tế"
+  
+  MỤC TIÊU: 6.5/10 trong 8 tuần - HOÀN TOÀN KHẢ THI
+============================================================

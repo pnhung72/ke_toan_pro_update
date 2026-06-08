@@ -1,0 +1,27 @@
+{
+  "phien_ban_moi_nhat": "17.1.3",
+  "ngay_phat_hanh": "08/06/2026",
+  "link_tai_exe": "https://drive.google.com/uc?export=download&id=1RFAX1HkUmq1AJCX8yhdc8QXKsAEh4qbz",
+  "ten_file_exe": "PhanMemKeToan.exe",
+  "kich_thuoc_mb": 50,
+  "canh_bao_bat_buoc": false,
+  "ghi_chu_phien_ban": [
+    "✅ Sửa lỗi cập nhật email tự động",
+    "✅ Sửa lỗi cập nhật phiên bản tự động",
+    "✅ Làm sạch mã nguồn, tăng tốc xử lý",
+    "✅ Hiển thị đúng tên khách hàng khi tắt phần mềm",
+    "✅ Thêm gợi ý",
+    "✅ Sửa lỗi",
+    "✅ Tăng độ an toàn bút toán kế toán (kiểm tra cân bằng Nợ/Có)",
+    "✅ Sửa lỗi tính số dư tài khoản cuối ngày",
+    "✅ Tối ưu tốc độ báo cáo tài chính",
+    "✅ Sửa lỗi quy đổi nhiệt độ xăng dầu (VCF)",
+    "✅ Cải thiện hệ thống cập nhật tự động",
+    "✅ Tăng độ chính xác thống kê hóa đơn theo ngày",
+    "✅ Tăng cường bảo mật email hệ thống",
+    "✅ Hệ thống tự động báo cáo lỗi về kỹ thuật viên",
+    "✅ Thông báo thân thiện khi hệ thống gặp sự cố",
+    "✅ Đồng bộ ngưỡng thuế toàn hệ thống",
+    "✅ Tăng cường xử lý lỗi xuất báo cáo Excel"
+  ]
+}

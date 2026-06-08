@@ -1,0 +1,83 @@
+========================================================================
+KE HOACH TONG THE & CHI TIET: NANG CAP TU DONG CAP NHAT THONG TU
+PHAN MEM: KE TOAN PRO
+Ngay lap: 16/05/2026
+========================================================================
+
+I. MUC TIEU CHIEN LUOC
+------------------------------------------------------------------------
+- Chuyen doi tu co che "sua code thu cong (hardcode)" sang co che 
+  "Tu dong cap nhat qua du lieu (Data-driven Update)".
+- Giải phong thoi gian code moi khi Bo Tai Chinh ra Thong tu moi.
+- Khach hang tu dong nhan bieu mau moi ma khong can cai lai app.
+
+
+II. KE HOACH TONG THE (OVERVIEW)
+------------------------------------------------------------------------
+Giai doan 1 (Tuan 1): Tach biet bieu mau & cong thuc khoi Source Code.
+Giai doan 2 (Tuan 2): Xay dung Engine tu dong kiem tra & tai cap nhat.
+Giai doan 3 (Tuan 3-4): Viet UnitTest, kiem thu doc lap & dong goi v8.1.0.
+
+
+III. KE HOACH CHI TIET (DETAIL PLAN)
+------------------------------------------------------------------------
+
+GIAI DOAN 1: TACH BIET DU LIEU HOA CONG THUC (TUAN 1)
+------------------------------------------------------------------------
+* Ngay 01 - 02: Thiet ke file cau hinh bieu mau bao cao (JSON/XML)
+  - Tao file mau dat trong thu muc 'config/templates/'.
+  - Dinh nghia cac chi tieu bao cao, ma so, va cong thuc tinh toan dong
+    (Vi du: Ma so 110 = DU_NO(111) + DU_NO(112)).
+
+* Ngay 03 - 04: Chuan hoa danh muc tai khoan trong Database (bangk accounts)
+  - Thiet ke tinh nang cho pap nap nhanh danh muc tai khoan tu file Excel.
+  - Khi thong tu thay doi structural tai khoan, chi can nap lai file data.
+
+* Ngay 05 - 07: Nang cap Engine tinh toan trong thu muc 'services/reports/'
+  - Viet ham Parser de doc file JSON/XML cau hinh.
+  - Quet va tinh toan so lieu dong dua tren cong thuc cua file cau hinh,
+    xoa bo hoan toan cac cau lenh 'if/else' co dinh so tai khoan trong code.
+
+
+GIAI DOAN 2: XAY DUNG MODULE AUTO-UPDATE ENGINE (TUAN 2)
+------------------------------------------------------------------------
+* Ngay 08 - 09: Viet module tai du lieu 'services/update_service.py'
+  - Tan dung thu vien 'requests' co san trong 'requirements.txt'.
+  - Gui request len Server de check phien ban cau hinh hien tai.
+  - Neu co ban moi, tu dong tai file cau hinh (.json) va ghi de vao 'config/'.
+
+* Ngay 10 - 11: Tich hop vao luong khoi dong cua he thong ('ui/')
+  - Chay mot tien trinh ngam (Thread) khi ung dung vua bat de check update.
+  - Khong lam treo hoac cham giao dien nguoi dung.
+  - Hien thi thong bao ngam khi cap nhat thanh cong.
+
+* Ngay 12 - 14: Xay dung co che du phong va Rollback an toan
+  - Truoc khi ghi de file cau hinh moi, tu dong copy file cu vao 'backup/'.
+  - Neu file tai ve bi loi or mat mang giua chung, tu dong khoi phuc file cu.
+
+
+GIAI DOAN 3: KIEM THU MO RONG VA DONG GOI (TUAN 3 & 4)
+------------------------------------------------------------------------
+* Ngay 15 - 18: Viet kiem thu tu dong (Unit Test & Integration Test)
+  - Su dung 'pytest' va 'pytest-mock' trong thu muc 'tests/'.
+  - Gia lap cac tinh huong: Server sap, file JSON loi cu phap, mat mang...
+  - Dam bao module xu ly ngoai le dat 100% do on dinh.
+
+* Ngay 19 - 22: Chay thu nghiem thuc te (Beta Test)
+  - Tao file cau hinh gia lap tren server de may khach tu dong tai ve.
+  - Nho cac ke toan vien kiem tra doi chieu so lieu bao cao dong.
+
+* Ngay 23 - 25: Chuan hoa tai lieu va Dong goi phat hanh
+  - Cap nhat file 'version.txt' va nhat ky 'Dong goi phan mem cho khach.txt'.
+  - Dung 'pyinstaller' dong goi ban thuong mai on dinh v8.1.0.
+
+
+IV. QUAN LY RUI RO
+------------------------------------------------------------------------
+1. May khach khong co ket noi Internet:
+   -> Giai phap: Offline-First. Khong co mang thi dung file config cu,
+      he thong van hoat dong binh thuong.
+2. File update bi loi cu phap (JSON parse error):
+   -> Giai phap: Dung khoi lenh try...except de kiem tra tinh hop le 
+      cua file truoc khi ghi de. Neu loi, bo qua va dung file cu.
+========================================================================

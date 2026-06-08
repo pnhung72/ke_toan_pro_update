@@ -1,0 +1,42 @@
+------------------------------------------------------------
+LỊCH TRÌNH PHÁT TRIỂN KẾ TOÁN PRO - THÁNG 06/2026
+------------------------------------------------------------
+
+[ ] Giai đoạn 0 - Chuẩn bị (Tuần 1):
+    - [ ] Backup toàn bộ mã nguồn, database và model hiện tại
+    - [ ] Thiết lập môi trường thử nghiệm riêng biệt
+    - [ ] Soạn thảo bộ test case cho các chức năng cốt lõi
+
+[ ] Giai đoạn 1 - Bảo mật (Tuần 2):
+    - [ ] Cập nhật MAX_BACKUPS = 5 trong backup.py
+    - [ ] Chuyển mật khẩu SMTP vào file cấu hình mã hóa
+    - [ ] Thêm hàm testzip() kiểm tra toàn vẹn file backup
+    - [ ] Triển khai mã hóa database ke_toan.db
+    - [ ] Cấu hình log ghi lại hành vi đăng nhập bất thường
+
+[ ] Giai đoạn 2 - Tối ưu hiệu năng (Tuần 3-4):
+    - [ ] Benchmark tốc độ truy vấn SQL hiện tại
+    - [ ] Thêm INDEX cho transactions, invoices, journal_entries
+    - [ ] Tách logic nén và upload trong cloud_thread.py
+    - [ ] Cấu hình OCR timeout = 60s + retry tự động
+    - [ ] Thiết lập LRU cache cho dữ liệu thường xuyên
+    - [ ] Kiểm tra dung lượng backup trước khi nén
+    - [ ] Tự động xóa backup cũ sau 30 ngày
+
+[ ] Giai đoạn 3 - Trải nghiệm người dùng (Tuần 5):
+    - [ ] Dashboard hiển thị 5-7 chỉ số tài chính chủ chốt
+    - [ ] Biểu đồ doanh thu (cột) và chi phí (tròn)
+    - [ ] Xuất báo cáo PDF/Excel từ Dashboard
+    - [ ] Hoàn thiện hướng dẫn sử dụng nhanh
+
+[ ] Giai đoạn 4 - Release (Cuối tháng):
+    - [ ] Kiểm thử tổng thể toàn bộ hệ thống
+    - [ ] Đóng gói phiên bản cập nhật
+    - [ ] Thông báo lịch cập nhật đến khách hàng
+
+------------------------------------------------------------
+Ghi chú vận hành:
+- Luôn kiểm tra /logs sau mỗi thay đổi
+- Lỗi nghiêm trọng đẩy về ai/feedback ngay
+- Thông báo admin khi backup thất bại
+------------------------------------------------------------

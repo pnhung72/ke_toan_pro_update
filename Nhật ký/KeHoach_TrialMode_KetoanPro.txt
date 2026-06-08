@@ -1,0 +1,77 @@
+========================================================================
+KE HOACH CAP NHAT VA TRIEN KHAI TINH NANG DUNG THU (TRIAL MODE)
+PHAN MEM KE TOAN PRO v11.0.0
+========================================================================
+Ngay lap: 18/05/2026
+Tac gia: NgocPhan / Thay Hung
+Muc tieu: Tu dong hoa quy trình cap quyen dung thu 30 ngay cho khach hang 
+          khi tai ve ma khong can can thiep thu cong, bao dam an toan, 
+          bao mat va chong gian lan thoi gian.
+
+------------------------------------------------------------------------
+GIAI DOAN 1: KHAO SAT THUC TE & CHUAN BI (Thuc hien trong 1 ngay)
+------------------------------------------------------------------------
+1. Kiem tra cau truc bang `licenses`:
+   - Mo co so du lieu trong thu muc `ke_toan_data/` hoac kiem tra file `SQL.txt`.
+   - Xac dinh chính xac ten cac truong du lieu dang co (vi du: license_type, 
+     start_date, expire_date, status hoac ngon ngu tuong duong).
+     * Ghi chu: Hien tai kien truc ghi nhan bang nay dang co 0 dong.
+
+2. Khao sat module bao mat `core/security/`:
+   - Xem lai logic doc va giai ma file key ban quyen hien tai de tìm vi trí 
+     nhung hop ly (dat nhanh `if... else...` khi khong tim thay file key chính thuc).
+
+------------------------------------------------------------------------
+GIAI DOAN 2: PHAT TRIEN MA NGUON MOI (Thuc hien trong 2 ngay)
+------------------------------------------------------------------------
+1. Bo sung logic khoi tao Dung thu tai `core/database/` hoac `core/security/`:
+   - Thiet lap ham kiem tra neu bang `licenses` trong (0 dong) -> Tu dong 
+     chen 1 dong moi:
+     + license_type = 'TRIAL'
+     + start_date = Thoi gian hien tai
+     + expire_date = Thoi gian hien tai + 30 ngay
+     + status = 'ACTIVE'
+
+2. Xay dung co che chong gian lan thoi gian (Anti-cheat):
+   - Tan dung thu muc `config/` de ghi log thoi gian chay gan nhat vao mot file 
+     cau hinh ma hoa hoac file JSON an (vi du: `config/app_state.json`).
+   - Logic: Neu `Thoi gian he thong hien tai` < `Thoi gian chay gan nhat trong log`
+     -> Phat hien khach hang lui dong ho Windows -> Lap tuc chuyen status thanh 
+     'LOCKED' va khoa phan mem.
+
+3. Dieu huong luong khoi chay (Main Execution Flow):
+   - Goi ham kiem tra ban quyen ngay tai dau ham `main()` truoc khi ve giao dien.
+   - Neu con han dung thu: Cho vao phan mem, hien thi so ngay con lai tren thanh 
+     tieu de (Window Title) de nhac nho khach hang (vi du: "Con 25 ngay dung thu").
+   - Neu het han hoac bi khoa: Goi cua so `ActivationDialog` trong `views/dialogs/` 
+     de chan toan bo bieu mau, yeu cau nhap Key kích hoat chính thuc.
+
+------------------------------------------------------------------------
+GIAI DOAN 3: KIEM THU TOAN DIEN - TESTING (Thuc hien trong 1-2 ngay)
+------------------------------------------------------------------------
+Su dung cac thu muc test da co (`tests/unit/` va `tests/integration/`) de test:
+- Test case 1 (Khach moi tai): Xoa sach bang `licenses` -> Chay phan mem xem 
+  co tu dong cap 30 ngay dung thu khong.
+- Test case 2 (Tru ngay dung thu): Chinh tang thoi gian may tinh len 3 ngay -> 
+  Kiem tra giao dien xem co tru bot 3 ngay dung thu hay khong.
+- Test case 3 (Hack thoi gian): Chinh lui thoi gian may tinh ve qua khu -> 
+  Kiem tra xem he thong co phat hien va bao khoa phan mem khong.
+- Test case 4 (Het han): Chinh thoi gian vuot qua 30 ngay -> Kiem tra xem 
+  co chan giao dien va hien thong bao nhap key khong.
+
+------------------------------------------------------------------------
+GIAI DOAN 4: DONG GOI VA TRIEN KHAI (Thuc hien trong 1 ngay)
+------------------------------------------------------------------------
+1. Don dep du lieu thu nghiem:
+   - Xoa sach cac dong thu nghiem trong bang `licenses` de dua ve trang thai 
+     0 dong goc truoc khi dong goi. Xoa file log thoi gian tam thoi.
+2. Cap nhat tai lieu cam nang khach hang:
+   - Bo sung dieu khoan va huong dan dung thu vao file `TERMS_OF_USE.md` hoac 
+     file `Dong goi phan mem cho khach.txt`.
+3. Bien dich ra file thuc thi (.EXE):
+   - Su dung cong cu `pyinstaller` (trong requirements.txt) de dong goi toan bo 
+     du an dua tren cau hinh duong dan tu file `pyinstaller_paths.txt`.
+
+========================================================================
+TIEN DO THEO DOI THUC HIEN: [ ] Giai doan 1 | [ ] Giai doan 2 | [ ] Giai doan 3 | [ ] Giai doan 4
+========================================================================

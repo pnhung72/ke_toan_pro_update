@@ -1,0 +1,482 @@
+﻿
+ui\account_detail_tab.py:83:        selected = self.account_combo.get()
+ui\account_detail_tab.py:88:        from_date = self.from_date.get().strip()
+ui\account_detail_tab.py:89:        to_date = self.to_date.get().strip()
+ui\account_detail_tab.py:125:                e.get('account_code', ''),
+ui\business_info_tab.py:652:                self.ma_so_thue = self.business_info.get('ma_so_thue')
+ui\business_info_tab.py:668:                        value = self.business_info.get(db_field, '')
+ui\business_info_tab.py:681:                                    self.entries[entry_key].set(nhom_map.get(value, value))
+ui\business_info_tab.py:689:                nhom = self.business_info.get('nhom_doi_tuong', 'group1')
+ui\business_info_tab.py:691:                nhom_text = nhom_map.get(nhom, 'Chưa xác định')
+ui\business_info_tab.py:748:                acc.get('id', ''),
+ui\business_info_tab.py:749:                acc.get('ten_ngan_hang', ''),
+ui\business_info_tab.py:750:                acc.get('so_tai_khoan', ''),
+ui\business_info_tab.py:751:                acc.get('so_hieu_vi_dien_tu', ''),
+ui\business_info_tab.py:752:                "✓" if acc.get('la_tai_khoan_chinh') else ""
+ui\business_info_tab.py:776:            ma_so_thue = self.entries['ma_so_thue'].get().strip()
+ui\business_info_tab.py:783:            nhom_text = self.nhom_combobox.get()
+ui\business_info_tab.py:793:                ten_ho_kinh_doanh=self.entries['ten_ho_kinh_doanh'].get(),
+ui\business_info_tab.py:794:                dia_chi=self.entries['dia_chi'].get(),
+ui\business_info_tab.py:795:                so_dien_thoai=self.entries['so_dien_thoai'].get(),
+ui\business_info_tab.py:796:                email=self.entries['email'].get(),
+ui\business_info_tab.py:797:                loai_hinh=self.entries['loai_hinh'].get() or "Hộ kinh doanh",
+ui\business_info_tab.py:799:                ngay_bat_dau_kinh_doanh=self.entries['ngay_bat_dau_kinh_doanh'].get(),
+ui\business_info_tab.py:800:                nganh_nghe_kinh_doanh=self.entries['nganh_nghe_kinh_doanh'].get()
+ui\business_info_tab.py:826:        ten_ngan_hang = self.bank_name_entry.get().strip()
+ui\business_info_tab.py:827:        so_tai_khoan = self.account_number_entry.get().strip()
+ui\business_info_tab.py:844:            so_hieu_vi_dien_tu=self.vid_entry.get().strip(),
+ui\business_info_tab.py:845:            la_tai_khoan_chinh=1 if self.is_main_var.get() else 0
+ui\business_info_tab.py:947:        nam = int(self.year_combobox.get())
+ui\business_info_tab.py:948:        ky_text = self.period_combobox.get()
+ui\business_info_tab.py:958:        ky_value = ky_map.get(ky_text, "quy1")
+ui\business_info_tab.py:986:        nam = int(self.year_combobox.get())
+ui\business_info_tab.py:987:        ky_text = self.period_combobox.get()
+ui\business_info_tab.py:996:        ky_value = ky_map.get(ky_text, "quy1")
+ui\business_info_tab.py:1115:            nam = int(self.notify_year_combobox.get())
+ui\business_info_tab.py:1116:            ky = self.notify_period_combobox.get()
+ui\business_info_tab.py:1213:        nam = int(self.notify_year_combobox.get())
+ui\business_info_tab.py:1214:        ky_text = self.notify_period_combobox.get()
+ui\business_info_tab.py:1218:        source_text = self.data_source_combo.get()
+ui\business_info_tab.py:1350:            nam = int(self.tax_return_year.get())
+ui\business_info_tab.py:1351:            quy = int(self.tax_return_quarter.get())
+ui\business_info_tab.py:1452:        nhom = business_info.get('nhom_doi_tuong', 'group1')
+ui\business_info_tab.py:1460:        nam = int(self.tax_return_year.get())
+ui\business_info_tab.py:1461:        quy = int(self.tax_return_quarter.get())
+ui\business_info_tab.py:1524:        mst = self.entries['ma_so_thue'].get().strip()
+ui\business_info_tab.py:1534:        email = self.entries['email'].get().strip()
+ui\business_info_tab.py:1547:        date_str = self.entries['ngay_bat_dau_kinh_doanh'].get().strip()
+ui\business_info_tab.py:1581:        if business and business.get('ten_ho_kinh_doanh'):
+ui\business_info_tab.py:1617:        nam = int(self.year_combobox.get())
+ui\business_info_tab.py:1618:        ky_text = self.period_combobox.get()
+ui\business_info_tab.py:1621:        ky_value = ky_map.get(ky_text, "quy1")
+ui\business_info_tab.py:1645:        nam = int(self.notify_year_combobox.get())
+ui\business_info_tab.py:1646:        ky_text = self.notify_period_combobox.get()
+ui\business_info_tab.py:1650:        source_text = self.data_source_combo.get()
+ui\business_info_tab.py:1690:        if data.get('vuot_1 tỷ', False):
+ui\business_info_tab.py:1691:            # Dùng .get() cho cả 'canh_bao' để chắc chắn không bao giờ bị sập app
+ui\business_info_tab.py:1692:            canh_bao_msg = data.get('canh_bao', 'Vui lòng kiểm tra lại ngưỡng doanh thu.')
+ui\business_info_tab.py:1706:        nam = int(self.tax_return_year.get())
+ui\business_info_tab.py:1707:        quy = int(self.tax_return_quarter.get())
+ui\business_info_tab.py:1720:            nhom = self.business_info.get('nhom_doi_tuong', 'group1')
+ui\business_info_tab.py:1722:            nhom_text = nhom_map.get(nhom, 'Chưa xác định')
+ui\business_info_tab.py:1731:            test_revenue = float(self.test_revenue_entry.get().replace(',', ''))
+ui\business_info_tab.py:1736:        industry = self.test_industry_combo.get()
+ui\business_info_tab.py:1805:                        acc.get('id', ''),
+ui\business_info_tab.py:1806:                        acc.get('ten_ngan_hang', ''),
+ui\business_info_tab.py:1807:                        acc.get('so_tai_khoan', ''),
+ui\business_info_tab.py:1808:                        acc.get('so_hieu_vi_dien_tu', '') or "",
+ui\business_info_tab.py:1809:                        "✓" if acc.get('la_tai_khoan_chinh') else ""
+ui\category_manager.py:53:            name = entry.get().strip()
+ui\category_manager.py:94:            tree = self.trees.get(cat['type'])
+ui\change_password_dialog.py:50:        old = self.old_pw.get().strip()
+ui\change_password_dialog.py:51:        new = self.new_pw.get().strip()
+ui\change_password_dialog.py:52:        confirm = self.confirm_pw.get().strip()
+ui\currency_tab.py:12:        return fonts.get(size, ("Segoe UI", 10))
+ui\currency_tab.py:85:                symbol = curr.get("symbol", code)
+ui\currency_tab.py:86:                is_base = "✓" if curr.get("is_base", False) else ""
+ui\debt_tab.py:122:        name = self.entry_search_name.get().strip()
+ui\debt_tab.py:123:        phone = self.entry_search_phone.get().strip()
+ui\debt_tab.py:199:                date = entry_date.get().strip()
+ui\debt_tab.py:203:                raw_amount = entry_amount.get().replace(".", "").replace(",", "")
+ui\debt_tab.py:220:                                 (amount, date, entry_note.get().strip(), name, phone))
+ui\debt_tab.py:484:                total_str = entry_total.get().replace(".", "").replace(",", "")
+ui\debt_tab.py:485:                paid_str = entry_paid.get().replace(".", "").replace(",", "")
+ui\debt_tab.py:489:                new_date = entry_date.get().strip()
+ui\debt_tab.py:490:                new_notes = entry_notes.get("1.0", "end").strip()
+ui\font_config.py:73:    size = FONT_SIZES.get(size_key, 13)
+ui\gateway_future.py:53:            mst = mst_entry.get().strip()
+ui\gateway_future.py:60:                "token": token_entry.get().strip(),
+ui\invoice_tab.py:51:            buyer = self.entry_buyer.get().strip()
+ui\invoice_tab.py:52:            phone = self.entry_phone.get().strip()
+ui\invoice_tab.py:53:            address = self.entry_address.get().strip()
+ui\invoice_tab.py:114:        text = self.entry_buyer.get().strip().lower()
+ui\invoice_tab.py:123:        text = self.entry_phone.get().strip()
+ui\invoice_tab.py:132:        name = self.entry_buyer.get().strip()
+ui\invoice_tab.py:153:        phone = self.entry_phone.get()
+ui\invoice_tab.py:353:        selected = self.combo_product.get()
+ui\invoice_tab.py:366:            qty = float(self.entry_qty.get())
+ui\invoice_tab.py:367:            price_str = self.entry_price.get().replace(".", "").replace(",", "")
+ui\invoice_tab.py:373:            if self.tax_var.get():
+ui\invoice_tab.py:374:                rate_str = self.combo_tax_rate.get().replace("%", "")
+ui\invoice_tab.py:394:        buyer = self.entry_buyer.get().strip()
+ui\invoice_tab.py:395:        phone = self.entry_phone.get().strip()
+ui\invoice_tab.py:396:        tax = self.entry_tax.get().strip()
+ui\invoice_tab.py:397:        address = self.entry_address.get().strip()
+ui\invoice_tab.py:398:        product_name = self.combo_product.get()
+ui\invoice_tab.py:399:        sale_source = self.combo_source.get() 
+ui\invoice_tab.py:403:            qty = float(self.entry_qty.get())
+ui\invoice_tab.py:404:            price_str = self.entry_price.get().replace(".", "").replace(",", "")
+ui\invoice_tab.py:406:            paid_str = self.entry_paid.get().replace(".", "").replace(",", "")
+ui\invoice_tab.py:429:        if self.tax_var.get():
+ui\invoice_tab.py:431:                rate = float(self.combo_tax_rate.get().replace("%", "")) / 100
+ui\invoice_tab.py:448:                payment_method=self.combo_payment.get(), sale_source=sale_source
+ui\invoice_tab.py:551:            # 2. XỬ LÝ CÁC GIÁ TRỊ NULL/NONE (Sửa lỗi .get() bằng cách truy xuất trực tiếp)
+ui\invoice_tab.py:697:        combo_tax_rate.config(state="normal" if tax_var.get() else "disabled")
+ui\invoice_tab.py:700:            combo_tax_rate.config(state="normal" if tax_var.get() else "disabled")
+ui\invoice_tab.py:745:                qty = float(entry_qty.get())
+ui\invoice_tab.py:746:                price = float(entry_price.get().replace(".", "").replace(",", ""))
+ui\invoice_tab.py:750:                if tax_var.get():
+ui\invoice_tab.py:751:                    rate_str = combo_tax_rate.get().replace("%", "")
+ui\invoice_tab.py:772:                new_buyer = entry_buyer.get().strip()
+ui\invoice_tab.py:773:                new_phone = entry_phone.get().strip()
+ui\invoice_tab.py:774:                new_tax = entry_tax.get().strip()
+ui\invoice_tab.py:775:                new_address = entry_address.get().strip()
+ui\invoice_tab.py:776:                new_product_name = combo_product.get()
+ui\invoice_tab.py:777:                new_qty = float(entry_qty.get())
+ui\invoice_tab.py:778:                new_price = float(entry_price.get().replace(".", "").replace(",", ""))
+ui\invoice_tab.py:779:                new_paid = float(entry_paid.get().replace(".", "").replace(",", ""))
+ui\invoice_tab.py:780:                new_payment_method = combo_payment.get()
+ui\invoice_tab.py:781:                new_source = combo_source.get()
+ui\invoice_tab.py:782:                new_created_date = entry_date.get().strip()
+ui\invoice_tab.py:785:                if tax_var.get():
+ui\invoice_tab.py:786:                    rate_str = combo_tax_rate.get().replace("%", "")
+ui\ledger_tab.py:169:        selected = self.account_combo.get()
+ui\ledger_tab.py:189:            start_date = datetime.strptime(self.start_date_entry.get(), "%d/%m/%Y")
+ui\ledger_tab.py:190:            end_date = datetime.strptime(self.end_date_entry.get(), "%d/%m/%Y")
+ui\ledger_tab.py:203:                date_str = t.get('date', '')
+ui\ledger_tab.py:209:                amount = t.get('amount', 0)
+ui\ledger_tab.py:210:                trans_type = t.get('type', '')
+ui\ledger_tab.py:229:                    'description': f"{t.get('description', '')} ({t.get('category', '')})" if 
+t.get('category') else t.get('description', ''),
+ui\ledger_tab.py:233:                    'id': t.get('id', 0)
+ui\ledger_tab.py:240:                date_str = inv.get('created_date', '')
+ui\ledger_tab.py:247:                amount = inv.get('total_payment', 0)
+ui\ledger_tab.py:248:                inv_no = inv.get('invoice_number', '')
+ui\ledger_tab.py:259:                    'description': f"Bán hàng: {inv.get('buyer_name', '')}",
+ui\ledger_tab.py:263:                    'id': inv.get('id', 0)
+ui\ledger_tab.py:268:        all_entries.sort(key=lambda x: (parse_date(x['date']), x.get('id', 0)))
+ui\ledger_tab.py:338:        selected = self.account_combo.get()
+ui\license_manager_dialog.py:167:                key = self.license_key_entry.get().strip()
+ui\license_manager_dialog.py:261:        base_price = package_prices.get(self.combo_package.get(), 1000000)
+ui\license_manager_dialog.py:262:        extra_total = sum(info['price'] for key, info in self.extra_features.items() if 
+self.feature_vars[key].get())
+ui\license_manager_dialog.py:308:        machine_id = self.entry_machine.get().strip()
+ui\license_manager_dialog.py:309:        name = self.entry_name.get().strip()
+ui\license_manager_dialog.py:310:        email = self.entry_email.get().strip()
+ui\license_manager_dialog.py:311:        phone = self.entry_phone.get().strip()
+ui\license_manager_dialog.py:312:        package = self.combo_package.get()
+ui\license_manager_dialog.py:313:        expiry_option = self.combo_expiry.get()
+ui\license_manager_dialog.py:334:        machine_id = self.entry_machine.get().strip()
+ui\license_manager_dialog.py:335:        package = self.combo_package.get()
+ui\license_manager_dialog.py:336:        expiry_option = self.combo_expiry.get()
+ui\license_manager_dialog.py:352:        selected_features = [key for key, var in self.feature_vars.items() if var.get()]
+ui\license_manager_dialog.py:388:        total = self.package_prices.get(self.selected_package.get(), 0)
+ui\license_manager_dialog.py:390:            if var.get():
+ui\license_manager_dialog.py:396:        selected_pkg = self.selected_package.get()
+ui\license_manager_dialog.py:400:        features = [self.extra_features[key]['title'] for key, var in self.addon_vars.items() if 
+var.get()]
+ui\license_manager_dialog.py:406:            custom_request = self.custom_request_text.get("1.0", tk.END).strip()
+ui\main_window.py:198:            features_str = license_result.get('features', "")
+ui\main_window.py:211:                    valid_module_ids = [item["id"] for item in industry_data.get("industry_tabs", [])]
+ui\main_window.py:227:                    saved_modules = state.get("active_module_ids", [])
+ui\main_window.py:320:        self.configure(bg=COLORS.get('bg_root', '#f0f0f0'))
+ui\main_window.py:568:                    self.active_module_ids = state.get("active_module_ids", [])
+ui\main_window.py:894:            response = requests.get(url, params=params, timeout=15)
+ui\main_window.py:974:        return mapping.get(id(widget), None)
+ui\main_window.py:1089:                user.get('username', 'unknown'), 
+ui\main_window.py:1090:                f"Họ tên: {user.get('full_name', 'N/A')}, Vai trò: {user.get('role', 'N/A')}"
+ui\main_window.py:1119:                    user.get('username', 'unknown'), 
+ui\main_window.py:1183:                    self.current_user.get('username', 'unknown'), 
+ui\main_window.py:1272:                    industry_list = data.get("industry_tabs", [])
+ui\main_window.py:1319:        is_admin_user = self.current_user and self.current_user.get('role') == 'admin'
+ui\main_window.py:1450:            log_behavior("SAO LƯU", self.current_user.get('username', 'system'), "Thủ công")
+ui\main_window.py:1460:                log_behavior("IN HÓA ĐƠN", self.current_user.get('username', 'system'), "")
+ui\main_window.py:1566:                username = self.current_user.get('username', 'system')
+ui\main_window.py:1600:            source = self.data_source_var.get()
+ui\main_window.py:1619:                f"Đã chuyển sang chế độ: {source_names.get(source, source)}\n\n"
+ui\main_window.py:1620:                f"{source_descriptions.get(source, '')}\n\n"
+ui\main_window.py:1674:                source = self.data_source_var.get()
+ui\main_window.py:1675:                self.update_status(f"Đã chuyển sang nguồn: {source_names.get(source, source)}")
+ui\main_window.py:1859:                    log_behavior("NHẬP XML", self.current_user.get('username', 'system'), result_msg)
+ui\main_window.py:1898:            response = requests.get(URL_VERSION, timeout=10)
+ui\main_window.py:1910:                    r = requests.get(URL_DOWNLOAD)
+ui\main_window.py:1946:                log_behavior("NHẬP XML", self.current_user.get('username', 'system'), result_msg)
+ui\main_window.py:2007:            mid = ent_mid.get().strip()
+ui\main_window.py:2008:            tier = cb_tier.get()
+ui\main_window.py:2095:            tabs_list = configs_data.get("industry_tabs", [])
+ui\main_window.py:2104:                print(f"   Tạo var cho {m_id}: giá trị ban đầu={var.get()}")
+ui\main_window.py:2132:        checkbox_val = self.checkbox_vars[module_id].get()
+ui\main_window.py:2133:        print(f"   checkbox_vars.get() = {checkbox_val} (chỉ tham khảo)")
+ui\main_window.py:2229:        for item in config_data.get("industry_tabs", []):
+ui\main_window.py:2230:            if item.get("id") == module_id:
+ui\main_window.py:2366:            tabs_list = config_data.get("industry_tabs", [])
+ui\main_window.py:2490:            industry_repo = {tab["id"]: tab for tab in config_data.get("industry_tabs", [])}
+ui\main_window.py:2559:                    print(f"🛑 LỖI NẠP TAB '{cfg.get('name', m_id)}': {e}")
+ui\period_closing_tab.py:119:        name = self.entry_name.get().strip()
+ui\period_closing_tab.py:120:        start = self.entry_start.get().strip()
+ui\period_closing_tab.py:121:        end = self.entry_end.get().strip()
+ui\product_manager.py:99:        code = self.entry_code.get().strip()
+ui\product_manager.py:100:        name = self.entry_name.get().strip()
+ui\product_manager.py:101:        unit = self.entry_unit.get().strip()
+ui\product_manager.py:103:            price_sell = float(self.entry_price_sell.get().replace(".", ""))
+ui\product_manager.py:104:            price_buy = float(self.entry_price_buy.get().replace(".", ""))
+ui\product_manager.py:105:            stock = float(self.entry_stock.get().replace(",", "."))
+ui\product_manager.py:106:            min_stock = float(self.entry_min_stock.get().replace(",", "."))
+ui\product_manager.py:129:        code = self.entry_code.get().strip()
+ui\product_manager.py:130:        name = self.entry_name.get().strip()
+ui\product_manager.py:131:        unit = self.entry_unit.get().strip()
+ui\product_manager.py:133:            price_sell = float(self.entry_price_sell.get().replace(".", ""))
+ui\product_manager.py:134:            price_buy = float(self.entry_price_buy.get().replace(".", ""))
+ui\product_manager.py:135:            stock = float(self.entry_stock.get().replace(",", "."))
+ui\product_manager.py:136:            min_stock = float(self.entry_min_stock.get().replace(",", "."))
+ui\product_tab.py:166:        code = self.entry_code.get().strip()
+ui\product_tab.py:167:        name = self.entry_name.get().strip()
+ui\product_tab.py:168:        unit = self.entry_unit.get().strip()
+ui\product_tab.py:170:            price_sell = float(self.entry_price_sell.get().replace(".", ""))
+ui\product_tab.py:171:            price_buy = float(self.entry_price_buy.get().replace(".", ""))
+ui\product_tab.py:172:            stock = float(self.entry_stock.get().replace(",", "."))
+ui\product_tab.py:193:        code = self.entry_code.get().strip()
+ui\product_tab.py:194:        name = self.entry_name.get().strip()
+ui\product_tab.py:195:        unit = self.entry_unit.get().strip()
+ui\product_tab.py:197:            price_sell = float(self.entry_price_sell.get().replace(".", ""))
+ui\product_tab.py:198:            price_buy = float(self.entry_price_buy.get().replace(".", ""))
+ui\product_tab.py:199:            stock = float(self.entry_stock.get().replace(",", "."))
+ui\report_service.py:26:            categories[cat] = categories.get(cat, 0) + amount
+ui\report_service.py:31:            categories[cat] = categories.get(cat, 0) + invoice_income
+ui\report_service.py:110:        rates = tax_rates.get(industry, tax_rates["Phân phối, cung cấp hàng hóa"])
+ui\report_tab.py:576:            cfg = columns_config.get(col, {"width": 120, "anchor": "e"})
+ui\report_tab.py:671:            cfg = columns_config.get(col, {"width": 140, "anchor": "e"})
+ui\report_tab.py:754:                rev = float(self.revenue_var.get().replace(".", "").replace(",", ""))
+ui\report_tab.py:755:                year = int(self.year_var.get())
+ui\report_tab.py:756:                tax = self.report_service.calculate_tax(rev, self.business_type.get(), self.industry.get(), 
+year)
+ui\report_tab.py:843:        revenue_str = self.revenue_var.get() if hasattr(self, 'revenue_var') else "0"
+ui\report_tab.py:845:        business = self.business_type.get() if hasattr(self, 'business_type') else "Hộ kinh doanh cá thể"
+ui\report_tab.py:846:        industry = self.industry.get() if hasattr(self, 'industry') else "Phân phối, cung cấp hàng hóa"
+ui\report_tab.py:847:        year = int(self.year_var.get()) if hasattr(self, 'year_var') else datetime.now().year
+ui\report_tab.py:902:            revenue_str = self.revenue_var.get() if hasattr(self, 'revenue_var') else "0"
+ui\report_tab.py:904:            tax_year = self.year_var.get() if hasattr(self, 'year_var') else str(datetime.now().year)
+ui\report_tab.py:905:            business = self.business_type.get() if hasattr(self, 'business_type') else "Hộ kinh doanh cá thể"
+ui\report_tab.py:906:            industry = self.industry.get() if hasattr(self, 'industry') else "Phân phối, cung cấp hàng hóa"
+ui\report_tab.py:978:            revenue_str = self.revenue_var.get().replace(".", "").replace(",", "")
+ui\report_tab.py:981:            profit_str = self.profit_var.get().replace(".", "").replace(",", "")
+ui\report_tab.py:984:            business_type = self.business_type.get()
+ui\report_tab.py:985:            industry = self.industry.get()
+ui\report_tab.py:986:            tax_year = int(self.tax_year.get())
+ui\styles.py:29:    return ICONS.get(name, '📌')
+ui\styles.py:33:    return (FONT_FAMILY, FONT_SIZES.get(size_name, 14), weight)
+ui\tax_declaration_tab.py:151:            year = int(self.year_combo.get())
+ui\tax_declaration_tab.py:152:            tax_type = self.tax_type_combo.get()
+ui\tax_declaration_tab.py:212:                        date = t.get('date', '')
+ui\tax_declaration_tab.py:214:                            total += t.get('amount', 0)
+ui\tax_declaration_tab.py:221:                    date = inv.get('created_date', '')
+ui\tax_declaration_tab.py:223:                        total += inv.get('total_payment', 0)
+ui\tax_declaration_tab.py:274:        year = self.year_combo.get()
+ui\tax_declaration_tab.py:275:        tax_type = self.tax_type_combo.get()
+ui\tax_declaration_tab.py:322:            year = self.year_combo.get()
+ui\tax_declaration_tab.py:323:            tax_type = self.tax_type_combo.get()
+ui\theme.py:52:        return get_fonts().get(key, default)
+ui\theme.py:91:    f = FONTS.get(key, make_font())
+ui\theme.py:97:    return COLORS.get(key, '#333333')
+ui\theme.py:100:    return SIZES['padding'].get(key, 10)
+ui\theme.py:180:        width = SIZES.get('button_width', 15)
+ui\theme.py:186:        width = SIZES.get('entry_width', 30)
+ui\theme.py:191:        height = SIZES.get('tree_height', 12)
+ui\theme.py:202:        width = SIZES.get('entry_width', 30)
+ui\transaction_tab.py:86:        trans_type = self.cbo_type.get()
+ui\transaction_tab.py:103:        desc = self.entry_desc.get().strip()
+ui\transaction_tab.py:318:            account = expense_accounts.get(category_name, "642")
+ui\transaction_tab.py:323:            date_dmy = self.entry_date.get().strip()
+ui\transaction_tab.py:325:            desc = self.entry_desc.get().strip()
+ui\transaction_tab.py:326:            amount_str = self.entry_amount.get().strip().replace('.', '').replace(',', '')
+ui\transaction_tab.py:328:            trans_type = self.cbo_type.get()
+ui\transaction_tab.py:329:            category = self.cbo_category.get()
+ui\transaction_tab.py:520:            cat_type = cbo_type.get()
+ui\transaction_tab.py:534:                new_date_dmy = entry_date.get().strip()
+ui\transaction_tab.py:536:                new_desc = entry_desc.get().strip()
+ui\transaction_tab.py:539:                raw_amount = entry_amount.get().strip().replace('.', '').replace(',', '')
+ui\transaction_tab.py:542:                new_type = cbo_type.get() # 'Thu' hoặc 'Chi'
+ui\transaction_tab.py:543:                new_cat = cbo_category.get()
+ui\transaction_tab.py:770:        start_dmy = self.filter_start_date.get().strip()
+ui\transaction_tab.py:771:        end_dmy = self.filter_end_date.get().strip()
+ui\dialogs\ocr_import_dialog.py:137:            self.so_hd.insert(0, parsed.get('so_hoa_don', ''))
+ui\dialogs\ocr_import_dialog.py:139:            self.ngay_hd.insert(0, parsed.get('ngay', ''))
+ui\dialogs\ocr_import_dialog.py:141:            self.tien.insert(0, f"{parsed.get('tien', 0)}")
+ui\dialogs\ocr_import_dialog.py:143:            self.thue.insert(0, f"{parsed.get('thue', 0)}")
+ui\dialogs\ocr_import_dialog.py:145:            self.tong.insert(0, f"{parsed.get('tong', 0)}")
+ui\dialogs\ocr_import_dialog.py:173:                self.so_hd.get(),
+ui\dialogs\ocr_import_dialog.py:174:                self.ngay_hd.get(),
+ui\dialogs\ocr_import_dialog.py:175:                float(self.tien.get()) if self.tien.get() else 0,
+ui\dialogs\ocr_import_dialog.py:176:                float(self.thue.get()) if self.thue.get() else 0,
+ui\dialogs\ocr_import_dialog.py:177:                float(self.tong.get()) if self.tong.get() else 0,
+ui\dialogs\ocr_import_dialog.py:178:                self.text_result.get(1.0, tk.END),
+ui\tabs\ai_tab.py:79:                desc = row.get('description', '')[:50]
+models\database.py:384:                    data.get('ma_so_thue'),
+models\database.py:385:                    data.get('ten_ho_kinh_doanh'),
+models\database.py:386:                    data.get('dia_chi'),
+models\database.py:387:                    data.get('so_dien_thoai'),
+models\database.py:388:                    data.get('email'),
+models\database.py:389:                    data.get('loai_hinh', 'Hộ kinh doanh'),
+models\database.py:390:                    data.get('nhom_doi_tuong', 'group1'),
+models\database.py:391:                    data.get('ngay_bat_dau_kinh_doanh'),
+models\database.py:392:                    data.get('nganh_nghe_kinh_doanh'),
+models\database.py:404:                    data.get('ma_so_thue'),
+models\database.py:405:                    data.get('ten_ho_kinh_doanh'),
+models\database.py:406:                    data.get('dia_chi'),
+models\database.py:407:                    data.get('so_dien_thoai'),
+models\database.py:408:                    data.get('email'),
+models\database.py:409:                    data.get('loai_hinh', 'Hộ kinh doanh'),
+models\database.py:410:                    data.get('nhom_doi_tuong', 'group1'),
+models\database.py:411:                    data.get('ngay_bat_dau_kinh_doanh'),
+models\database.py:412:                    data.get('nganh_nghe_kinh_doanh')
+models\invoice.py:82:                    existing_tables.append(row.get('name'))
+models\journal_entry.py:13:                ''', (date, description, e['account'], e.get('debit', 0), e.get('credit', 0)))
+models\transaction.py:164:        total_debit = sum(self._to_decimal(e.get('debit', 0)) for e in entries)
+models\transaction.py:165:        total_credit = sum(self._to_decimal(e.get('credit', 0)) for e in entries)
+models\transaction.py:199:                debit = self._to_decimal(entry.get('debit', 0))
+models\transaction.py:200:                credit = self._to_decimal(entry.get('credit', 0))
+models\transaction.py:201:                account = entry.get('account')
+models\user_model.py:219:            return permissions[module].get("can_view", False)
+models\user_model.py:221:            return permissions[module].get("can_edit", False)
+models\user_model.py:223:            return permissions[module].get("can_delete", False)
+services\accounting_service.py:253:        if deductions.get('tax', 0) > 0:
+services\accounting_service.py:256:        if deductions.get('insurance', 0) > 0:
+services\accounting_service.py:345:        tax_account = tax_accounts.get(tax_type, '3338')
+services\bank_account_service.py:44:        ET.SubElement(thong_tin_chung, "TenNguoiNopThue").text = 
+business.get('ten_ho_kinh_doanh', '')
+services\bank_account_service.py:51:            ET.SubElement(tai_khoan, "TenNganHang").text = acc.get('ten_ngan_hang', '')
+services\bank_account_service.py:52:            ET.SubElement(tai_khoan, "SoTaiKhoan").text = acc.get('so_tai_khoan', '')
+services\bank_account_service.py:53:            if acc.get('so_hieu_vi_dien_tu'):
+services\bank_account_service.py:54:                ET.SubElement(tai_khoan, "SoHieuViDienTu").text = acc.get('so_hieu_vi_dien_tu', 
+'')
+services\bank_account_service.py:55:            ET.SubElement(tai_khoan, "LaTaiKhoanChinh").text = "true" if 
+acc.get('la_tai_khoan_chinh') else "false"
+services\bank_account_service.py:96:                <tr><td>Mã số thuế:</td><td>{business.get('ma_so_thue', '')}</td></tr>
+services\bank_account_service.py:97:                <tr><td>Tên hộ kinh doanh:</td><td>{business.get('ten_ho_kinh_doanh', 
+'')}</td></tr>
+services\bank_account_service.py:98:                <tr><td>Địa chỉ:</td><td>{business.get('dia_chi', '')}</td></tr>
+services\bank_account_service.py:99:                <tr><td>Số điện thoại:</td><td>{business.get('so_dien_thoai', '')}</td></tr>
+services\bank_account_service.py:100:                <tr><td>Email:</td><td>{business.get('email', '')}</td></tr>
+services\bank_account_service.py:117:                    <td>{acc.get('ten_ngan_hang', '')}</td>
+services\bank_account_service.py:118:                    <td>{acc.get('so_tai_khoan', '')}{'<br>Ví: ' + 
+acc.get('so_hieu_vi_dien_tu', '') if acc.get('so_hieu_vi_dien_tu') else ''}</td>
+services\bank_account_service.py:119:                    <td>{'✓' if acc.get('la_tai_khoan_chinh') else ''}</td>
+services\business_tax_return_service.py:140:        rates = TaxService.TAX_RATES.get(industry, TaxService.TAX_RATES["Phân phối, 
+cung cấp hàng hóa"])
+services\business_tax_return_service.py:178:        rates = TaxService.TAX_RATES.get(industry, TaxService.TAX_RATES["Phân phối, 
+cung cấp hàng hóa"])
+services\business_tax_return_service.py:196:        nhom_doi_tuong = business_info.get('nhom_doi_tuong', 'group2')
+services\business_tax_return_service.py:197:        nganh_nghe = business_info.get('nganh_nghe_kinh_doanh', 'Phân phối, cung cấp 
+hàng hóa')
+services\business_tax_return_service.py:235:                <tr><td>Hộ kinh doanh: </td><td 
+colspan="3">{business_info.get('ten_ho_kinh_doanh', '')}</td></tr>
+services\business_tax_return_service.py:236:                <tr><td>Mã số thuế: </td><td 
+colspan="3">{business_info.get('ma_so_thue', '')}</td></tr>
+services\business_tax_return_service.py:237:                <tr><td>Địa chỉ: </td><td colspan="3">{business_info.get('dia_chi', 
+'')}</td></tr>
+services\cache_service.py:82:        return self.revenue_cache.get(period)
+services\dashboard_service.py:49:                    date_str = inv.get('created_date', '')
+services\dashboard_service.py:57:                                    revenues[m] += float(inv.get('total_payment', 0) or 0)
+services\dashboard_service.py:64:                    t_type = t.get('type', '')
+services\dashboard_service.py:65:                    acc_code = str(t.get('account_code', ''))
+services\dashboard_service.py:69:                        date_str = t.get('date', '')
+services\dashboard_service.py:76:                                        revenues[m] += float(t.get('total_amount', 0) or 0)
+services\dashboard_service.py:93:                    name = inv.get('product_name')
+services\dashboard_service.py:94:                    qty = inv.get('quantity', 0)
+services\dashboard_service.py:123:            total = d.get('total_debt', 0)
+services\dashboard_service.py:124:            paid = d.get('paid', 0)
+services\dashboard_service.py:129:            due_date_str = d.get('due_date', '')
+services\dashboard_service.py:159:            amount = t.get('total_amount', 0) 
+services\dashboard_service.py:160:            if t.get('type') == 'Thu':
+services\dashboard_service.py:165:                d_str = t.get('date', '')
+services\dashboard_service.py:170:            total_income += inv.get('total_payment', 0)
+services\dashboard_service.py:172:                d_str = inv.get('created_date', '')
+services\dashboard_service.py:202:                date_str = inv.get('created_date', '')
+services\dashboard_service.py:204:                    total_revenue += inv.get('total_payment', 0)
+services\dashboard_service.py:209:            if t.get('type') == 'Thu' or '5' in str(t.get('account_code', '')):
+services\dashboard_service.py:211:                    date_str = t.get('date', '')
+services\dashboard_service.py:213:                        total_revenue += t.get('total_amount', 0)
+services\dashboard_service.py:228:                "date": inv.get('created_date', ''),
+services\dashboard_service.py:230:                "amount": inv.get('total_payment', 0),
+services\dashboard_service.py:231:                "description": f"Hóa đơn {inv.get('id', '')} - {inv.get('buyer_name', '')}"
+services\dashboard_service.py:237:                "date": t.get('date', ''),
+services\dashboard_service.py:238:                "type": t.get('type', ''),
+services\dashboard_service.py:239:                "amount": t.get('total_amount', 0), 
+services\dashboard_service.py:240:                "description": t.get('description', '')
+services\dashboard_service.py:243:        items.sort(key=lambda x: x.get('date', ''), reverse=True)
+services\dashboard_service.py:273:                    # Sử dụng phương thức .get() để tránh lỗi nếu thiếu key trong dictionary
+services\dashboard_service.py:274:                    date = inv.get('created_date', '')
+services\dashboard_service.py:276:                        amount = inv.get('total_payment', 0) or 0
+services\dashboard_service.py:288:                    t_type = t.get('type', '')
+services\dashboard_service.py:289:                    acc_code = str(t.get('account_code', ''))
+services\dashboard_service.py:292:                        date = t.get('date', '')
+services\dashboard_service.py:295:                            amount_val = t.get('total_amount', 0) or 0
+services\dashboard_service.py:319:            total = d.get('total_debt', 0)
+services\dashboard_service.py:320:            paid = d.get('paid', 0)
+services\dashboard_service.py:324:                    'customer_name': d.get('name', ''),
+services\dashboard_service.py:326:                    'due_date': d.get('due_date', ''),
+services\email_service.py:240:        if encrypted and encrypted.get('email'):
+services\email_service.py:244:                'app_password': encrypted.get('app_password', ''),
+services\email_service.py:245:                'created_at': encrypted.get('updated_at', '')
+services\email_service.py:263:                if row_dict.get('app_password'):
+services\email_service.py:349:        # SỬA: Xử lý đúng kiểu sqlite3.Row (không có phương thức .get())
+services\email_service.py:363:                email = config_dict.get('email', '') or config_dict.get('email_address', '')
+services\email_service.py:364:                password = config_dict.get('app_password', '')
+services\export_service.py:100:                f"{values.get('vat', 0):,.0f}",
+services\export_service.py:101:                f"{values.get('discount', 0):,.0f}",
+services\export_service.py:102:                f"{values.get('actual', values['revenue']):,.0f}"
+services\export_service.py:115:                customer.get("name", ""),
+services\export_service.py:116:                f"{customer.get('total_debt', 0):,.0f}",
+services\export_service.py:117:                f"{customer.get('paid', 0):,.0f}",
+services\export_service.py:118:                f"{customer.get('remaining', 0):,.0f}",
+services\export_service.py:119:                customer.get("due_date", ""),
+services\export_service.py:120:                "Qua han" if customer.get("is_overdue", False) else "Con han"
+services\export_service.py:131:            "SoHoaDon": invoice_data.get("id", ""),
+services\export_service.py:132:            "NgayLap": invoice_data.get("date", ""),
+services\export_service.py:133:            "KhachHang": invoice_data.get("customer", ""),
+services\export_service.py:134:            "TongTien": invoice_data.get("total", 0),
+services\export_service.py:135:            "ThueVAT": invoice_data.get("vat", 0),
+services\export_service.py:136:            "ThanhTien": invoice_data.get("total", 0) + invoice_data.get("vat", 0)
+services\export_service.py:139:        return self.export_to_xml(data, root_name, f"hoa_don_{invoice_data.get('id', '')}")
+services\product_service.py:56:                if inv.get('product_code') == code:
+services\report_service.py:369:        rate = tax_rates.get(industry, tax_rates["Phân phối, cung cấp hàng hóa"])
+services\revenue_book_service.py:219:        ten_ho = business_info.get('ten_ho_kinh_doanh', '')
+services\revenue_book_service.py:220:        dia_chi = business_info.get('dia_chi', '')
+services\revenue_book_service.py:221:        ma_so = business_info.get('ma_so_thue', '')
+services\revenue_book_service.py:277:        if data.get('has_duplicate', False):
+services\revenue_book_service.py:280:            ⚠️ {data.get('warning', 'Phát hiện giao dịch trùng lặp!')}
+services\revenue_book_service.py:285:        if data.get('source_name'):
+services\revenue_book_service.py:288:            📊 Nguồn dữ liệu: {data.get('source_name', 'Chưa xác định')}
+services\revenue_book_service.py:317:            if rev.get('is_duplicate') and rev.get('amount', 0) == 0:
+services\revenue_book_service.py:319:                original_amount = rev.get('original_amount', 0)
+services\revenue_notification_service.py:363:                <tr><td>Hộ kinh doanh: </td><td 
+colspan="3">{business_info.get('ten_ho_kinh_doanh', '')}</td></tr>
+services\revenue_notification_service.py:364:                <tr><td>Mã số thuế: </td><td 
+colspan="3">{business_info.get('ma_so_thue', '')}</td></tr>
+services\revenue_notification_service.py:365:                <tr><td>Địa chỉ: </td><td colspan="3">{business_info.get('dia_chi', 
+'')}</td></tr>
+services\tax_compliance.py:43:        return cls.DEADLINES.get(form_type, "Chua xac dinh")
+services\tax_service.py:23:        rates = TaxService.TAX_RATES.get(industry, TaxService.TAX_RATES["Phân phối, cung cấp hàng hóa"])
+services\tax_service.py:82:        return TaxService.TAX_RATES.get(industry, TaxService.TAX_RATES["Phân phối, cung cấp hàng hóa"])
+services\transaction_service.py:96:                'income': summary.get('income', 0),
+services\transaction_service.py:97:                'expense': summary.get('expense', 0),
+services\transaction_service.py:98:                'profit': summary.get('income', 0) - summary.get('expense', 0)
+services\bank_engine\acb_parser.py:29:                    'trans_date': row.get(self.mapping['date']),
+services\bank_engine\acb_parser.py:30:                    'reference': row.get(self.mapping['ref']),
+services\bank_engine\acb_parser.py:31:                    'amount_in': float(row.get(self.mapping['in'], 0) or 0),
+services\bank_engine\acb_parser.py:32:                    'amount_out': float(row.get(self.mapping['out'], 0) or 0),
+services\bank_engine\acb_parser.py:33:                    'description': str(row.get(self.mapping['desc'], '')),
+services\bank_engine\acb_parser.py:37:                if pd.notnull(row.get(self.mapping['date'])) # Chỉ lấy dòng có dữ liệu
+services\bank_engine\agri_parser.py:20:                    'trans_date': row.get(self.mapping['date']),
+services\bank_engine\agri_parser.py:21:                    'reference': row.get(self.mapping['ref']),
+services\bank_engine\agri_parser.py:22:                    'amount_in': float(row.get(self.mapping['in'], 0) or 0),
+services\bank_engine\agri_parser.py:23:                    'amount_out': float(row.get(self.mapping['out'], 0) or 0),
+services\bank_engine\agri_parser.py:24:                    'description': str(row.get(self.mapping['desc'], '')),
+services\bank_engine\agri_parser.py:27:                for _, row in df.iterrows() if pd.notnull(row.get(self.mapping['date']))
+services\bank_engine\factory.py:16:        parser = parsers.get(bank_code)
+services\bank_engine\vcb_parser.py:21:                    'trans_date': row.get(self.mapping['date']),
+services\bank_engine\vcb_parser.py:22:                    'reference': row.get(self.mapping['ref']),
+services\bank_engine\vcb_parser.py:23:                    'amount_in': float(row.get(self.mapping['in'], 0) or 0),
+services\bank_engine\vcb_parser.py:24:                    'amount_out': float(row.get(self.mapping['out'], 0) or 0),
+services\bank_engine\vcb_parser.py:25:                    'description': str(row.get(self.mapping['desc'], '')),
+services\bank_engine\vcb_parser.py:28:                for _, row in df.iterrows() if pd.notnull(row.get(self.mapping['date']))
+services\reports\report_engine.py:98:        for chi_tieu in config_data.get("cac_chi_tieu", []):
+services\reports\report_engine.py:99:            so_tien_tinh_duoc = self.phan_tich_va_tinh_cong_thuc(chi_tieu.get("cong_thuc", ""))
+services\reports\report_engine.py:102:                "ma_so": chi_tieu.get("ma_so", ""),
+services\reports\report_engine.py:103:                "ten_chi_tieu": chi_tieu.get("ten_chi_tieu", ""),
+services\reports\report_engine.py:104:                "co_in_dam": chi_tieu.get("co_in_dam", False),
+services\reports\update_service.py:37:                return data.get("phien_ban_cau_hinh", "1.0.0")
+services\reports\update_service.py:49:            response = requests.get(self.SERVER_UPDATE_URL, timeout=5)
+services\reports\update_service.py:56:            v_server = server_data.get("phien_ban_cau_hinh", "0.0.0")
+
+

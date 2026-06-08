@@ -1,0 +1,35 @@
+📋 BẢNG GIÁM SÁT TIẾN ĐỘ STRATEGY 6.0
+🟢 GIAI ĐOẠN 1: NỀN MÓNG (HOÀN THÀNH 100%)
+[x] Đo đạc không gian: Nới rộng giao diện License Manager lên 850x850 để đủ chỗ cho "thực đơn".
+
+[x] Quy hoạch Font: Tích hợp get_font("label") và get_font("title") toàn cục vào các tiện ích mới.
+
+[x] Dọn dẹp: Loại bỏ việc gọi hàm khởi tạo trùng lặp trong __init__.
+
+🟡 GIAI ĐOẠN 2: VĂN PHÒNG GIAO DỊCH (HOÀN THÀNH 80%)
+[x] Thiết kế Form Buffet: Đã định nghĩa self.extra_features và tạo các Checkbox chọn món.
+
+[x] Mạch tính giá tự động: Đã cài đặt hàm recalculate_total giúp nhảy số tiền thời gian thực.
+
+[ ] Mã hóa License (The Key): [ĐANG THỰC HIỆN] Cần cập nhật hàm export_license để gom chuỗi tính năng (features_str) gửi đi.
+
+[ ] Ổ khóa bảo mật: [CHỜ FILE] Cần sửa hàm export_license_file trong file utils/license_manager.py để ghi dữ liệu tiện ích vào file .key.
+
+🔴 GIAI ĐOẠN 3: HỆ THỐNG ĐÀN HỒI MÁY KHÁCH (CHƯA BẮT ĐẦU)
+[ ] Mạch Elastic Tab: Viết logic tự động ẩn/hiện Tab dựa trên nội dung file .key nạp vào.
+
+[ ] Feature Flags: Cài đặt quyền "Admin thấy hết - Khách thấy theo gói" tại hàm nạp Tab chính.
+
+🔵 GIAI ĐOẠN 4: ĐÓNG GÓI & KIỂM THỬ (CHƯA BẮT ĐẦU)
+[ ] Test Super Admin: Kiểm tra đăng nhập của Thầy.
+
+[ ] Test Khách hàng: Thử nạp License gói "gọi món" xem Tab có mọc lên đúng không.
+
+🚀 CÔNG VIỆC TIẾP THEO THẦY CẦN GIAO CHO TÔI:
+Để hoàn tất 20% còn lại của Giai đoạn 2, Thầy cần thực hiện bước này:
+
+Gửi cho tôi file utils/license_manager.py: Tôi sẽ sửa hàm export_license_file để nó biết cách "nhét" các tính năng Thầy đã chọn vào file .key một cách bảo mật.
+
+Sau đó: Tôi sẽ hướng dẫn Thầy cập nhật lại nút bấm "Xuất file license.key" trong file giao diện để nó truyền dữ liệu sang file utils này.
+
+Thầy cứ yên tâm, tôi đang giám sát rất chặt chẽ từng row, từng column. Thầy chỉ cần đưa file utils lên là chúng ta chốt xong Giai đoạn 2 ngay!

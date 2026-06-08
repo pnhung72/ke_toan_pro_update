@@ -1,0 +1,80 @@
+================================================================================
+          KE HOACH TONG THE & CHI TIET: REFACTOR CORE & PHAT TRIEN ECOSYSTEM
+          Du an: Ke Toan Pro (v12.0.2) | Ngon ngu: Python | DB: SQLite
+          Triet ly van hanh: Cham ma chac - Vong lap tien bo - Khong nhanh au
+================================================================================
+
+[PHAN 1: MUC TIEU COT LOI CUA CHIEN DICH "RESET"]
+--------------------------------------------------------------------------------
+1. Chuan hoa nen tang loi (Core Platform): Đam bao core vung chac, bao mat, nhe.
+2. Cau truc module doc lap (Decoupling): Đua cac tab nghiep vu dac thu vao dang 
+   "Plug-and-Play" (Cam la chay) ma khong can sua code loi.
+3. Toi uu hoa co so du lieu (DB Optimization): Tan dung bang dynamic metadata de
+   ganh thong tin dac thu cho moi nganh nghe.
+
+
+[PHAN 2: LO TRINH TONG THE (HIGH-LEVEL ROADMAP)]
+--------------------------------------------------------------------------------
+Giai doan 1: Đanh gia & Khoanh vung vung an toan (Code Freeze & Backup)
+Giai doan 2: On dinh hoa tang Loi (Core Stabilization)
+Giai doan 3: Thiet ke kien truc cam Module (Plugin/Module Registry)
+Giai doan 4: Trien khai Module mau nghiep vu dac thu dau tien
+Giai doan 5: Kiem thu dong bo va Đong goi (Testing & Release)
+
+
+[PHAN 3: KE HOACH CHI TIET TUNG BUOC (STEP-BY-STEP ACTION PLAN)]
+--------------------------------------------------------------------------------
+
+Skeptic Buoc 1: Thiet lap "He thong phong ngu" (An toan la tren het)
+  [-] Thuc hien Backup toan bo source code hien tai sang thu muc /backups.
+  [-] Chay toan bo cac test case hien co trong /tests de ghi nhan trang thai on 
+      dinh hien tai (Baseline). Neu co loi phai fixed truoc khi Refactor.
+  [-] Ghi nhat ky khoi dau vao he thong log du an.
+
+Buoc 2: Chuan hoa va "Lam sach" tang Loi (core/)
+  [-] Kiem tra 'core/database/': Đam bao cac ket noi SQLite va lenh SQL duoc 
+      toi uu, tat ca cac transaction deu co co che hoan tac (rollback) neu loi.
+  [-] Kiem tra 'core/security/' & 'core/encryption/': Đong goi cac ham ma hoa 
+      thanh cac class tien ich de cac module sau nay chi viec goi dung ham.
+  [-] Kien toan 'core/utils/': Don dep code thua, thiet lap ghi log (audit log) 
+      chi tiet cho moi hanh vi thay doi du lieu tai tang loi.
+
+Buoc 3: Thiet ke co che "Dang ky Module" (Module Registry) tai Tang UI & Service
+  [-] Tại 'core/' hoac 'services/', tao mot file 'registry.py'. Đay la noi quan 
+      ly danh sach cac module nganh nghe dac thu duoc kich hoat.
+  [-] Thay vi goi truc tiep cac tab trong 'views/tabs', giao dien chinh se quet 
+      qua file 'registry.py' de tu dong sinh ra cac Tab nghiep vu tuong ung 
+      voi phan mem dang chon.
+  [-] Toi uu bang 'transaction_metadata': Thiet ke cau truc JSON/EAV chuan de 
+      luu tru thuoc tinh dong cua cac module ma khong can thay doi cau truc 27 bang.
+
+Buoc 4: Chay thu nghiem Module Nganh nghe Dac thu 01 (Sandbox Test)
+  [-] Tao thu muc module dac thu mau (Vi du: Tab nghiep vu dac thu nganh cua ban).
+  [-] Code module nay doc lap hoan toan, chi giao tiep qua API cua core/.
+  [-] Tien hanh do luong hieu nang: Đon dong du lieu tu module xem co load muer 
+      va co lam giam toc do truy van cua core hay khong.
+
+Buoc 5: Refactor UI/UX vao "Trang thai Tinh thuc" (Context-Aware UI)
+  [-] Sua doi cac file trong 'ui/' de khi nguoi dung chon nghiep vu nao, giao 
+      dien se tu dong an cac tab khong lien quan.
+  [-] Toi uu hoa font chu va giao dien (dua tren font_analysis_report.txt hien co) 
+      de dam bao giao dien phan mem sach se, de nhin, khong roi mat.
+
+Buoc 6: Kiem thu tong luc (Integration Testing)
+  [-] Viet them automated test trong 'tests/integration/' cho module moi.
+  [-] Đam bao tinh nang tu dong cap nhat thong tu (Thong tu 99/2025) hoat dong 
+      chinh xac tren ca core va module moi.
+  [-] Kiem tra tinh nang dong bo cloud (rclone) de dam bao du lieu module moi 
+      duoc sao luu an toan.
+
+
+[PHAN 4: NGUYEN TAC "CHAM MA CHAC" KHI CODE]
+--------------------------------------------------------------------------------
+* NGUYEN TAC 1: Khong viet qua 50 dong code ma khong chay thu (Test-driven).
+* NGUYEN TAC 2: Sửa file nao, refactor file do phai commit hoac backup ngay lập tức.
+* NGUYEN TAC 3: Luon de san mot duong lui (Rollback) ve phien ban chay on dinh gan nhat.
+* NGUYEN TAC 4: Khi met, dung lai, tat may, ngoi xuong nghi ngoi de dau oc tinh tao.
+
+================================================================================
+          HOAN THANH BOCK-UP BAN KE HOACH - SAN SANG KICH HOAT VONG LAP MOI!
+================================================================================

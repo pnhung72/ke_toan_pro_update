@@ -1,0 +1,55 @@
+=====================================================================
+KẾ HOẠCH CẢI TIẾN - BẢN TẬN DỤNG CODE CŨ (v14.0.15)
+=====================================================================
+Mục tiêu: Tự động nhận hóa đơn XML từ email mà KHÔNG LÀM HỎNG các chức năng 
+đồng bộ sao kê ngân hàng và nhận phản hồi khách hàng hiện có.
+
+=====================================================================
+1. PHÂN TÍCH HỆ THỐNG HIỆN TẠI (Từ ảnh chụp)
+=====================================================================
+- Đã có giao diện cấu hình email kết nối: 2 tài khoản
+    + pnhungc3nvt@gmail.com – nhận ý kiến phản hồi từ khách hàng
+    + yatrangmn@gmail.com & pnhungc3nvt@gmail.com – đồng bộ hóa đơn vào sao kê ngân hàng
+- Đã có module xử lý email chung (đọc, lọc đính kèm, xử lý theo loại)
+- Các xử lý hiện tại: ghi feedback, xử lý sao kê
+
+=> Chúng ta sẽ thêm xử lý hóa đơn XML vào module này, nhưng dưới dạng "plugin nhẹ" 
+   không làm thay đổi luồng chính.
+
+=====================================================================
+2. NGUYÊN TẮC SỬA ĐỔI (ĐỂ AN TOÀN)
+=====================================================================
+- Không sửa logic xử lý sao kê ngân hàng.
+- Không sửa logic xử lý phản hồi khách hàng.
+- Chỉ thêm một hàm xử lý riêng cho XML, gọi sau cùng trong vòng lặp xử lý đính kèm.
+- Dùng try-except bao quanh để nếu lỗi không ảnh hưởng các xử lý khác.
+- Dùng bảng `invoice_queue` riêng (không động vào bảng invoices cũ).
+- Giao diện duyệt hóa đơn là dialog riêng (có thể mở từ menu).
+
+=====================================================================
+3. CÁC THÀNH PHẦN MỚI (ĐẶT TRONG extensions/invoice_auto_import/)
+=====================================================================
+A. xml_parser.py          – parse XML thành dict, xử lý nhiều định dạng.
+B. queue_db.py            – quản lý bảng invoice_queue (tạo mới).
+C. approval_dialog.py     – cửa sổ duyệt hóa đơn (QDialog).
+D. integrator.py          – khi duyệt, copy từ queue vào bảng invoices cũ.
+E. logger.py              – ghi log riêng.
+F. hook_email.py          – đoạn code ngắn sẽ được chèn vào module email hiện tại.
+
+=====================================================================
+4. SỬA ĐỔI CỤ THỂ VÀO MODULE EMAIL HIỆN TẠI
+=====================================================================
+Giả sử file xử lý email hiện tại là: core/services/email_service.py 
+hoặc controllers/email_controller.py. Trong hàm xử lý đính kèm (ví dụ: process_attachment),
+ta thêm đoạn sau (CHỈ THÊM, KHÔNG SỬA code cũ):
+
+```python
+# === Tự động xử lý hóa đơn XML (thêm mới, an toàn) ===
+try:
+    from extensions.invoice_auto_import.hook_email import handle_invoice_xml
+    handle_invoice_xml(attachment, email_from, save_dir="DATA_XML/HoaDon_DauVao")
+except Exception as e:
+    # Ghi log lỗi nhưng không làm gián đoạn các xử lý khác
+    import logging
+    logging.getLogger("invoice_import").error(f"Lỗi xử lý XML: {e}")
+# === Kết thúc phần thêm ===

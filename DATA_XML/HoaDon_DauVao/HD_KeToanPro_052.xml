@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HDon>
+    <inv:shdon xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">0000052</inv:shdon>
+    <inv:tdlap xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">2026-05-11</inv:tdlap>
+    <inv:nbban xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">
+        <inv:ten>Tổng Công Ty Công Nghệ Kế Toán Pro</inv:ten>
+        <inv:mst>0101234568</inv:mst>
+    </inv:nbban>
+    <inv:tgtttbso xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">5600000</inv:tgtttbso>
+    <inv:tsuat xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">10%</inv:tsuat>
+</HDon>

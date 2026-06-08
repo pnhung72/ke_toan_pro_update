@@ -1,0 +1,15 @@
+"Kế hoạch Tái cấu trúc Vòng đời đối tượng và Chuẩn hóa Luồng giao tiếp hệ thống" (Object Lifecycle Refactoring & System Communication Standardization).
+
+Dưới đây là chi tiết các cột trụ của kế hoạch này để Thầy nắm bắt và kiểm soát:
+
+Mục tiêu: Xóa bỏ hoàn toàn lỗi xung đột khởi tạo (no default root window) bằng cách thiết lập quan hệ "Cha - Con" (Parent - Child) tường minh giữa cửa sổ chính và cửa sổ chức năng.
+
+Tiến trình thực hiện:
+
+Giai đoạn 1: Chuẩn hóa kiến trúc lớp giao diện (LicenseManagerDialog kế thừa tk.Toplevel và tách biệt hàm setup_ui).
+
+Giai đoạn 2: Cầu nối điều khiển (Bridge Integration): Truyền tham chiếu root (từ main_window.py) vào cửa sổ con một cách bài bản để tránh tình trạng "shipper ném hàng".
+
+Giai đoạn 3: Kiểm chứng xác thực (Verification): Vệ sinh bộ nhớ tạm và chạy test case kiểm thử với quyền Admin để đảm bảo hệ thống nhận diện đúng Hardware ID.
+
+Thầy đã nắm rõ tên và nội dung kế hoạch này. Thầy có muốn tôi bắt đầu thực thi Bước 1 (sửa cấu trúc Class) ngay bây giờ không?

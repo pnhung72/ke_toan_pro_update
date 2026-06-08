@@ -1,0 +1,56 @@
+Dự án: Cải tiến Hệ thống Quản lý Gói cước & Bản quyền (Tier-Based Licensing)
+Chủ đầu tư: Thầy Hùng
+Thời gian hoàn thành: 14/05/2026 - 16:45
+
+I. TỔNG KẾT CÁC GIAI ĐOẠN (STATUS: COMPLETED)
+1. GĐ 1: Xây dựng nền móng (Database)
+
+Hạng mục: Khởi tạo cấu trúc bảng lưu trữ quyền hạn.
+
+Kết quả: Đã thêm bảng feature_tiers (định nghĩa gói BASIC/PRO) và software_licenses (lưu mã máy và hạn dùng) vào user_model.py.
+
+Trạng thái: [x] Xong.
+
+2. GĐ 2: Xây dựng khung xương (Logic Backend)
+
+Hạng mục: Định danh thiết bị duy nhất và kiểm tra quyền hạn 2 lớp.
+
+Kết quả: * Tạo module utils/license_helper.py lấy Machine ID từ Serial ổ cứng.
+
+Tích hợp hàm check_feature_access vào UserModel để kiểm tra gói cước trước khi cho phép sử dụng tính năng.
+
+Trạng thái: [x] Xong.
+
+3. GĐ 3: Hoàn thiện mặt tiền (UI/UX)
+
+Hạng mục: Đặt "ổ khóa" lên giao diện người dùng.
+
+Kết quả: * Nâng cấp main_window.py để tự động làm mờ (Disable) các nút "Báo cáo Thuế", "Nạp XML" nếu không có License PRO.
+
+Sử dụng đúng hệ thống Font toàn cục cho các thông báo nhắc nhở nâng cấp.
+
+Trạng thái: [x] Xong.
+
+4. GĐ 4: Bàn giao chìa khóa (Admin Control)
+
+Hạng mục: Xây dựng cổng mật dành riêng cho Thầy Hùng.
+
+Kết quả: * Thiết lập cơ chế MASTER_ID chỉ hiển thị Menu quản trị trên máy của anh.
+
+Tạo cửa sổ "Cấp License nhanh" để anh kích hoạt gói PRO cho khách hàng chỉ bằng vài cú click.
+
+Trạng thái: [x] Xong.
+
+II. GHI CHÚ KỸ THUẬT QUAN TRỌNG (TECHNICAL LOGS)
+Tính an toàn: Toàn bộ hệ thống đã được Thầy Hùng backup lên Drive trước khi thi công.
+
+Tính bảo mật: Bản quyền được khóa theo phần cứng (Machine ID), ngăn chặn việc sao chép phần mềm trái phép.
+
+Tính linh hoạt: Anh có thể bổ sung thêm tính năng mới vào chuỗi allowed_features trong bảng feature_tiers mà không cần sửa lại cấu trúc Database.
+
+III. HƯỚNG DẪN BẢO TRÌ & VẬN HÀNH
+Khi có máy mới: Yêu cầu khách gửi "Mã máy" hiện trên Terminal -> Vào Menu 🛠️ Quản trị PRO -> Nhập mã và chọn gói -> Bấm Kích hoạt.
+
+Khi nâng cấp tính năng: Chỉ cần cập nhật danh sách tính năng trong bảng feature_tiers qua trang quản trị, các máy khách sẽ tự động cập nhật theo.
+
+Kết luận: Công trình nâng cấp Kế Toán Pro v5.2.4 đã hoàn thành đúng tiến độ, đảm bảo tính chuyên nghiệp, thẩm mỹ và bảo mật cao.

@@ -1,0 +1,28 @@
+# Core dependencies
+cryptography>=41.0.0
+psutil>=5.9.0
+Pillow>=10.0.0
+pandas>=2.0.0
+openpyxl>=3.1.0
+requests>=2.31.0
+matplotlib>=3.7.0
+
+# Database
+#sqlite3  # Built-in with Python
+
+# GUI
+#tkinter  # Built-in with Python
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+
+# Code quality
+black>=23.0.0
+flake8>=6.0.0
+
+# Build
+pyinstaller>=5.0.0
+
+imap-tools>=1.5.0

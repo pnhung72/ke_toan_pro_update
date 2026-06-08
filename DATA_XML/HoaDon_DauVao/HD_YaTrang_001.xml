@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HDon>
+    <inv:shdon xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">0000001</inv:shdon>
+    <inv:tdlap xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">2026-05-10</inv:tdlap>
+    <inv:nbban xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">
+        <inv:ten>Công ty Nước Mắm YaTrang - Chi nhánh Nha Trang</inv:ten>
+        <inv:mst>4201234567</inv:mst>
+    </inv:nbban>
+    <inv:tgtttbso xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">1500000</inv:tgtttbso>
+    <inv:tsuat xmlns:inv="http://laphoadon.gdt.gov.vn/2014/09/invoicexml/v1">8%</inv:tsuat>
+</HDon>
